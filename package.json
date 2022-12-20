@@ -17,7 +17,7 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    "format": "prettier --write './**/*.{ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",

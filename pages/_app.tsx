@@ -28,8 +28,45 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
             withNormalizeCSS
             theme={{
               colorScheme: 'dark',
-              fontFamily: 'Gotham, sans serif',
+              colors: {
+                veryDarkGreen: ['#040A01'],
+                mustardGreen: ['#C9D94E'],
+                orange: ['#F08906'],
+                white: ['#FFFFFF'],
+              },
+              fontFamily: 'Gotham, sans-serif',
+              lineHeight: '19px',
+              fontSizes: {
+                xs: 10,
+                sm: 12,
+                md: 15,
+                lg: 16,
+                xl: 20,
+              },
+              primaryColor: 'white',
               spacing: { xs: 15, sm: 20, md: 25, lg: 30, xl: 40 },
+              headings: {
+                fontFamily: 'Gotham, sans serif',
+                sizes: {
+                  h1: { fontSize: 30 },
+                },
+              },
+              defaultGradient: {
+                from: 'mustardGreen',
+                to: 'orange',
+                deg: 90,
+              },
+              activeStyles: {
+                backgroundColor: 'veryDarkGreen',
+              },
+              components: {
+                Button: {
+                  defaultProps: {
+                    size: 'xs',
+                    color: 'cyan',
+                  },
+                },
+              },
             }}
           >
             <NotificationsProvider>

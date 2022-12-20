@@ -6,7 +6,18 @@ export const GlobalStyleProvider: FC<{ children: ReactNode }> = ({ children }) =
     <>
       <Global
         styles={{
-          '*': { wordBreak: 'break-all' },
+          'html': {
+            height: '100%',
+            background: '#040A01',
+            display: 'flex',
+          },
+          'body': {
+            margin: 'auto',
+          },
+          '*': {
+            wordBreak: 'break-all',
+            webkitBoxSizing: 'border-box', mozBoxSizing: 'border-box', boxSizing: 'border-box',
+          },
           'button, *[type="button"]': { transform: 'none !important' },
         }}
       />

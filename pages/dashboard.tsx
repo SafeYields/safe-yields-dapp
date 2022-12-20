@@ -1,17 +1,20 @@
-import { Stack } from '@mantine/core';
+import { Group, Stack } from '@mantine/core';
 import { PageContainer } from 'components/PageContainer';
 import { PageContent } from 'components/PageContent';
+import { DashboardLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
-
-import { DashboardLayout } from '../layout';
 
 const Home: NextPageWithLayout = () => {
   return (
     <PageContainer title='Dashboard'>
       <Stack spacing='xl'>
-        <PageContent outerTitle title='Homepage'>
-          Safe Yields
+        <PageContent outerTitle title='Foo!'>
+          Foo
         </PageContent>
+        <Group grow>
+          <PageContent title='Bar!'>Bar</PageContent>
+          <PageContent title='Baz!'>Baz</PageContent>
+        </Group>
       </Stack>
     </PageContainer>
   );

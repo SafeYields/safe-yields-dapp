@@ -1,9 +1,19 @@
-import { createStyles, Group, MediaQuery, Navbar, Tooltip, UnstyledButton } from '@mantine/core';
-import { Image } from '@mantine/core';
+import { createStyles, Group, Image, MediaQuery, Navbar, Tooltip, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
 import { FC } from 'react';
-import { ArrowLeft, ArrowRight, CornerRightUp,FileReport, Home, LayoutDashboard,Moneybag,ReportMoney,Robot, UserCircle } from 'tabler-icons-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  CornerRightUp,
+  FileReport,
+  Home,
+  LayoutDashboard,
+  Moneybag,
+  ReportMoney,
+  Robot,
+  UserCircle,
+} from 'tabler-icons-react';
 import { getPath } from 'utils';
 // eslint-disable-next-line no-duplicate-imports
 import { ActiveLink } from 'utils';
@@ -14,8 +24,9 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
   return {
     navbar: {
       position: 'sticky',
+      backgroundColor: theme.colors.veryDarkGreen[0],
       top: 0,
-      width: params?.collapsed ? 81 : 264,
+      width: params?.collapsed ? 120 : 315,
       transition: params?.collapsed ? 'width 0.1s linear' : 'none',
     },
 
@@ -49,29 +60,64 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       ...theme.fn.focusStyles(),
       width: '100%',
       display: 'flex',
+      margin: 'auto',
+      marginBottom: 2,
       alignItems: 'center',
       columnGap: theme.spacing.sm,
       textDecoration: 'none',
-      fontSize: theme.fontSizes.sm,
-      color: theme.colors.gray[7],
-      padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
-      borderRadius: theme.radius.sm,
-      fontWeight: 500,
+      fontSize: theme.fontSizes.md,
+      color: theme.colors[theme.primaryColor][0],
+      padding: `${theme.spacing.sm}px ${theme.spacing.md}px`,
+      lineHeight: '18px',
+      fontWeight: 325,
+      borderRadius: '50px',
+      borderWidth: '2px',
+      borderStyle: 'solid',
+      borderColor: 'transparent',
+      backgroundClip: 'padding-box',
+      position: 'relative',
+      boxSizing: 'border-box',
+      background: theme.colors.veryDarkGreen[0],
 
       '&:hover': {
-        backgroundColor: theme.colors.gray[0],
-        color: theme.black,
-
-        [`& .${icon}`]: {
-          color: theme.black,
+        borderRadius: '50px',
+        borderWidth: '2px',
+        borderStyle: 'solid',
+        '&:before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          zIndex: -1,
+          margin: '-4px',
+          borderRadius: 'inherit',
+          background: theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0]),
         },
       },
     },
 
     linkActive: {
       '&, &:hover': {
-        backgroundColor: theme.colors[theme.primaryColor][0],
-        color: theme.colors[theme.primaryColor][7],
+        // background: 'transparent',
+        background: theme.colors.veryDarkGreen[0],
+        '&:before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          zIndex: -1,
+          margin: '-4px',
+          borderRadius: 'inherit',
+          background: theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0]),
+        },
+        // borderRadius: '50px',
+        // borderWidth: '2px',
+        // borderStyle: 'solid',
+        // borderColor: theme.colors[theme.primaryColor][0],
         [`& .${icon}`]: {
           color: theme.colors[theme.primaryColor][7],
         },
@@ -80,7 +126,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
 
     linkIcon: {
       ref: icon,
-      color: theme.colors.gray[6],
+      color: theme.colors.gray[3],
     },
 
     linkLabel: params?.collapsed ? { display: 'none' } : {},
@@ -135,24 +181,24 @@ export const SideNav: FC<{ className?: string }> = ({ className }) => {
                   </a>
                 );
               }}
-            </ActiveLink>
-          </Tooltip>
-        ))}
-      </Navbar.Section>
+                </ActiveLink>
+                </Tooltip>
+                ))}
+            </Navbar.Section>
 
-      <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-        <Navbar.Section className={classes.footer}>
-          <UnstyledButton className={classes.link} onClick={handlers.toggle}>
-            {collapsed ? (
-              <ArrowRight className={classes.linkIcon} />
-            ) : (
-              <>
-                <ArrowLeft className={classes.linkIcon} />
-              </>
-            )}
-          </UnstyledButton>
-        </Navbar.Section>
-      </MediaQuery>
-    </Navbar>
-  );
-};
+            <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
+              <Navbar.Section className={classes.footer}>
+                <UnstyledButton className={classes.link} onClick={handlers.toggle}>
+                  {collapsed ? (
+                    <ArrowRight className={classes.linkIcon} />
+                  ) : (
+                    <>
+                      <ArrowLeft className={classes.linkIcon} />
+                    </>
+                  )}
+                </UnstyledButton>
+              </Navbar.Section>
+            </MediaQuery>
+          </Navbar>
+        );
+        };
