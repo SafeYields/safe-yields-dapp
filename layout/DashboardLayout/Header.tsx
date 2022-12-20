@@ -56,7 +56,7 @@ const SearchForm: FC = () => {
 const Notification: FC = () => {
   return (
     <Indicator inline size={14} offset={4} color='red' withBorder>
-      <Link  href={getPath('NOTIFICATION')} passHref>
+      <Link href={getPath('NOTIFICATION')} passHref>
         <ActionIcon component='a' variant='default' radius='xl' size={40}>
           <Bell />
         </ActionIcon>

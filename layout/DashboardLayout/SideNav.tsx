@@ -1,8 +1,9 @@
 import { createStyles, Group, MediaQuery, Navbar, Tooltip, UnstyledButton } from '@mantine/core';
+import { Image } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
 import { FC } from 'react';
-import { ArrowLeft, ArrowRight, DeviceAnalytics, Home, Settings } from 'tabler-icons-react';
+import { ArrowLeft, ArrowRight, Home, Settings } from 'tabler-icons-react';
 import { getPath } from 'utils';
 // eslint-disable-next-line no-duplicate-imports
 import { ActiveLink } from 'utils';
@@ -99,11 +100,11 @@ export const SideNav: FC<{ className?: string }> = ({ className }) => {
     <Navbar p='md' className={cx(classes.navbar, className)}>
       <Navbar.Section grow>
         <Group className={classes.header} position='apart'>
-          <Link  href={getPath('INDEX')}>
-            <a className={classes.logo}>
-              <DeviceAnalytics />
-              <span className={classes.linkLabel}>Admin Dashboard</span>
-            </a>
+          <Link href={getPath('INDEX')}>
+            <Image
+              src='/assets/safe-yields-logo.svg'
+              alt='Safe Yields Logo'
+            />
           </Link>
         </Group>
         {ITEMS.map(({ label, href, Icon }) => (
@@ -141,7 +142,6 @@ export const SideNav: FC<{ className?: string }> = ({ className }) => {
             ) : (
               <>
                 <ArrowLeft className={classes.linkIcon} />
-                <span>折りたたむ</span>
               </>
             )}
           </UnstyledButton>

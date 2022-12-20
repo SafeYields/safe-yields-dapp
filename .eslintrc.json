@@ -58,10 +58,7 @@
     "simple-import-sort/exports": "error",
     "camelcase": "error",
     "spaced-comment": "error",
-    "quotes": [
-      "error",
-      "single"
-    ],
+    "quotes": ["error", "single"],
     "no-duplicate-imports": "error",
     "@typescript-eslint/explicit-function-return-type": "off",
     "prettier/prettier": "off",
@@ -72,10 +69,7 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "react/react-in-jsx-scope": "off",
     "react-hooks/exhaustive-deps": "off",
-    "object-shorthand": [
-      "error",
-      "always"
-    ],
+    "object-shorthand": ["error", "always"],
     "no-restricted-imports": [
       "error",
       {
@@ -91,15 +85,11 @@
         ],
         "patterns": [
           {
-            "group": [
-              "**/dist"
-            ],
+            "group": ["**/dist"],
             "message": "Do not import from dist/ - this is an implementation detail, and breaks tree-shaking."
           },
           {
-            "group": [
-              "!styled-components/macro"
-            ]
+            "group": ["!styled-components/macro"]
           }
         ]
       }

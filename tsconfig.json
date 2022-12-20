@@ -19,7 +19,7 @@
       "@config": ["config/*"],
       "@components": ["components/*"],
       "@contractTypes/*": ["types/*"],
-      "@utils/*": ["utils/*"],
+      "@utils/*": ["utils/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/MenuItem"],

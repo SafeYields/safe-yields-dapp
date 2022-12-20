@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Dashboard,
   ShoppingCart,
@@ -9,59 +9,59 @@ import {
   Business,
   HomeWork,
   Person,
-} from "@styled-icons/material";
+} from '@styled-icons/material';
 
 const MENU_OPTIONS: MenuOption[] = [
   {
-    name: "Dashboard",
+    name: 'Dashboard',
     icon: Dashboard,
-    url: "/",
+    url: '/',
   },
   {
-    name: "Orders",
+    name: 'Orders',
     icon: ShoppingCart,
-    url: "/orders",
+    url: '/orders',
     subItems: [
       {
-        name: "New",
+        name: 'New',
         icon: AddShoppingCart,
-        url: "/new-orders",
+        url: '/new-orders',
       },
       {
-        name: "Completed",
+        name: 'Completed',
         icon: Done,
-        url: "/completed-orders",
+        url: '/completed-orders',
       },
     ],
   },
   {
-    name: "Customers",
+    name: 'Customers',
     icon: People,
-    url: "/customers",
+    url: '/customers',
     subItems: [
       {
-        name: "Corporate",
+        name: 'Corporate',
         icon: Business,
-        url: "/corporate",
+        url: '/corporate',
       },
       {
-        name: "SMB",
+        name: 'SMB',
         icon: HomeWork,
-        url: "/smb",
+        url: '/smb',
         subItems: [
           {
-            name: "Retail",
+            name: 'Retail',
             icon: Person,
-            url: "/retail",
+            url: '/retail',
           },
         ],
       },
     ],
   },
   {
-    name: "Inventory",
+    name: 'Inventory',
     icon: AttachMoney,
-    url: "/inventory",
+    url: '/inventory',
   },
 ];
 

@@ -1,10 +1,10 @@
 const PATH = {
-  INDEX: "/",
-  NOTIFICATION: "/notification",
-  SETTINGS: "/settings",
-  SIGN_IN: "/sign-in",
-  SIGN_UP: "/sign-up",
-  FORGOT_PASSWORD: "/forgot-password",
+  INDEX: '/',
+  NOTIFICATION: '/notification',
+  SETTINGS: '/settings',
+  SIGN_IN: '/sign-in',
+  SIGN_UP: '/sign-up',
+  FORGOT_PASSWORD: '/forgot-password',
 } as const;
 
 export const getPath = (pathKey: keyof typeof PATH, ...args: string[]) => {
@@ -14,10 +14,10 @@ export const getPath = (pathKey: keyof typeof PATH, ...args: string[]) => {
     return val;
   }
 
-  const dirs = val.slice(1).split("/");
+  const dirs = val.slice(1).split('/');
 
   const newPath = dirs.map((dir) => {
-    if (dir.startsWith("[")) {
+    if (dir.startsWith('[')) {
       const replaceDir = args[0];
       args.shift();
       return replaceDir;
@@ -25,5 +25,5 @@ export const getPath = (pathKey: keyof typeof PATH, ...args: string[]) => {
     return dir;
   });
 
-  return "/" + newPath.join("/");
+  return '/' + newPath.join('/');
 };

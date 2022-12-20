@@ -12,7 +12,9 @@ interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout;
 }
 
-const Web3ProviderNetwork = dynamic(() => import('components/Web3ProviderNetwork/index'), { ssr: false });
+const Web3ProviderNetwork = dynamic(() => import('components/Web3ProviderNetwork/index'), {
+  ssr: false,
+});
 
 function _App({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
