@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FC } from 'react';
 import { ArrowLeft, ArrowRight, DeviceAnalytics, Home, Settings } from 'tabler-icons-react';
 import { getPath } from 'utils';
+// eslint-disable-next-line no-duplicate-imports
 import { ActiveLink } from 'utils';
 
 const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, getRef) => {
@@ -98,7 +99,7 @@ export const SideNav: FC<{ className?: string }> = ({ className }) => {
     <Navbar p='md' className={cx(classes.navbar, className)}>
       <Navbar.Section grow>
         <Group className={classes.header} position='apart'>
-          <Link href={getPath('INDEX')}>
+          <Link  href={getPath('INDEX')}>
             <a className={classes.logo}>
               <DeviceAnalytics />
               <span className={classes.linkLabel}>Admin Dashboard</span>

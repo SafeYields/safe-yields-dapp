@@ -1,18 +1,18 @@
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
-import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
+import { Web3ReactProvider } from '@web3-react/core';
 import { NextPageWithLayout } from 'next';
 import type { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
 import { getLibrary } from 'utils';
 
-import { NetworkContextName } from '../config';
 import { GlobalStyleProvider } from '../style/GlobalStyleProvider';
 
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout;
 }
 
-const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
+const Web3ProviderNetwork = dynamic(() => import('components/Web3ProviderNetwork/index'), { ssr: false });
 
 function _App({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
