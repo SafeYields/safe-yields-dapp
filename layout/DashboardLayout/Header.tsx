@@ -8,7 +8,7 @@ import {
   Indicator,
   Menu,
 } from '@mantine/core';
-import { NextLink } from '@mantine/next';
+import { NextLink } from '@mantine/next'
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, ReactNode } from 'react';
@@ -21,14 +21,12 @@ export const Header: FC<{ left: ReactNode }> = ({ left }) => {
       component='header'
       sx={(theme) => ({
         padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
-        borderBottom: `1px solid ${theme.colors.gray[2]}`,
-        backgroundColor: theme.white,
+        borderBottom: `0px solid ${theme.colors.gray[2]}`,
+        backgroundColor: theme.colors.veryDarkGreen[0]
       })}
     >
       <Group spacing='lg' noWrap>
         {left}
-        <SearchForm />
-        <Notification />
         <UserMenu />
       </Group>
     </Box>

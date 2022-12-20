@@ -25,8 +25,8 @@ export const DashboardLayout: CustomLayout = (page) => {
     <AppShell
       padding='md'
       styles={(theme) => ({
-        body: { minHeight: '100vh' },
-        main: { padding: 0, backgroundColor: theme.colors.gray[0] },
+        body: { minHeight: '100vh', backgroundColor: theme.colors.veryDarkGreen[0] },
+        main: { padding: 0, backgroundColor: theme.colors.veryDarkGreen[0] },
       })}
       navbar={
         <>
