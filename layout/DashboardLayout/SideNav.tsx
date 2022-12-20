@@ -3,7 +3,7 @@ import { Image } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
 import { FC } from 'react';
-import { ArrowLeft, ArrowRight, Home, Settings } from 'tabler-icons-react';
+import { ArrowLeft, ArrowRight, CornerRightUp,FileReport, Home, LayoutDashboard,Moneybag,ReportMoney,Robot, UserCircle } from 'tabler-icons-react';
 import { getPath } from 'utils';
 // eslint-disable-next-line no-duplicate-imports
 import { ActiveLink } from 'utils';
@@ -88,8 +88,14 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
 });
 
 const ITEMS = [
-  { href: getPath('INDEX'), label: 'Index', Icon: Home },
-  { href: getPath('SETTINGS'), label: 'Dashboard', Icon: Settings },
+  { href: getPath('HOME'), label: 'Website', Icon: Home },
+  { href: getPath('DASHBOARD'), label: 'Dashboard', Icon: LayoutDashboard },
+  { href: getPath('YIELD'), label: 'Yield aggregator', Icon: ReportMoney },
+  { href: getPath('EMMA'), label: 'Emma the trading Bot', Icon: Robot },
+  { href: getPath('SAFE'), label: 'Trade Safe', Icon: Moneybag },
+  { href: getPath('NFT'), label: 'Buy an NFT', Icon: UserCircle },
+  { href: getPath('INVESTMENT'), label: 'Investment Pool Portfolio', Icon: CornerRightUp },
+  { href: getPath('EXPENSE'), label: 'Expense Log', Icon: FileReport },
 ];
 
 export const SideNav: FC<{ className?: string }> = ({ className }) => {
@@ -100,7 +106,7 @@ export const SideNav: FC<{ className?: string }> = ({ className }) => {
     <Navbar p='md' className={cx(classes.navbar, className)}>
       <Navbar.Section grow>
         <Group className={classes.header} position='apart'>
-          <Link href={getPath('INDEX')}>
+          <Link href={getPath('HOME')}>
             <Image
               src='/assets/safe-yields-logo.svg'
               alt='Safe Yields Logo'
