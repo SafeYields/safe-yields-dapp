@@ -41,14 +41,14 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 sm: 12,
                 md: 15,
                 lg: 16,
-                xl: 20,
+                xl: 80,
               },
               primaryColor: 'white',
               spacing: { xs: 15, sm: 20, md: 25, lg: 30, xl: 40 },
               headings: {
-                fontFamily: 'Gotham, sans serif',
+                fontFamily: 'Gotham, sans-serif',
                 sizes: {
-                  h1: { fontSize: 30 },
+                  h1: { fontSize: 80 },
                 },
               },
               defaultGradient: {
@@ -64,6 +64,17 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                   defaultProps: {
                     size: 'xs',
                     color: 'cyan',
+                  },
+                },
+                Container: {
+                  defaultProps: {
+                    sizes: {
+                      xs: 540,
+                      sm: 720,
+                      md: 960,
+                      lg: 1140,
+                      xl: 1320,
+                    },
                   },
                 },
               },

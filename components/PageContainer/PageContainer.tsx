@@ -1,5 +1,4 @@
-import { Anchor, Breadcrumbs, Container, ContainerProps, Space, Title } from '@mantine/core';
-import Link from 'next/link';
+import { BackgroundImage, Container, ContainerProps } from '@mantine/core';
 import { FC, ReactNode } from 'react';
 
 type PageContainerProps = {
@@ -10,22 +9,10 @@ type PageContainerProps = {
 
 export const PageContainer: FC<PageContainerProps> = ({ children, title, items, fluid }) => {
   return (
-    <Container px={0} fluid={fluid}>
-      {items && items.length > 0 ? (
-        <Breadcrumbs>
-          {items.map((item) => (
-            <Link key={item.label} href={item.href} passHref>
-              <Anchor>{item.label}</Anchor>
-            </Link>
-          ))}
-        </Breadcrumbs>
-      ) : null}
-
-      <Title order={1}>{title}</Title>
-
-      <Space h='xl' />
-
-      {children}
+    <Container fluid={fluid}>
+      <BackgroundImage src='/assets/background-abstraction.svg'>
+        {children}
+      </BackgroundImage>
     </Container>
   );
 };
