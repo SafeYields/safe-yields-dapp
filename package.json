@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.6",
+    "@emotion/react": "^11.10.5",
+    "@emotion/server": "^11.10.0",
     "@ethersproject/contracts": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
     "@mantine/core": "^5.9.5",
