@@ -1,7 +1,7 @@
 import { Group, Stack } from '@mantine/core';
 import { PageContainer } from 'components/PageContainer';
 import { PageContent } from 'components/PageContent';
-import { DashboardLayout } from 'layout';
+import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
 
 const Home: NextPageWithLayout = () => {
@@ -22,4 +22,4 @@ const Home: NextPageWithLayout = () => {
 
 export default Home;
 
-Home.getLayout = DashboardLayout;
+Home.getLayout = AppLayout;

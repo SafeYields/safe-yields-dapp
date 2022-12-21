@@ -6,11 +6,9 @@ const PATH = {
   EMMA: '/emma-the-bot',
   SAFE: '/trade-safe',
   NFT: '/buy-nft',
-  INVESTMENT: '/ivestment-pool',
+  INVESTMENT: '/investment-pool',
   EXPENSE: '/expense-log',
-  SIGN_IN: '/sign-in',
-  SIGN_UP: '/sign-up',
-  FORGOT_PASSWORD: '/forgot-password',
+  WHITEPAPER: '/whitepaper',
 } as const;
 
 export const getPath = (pathKey: keyof typeof PATH, ...args: string[]) => {

@@ -30,6 +30,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
               colorScheme: 'dark',
               colors: {
                 veryDarkGreen: ['#040A01'],
+                highlightGreen: ['#D1DE5D'],
                 mustardGreen: ['#C9D94E'],
                 orange: ['#F08906'],
                 white: ['#FFFFFF'],

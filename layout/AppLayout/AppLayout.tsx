@@ -8,9 +8,9 @@ import { Menu2 } from 'tabler-icons-react';
 
 import { LayoutErrorBoundary } from '../LayoutErrorBoundary';
 
-const Header = dynamic(async () => {
-  const { Header } = await import('./Header');
-  return Header;
+const HeaderNav = dynamic(async () => {
+  const { HeaderNav } = await import('./HeaderNav');
+  return HeaderNav;
 });
 
 const SideNav = dynamic(async () => {
@@ -18,7 +18,7 @@ const SideNav = dynamic(async () => {
   return SideNav;
 });
 
-export const DashboardLayout: CustomLayout = (page) => {
+export const AppLayout: CustomLayout = (page) => {
   const [opened, handlers] = useDisclosure(false);
 
   return (
@@ -43,8 +43,7 @@ export const DashboardLayout: CustomLayout = (page) => {
           </MediaQuery>
         </>
       }
-    >
-      <Header
+      header={<HeaderNav
         left={
           <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
             <ActionIcon variant='default' radius='xl' size={40} onClick={handlers.open}>
@@ -52,7 +51,8 @@ export const DashboardLayout: CustomLayout = (page) => {
             </ActionIcon>
           </MediaQuery>
         }
-      />
+      />}
+    >
       <Box py='xl' px='md'>
         <LayoutErrorBoundary>{page}</LayoutErrorBoundary>
       </Box>
