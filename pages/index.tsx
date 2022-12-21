@@ -1,4 +1,4 @@
-import { Stack, Text } from '@mantine/core';
+import { Space,Stack, Text } from '@mantine/core';
 import { PageContainer } from 'components/PageContainer';
 import type { NextPageWithLayout } from 'next';
 
@@ -8,15 +8,20 @@ const Home: NextPageWithLayout = () => {
   return (
     <PageContainer title='Dashboard'>
       <Stack spacing='xl'>
-        {/* <PageContent outerTitle title='Homepage'>*/}
         <Text sx={{ fontFamily: 'Gotham, sans-serif' }}
               ta='center'
               fz='xl'
-              fw={700}
-              lineClamp={2}>
-          Safe Investments in DeFi
+              fw={700}>
+          Safe Investments
         </Text>
-        {/* </PageContent>*/}
+        <Space />
+        <Text sx={{ fontFamily: 'Gotham, sans-serif' }}
+              ta='center'
+              fz='xl'
+              fw={700}>
+          in DeFi
+        </Text>
+
       </Stack>
     </PageContainer>
   );

@@ -1,18 +1,19 @@
 import {
   ActionIcon,
   Autocomplete,
-  Avatar,
   Box,
-  Divider,
   Group,
   Indicator,
   Menu,
 } from '@mantine/core';
-import { NextLink } from '@mantine/next'
+import { NextLink } from '@mantine/next';
+import { useWeb3React } from '@web3-react/core';
+import { Account } from 'components/Account';
+import useEagerConnect from 'hooks/useEagerConnect';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, ReactNode } from 'react';
-import { Bell, Logout, Search, Settings } from 'tabler-icons-react';
+import { Bell, Search, Settings } from 'tabler-icons-react';
 import { getPath } from 'utils';
 
 export const Header: FC<{ left: ReactNode }> = ({ left }) => {
@@ -22,7 +23,7 @@ export const Header: FC<{ left: ReactNode }> = ({ left }) => {
       sx={(theme) => ({
         padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
         borderBottom: `0px solid ${theme.colors.gray[2]}`,
-        backgroundColor: theme.colors.veryDarkGreen[0]
+        backgroundColor: theme.colors.veryDarkGreen[0],
       })}
     >
       <Group spacing='lg' noWrap>
@@ -69,6 +70,10 @@ const UserMenu: FC = () => {
     router.push(getPath('SIGN_IN'));
   };
 
+  const { account, library } = useWeb3React();
+
+  const triedToEagerConnect = useEagerConnect();
+
   return (
     <Menu
       position='bottom'
@@ -78,18 +83,8 @@ const UserMenu: FC = () => {
         itemLabel: { fontSize: theme.fontSizes.md },
       })}
     >
-      <Menu.Label>Application</Menu.Label>
       <Menu.Item icon={<Settings size={16} />} component={NextLink} href='#'>
-        <ActionIcon variant='default' radius='xl' size={40}>
-          <Avatar
-            src='https://img.icons8.com/ios/512/metamask-logo.png'
-            radius='xl'
-          />
-        </ActionIcon>
-      </Menu.Item>
-      <Divider />
-      <Menu.Item icon={<Logout size={16} />} onClick={signOut}>
-        Wallet
+        <Account triedToEagerConnect={triedToEagerConnect} />
       </Menu.Item>
     </Menu>
   );

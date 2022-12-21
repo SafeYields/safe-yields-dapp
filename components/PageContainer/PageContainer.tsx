@@ -1,4 +1,4 @@
-import { BackgroundImage, Container, ContainerProps } from '@mantine/core';
+import { Container, ContainerProps } from '@mantine/core';
 import { FC, ReactNode } from 'react';
 
 type PageContainerProps = {
@@ -9,10 +9,19 @@ type PageContainerProps = {
 
 export const PageContainer: FC<PageContainerProps> = ({ children, title, items, fluid }) => {
   return (
-    <Container fluid={fluid}>
-      <BackgroundImage src='/assets/background-abstraction.svg'>
-        {children}
-      </BackgroundImage>
+    <Container fluid={fluid} >
+      {children}
     </Container>
   );
 };
+
+//
+// styles={_ => ({
+//   body: {
+//     backgroundImage: 'assets/background-abstraction.svg',
+//     backgroundSize: 'cover',
+//     backgroundPosition: 'center',
+//     backgroundRepeat: 'no-repeat',
+//     minHeight: '100vh',
+//   },
+// })}
