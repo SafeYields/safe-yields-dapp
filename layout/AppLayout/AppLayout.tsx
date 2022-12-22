@@ -53,7 +53,7 @@ export const AppLayout: CustomLayout = (page) => {
         }
       />}
     >
-      <Box py='xl' px='md'>
+      <Box py='xl' px='md' sx={{ marginTop: '60px' }}>
         <LayoutErrorBoundary>{page}</LayoutErrorBoundary>
       </Box>
     </AppShell>
