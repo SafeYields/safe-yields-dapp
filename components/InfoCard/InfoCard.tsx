@@ -1,4 +1,6 @@
-import { Badge, Box, createStyles, Group, Stack,Text } from '@mantine/core';
+import { Badge, Box, createStyles, Group, Stack, Text } from '@mantine/core';
+
+import useSafePrice from '../../hooks/useSafePrice';
 
 export const InfoCard = () => {
 
@@ -83,7 +85,7 @@ export const InfoCard = () => {
             <Group position='apart' mt='md' mb='xs'>
               <Text weight={500}>Safe Yields Stats</Text>
               <Badge color='pink' variant='light'>
-                Live
+                {useSafePrice().data?}
               </Badge>
             </Group>
 

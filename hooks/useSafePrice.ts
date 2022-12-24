@@ -1,16 +1,17 @@
-import type { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 import useSWR from 'swr';
 
-export default function useSafePrice() {
-  const { library } = useWeb3React<Web3Provider>();
-  const shouldFetch = !!library;
+import useSafeTokenContract from './useSafeTokenContract';
+
+const useSafePrice = () => {
+  const safeTokenContract = useSafeTokenContract();
 
   return useSWR(
-    shouldFetch ? ['BlockNumber'] : null,
-    () => library?.getBlockNumber(),
+    null,
+    () => safeTokenContract?.price(),
     {
       refreshInterval: 10 * 1000,
     },
   );
-}
+};
+
+export default useSafePrice;
