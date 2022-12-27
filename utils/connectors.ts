@@ -39,7 +39,6 @@ export const [metaMask, hooksMetamask] = initializeConnector<MetaMask>((actions)
 export const [network, hooksNetwork] = initializeConnector<Network>((actions) => new Network({
   actions,
   urlMap,
-  // urlMap: { 1337: ['http://localhost:8545'] },
   defaultChainId: 1337,
 }));
 
