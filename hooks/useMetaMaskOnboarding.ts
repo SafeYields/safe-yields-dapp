@@ -44,13 +44,10 @@ export default function useMetaMaskOnboarding() {
     }
   }
 
-  // @ts-ignore
-  const isWeb3Available = typeof window !== 'undefined' && window?.ethereum;
 
   return {
     startOnboarding,
     stopOnboarding,
     isMetaMaskInstalled,
-    isWeb3Available,
   };
 }

@@ -6,9 +6,6 @@ import {
   Indicator,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { useWeb3React } from '@web3-react/core';
-import { Account } from 'components/Account';
-import useEagerConnect from 'hooks/useEagerConnect';
 import Link from 'next/link';
 import { FC, ReactNode, useState } from 'react';
 import {
@@ -18,6 +15,8 @@ import {
   UserCircle,
 } from 'tabler-icons-react';
 import { getPath } from 'utils';
+
+import { Account } from '../../components/Account';
 
 
 const useStyles = createStyles((theme) => ({
@@ -68,10 +67,6 @@ const useStyles = createStyles((theme) => ({
 export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
   const [opened, { toggle }] = useDisclosure(false);
 
-  const { account, library } = useWeb3React();
-
-  const triedToEagerConnect = useEagerConnect();
-
   const links = [
     { link: getPath('WHITEPAPER'), label: 'Whitepaper', Icon: Home },
     { link: getPath('SAFE'), label: 'Buy Safe', Icon: Moneybag },
@@ -107,7 +102,7 @@ export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
         <Group spacing={50} className={classes.links}>
           {left}
           {items}
-          <Account triedToEagerConnect={triedToEagerConnect} />
+           <Account />
         </Group>
         <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />
       </Container>
