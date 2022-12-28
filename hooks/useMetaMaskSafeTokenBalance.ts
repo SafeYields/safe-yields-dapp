@@ -15,8 +15,8 @@ export default function useMetaMaskSafeTokenBalance(
     shouldFetch ? ['TokenBalance'] : null,
     async () => {
       const address = await contract?.signer?.getAddress();
-      const balance = await contract?.balanceOf(address);
-      return address && balance ? parseBalance(balance) : null;
+      const balance = address ? await contract?.balanceOf(address) : undefined;
+      return address && balance !== undefined ? parseBalance(balance) : null;
     },
     {
       suspense,
