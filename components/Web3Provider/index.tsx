@@ -8,7 +8,6 @@ import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
 import useEagerlyConnect from 'hooks/useEagerlyConnect';
 import { ReactNode, useEffect, useMemo } from 'react';
 
-import { chainConfig } from '../../config';
 
 
 export default function Web3Provider({ children }: { children: ReactNode }) {
@@ -27,11 +26,10 @@ export default function Web3Provider({ children }: { children: ReactNode }) {
 
 function Web3Status() {
   const context = useWeb3React();
-  console.debug(`Chain ${chainConfig.chainId} - ${chainConfig.rpcUrls.toString()}`);
-  console.debug(`Priority Connector is: ${getName(context.connector)}`);
-  console.debug(`${context.account ? 'Connected' : 'Disconnected'} to ${context.chainId ? context.chainId : 'Unknown'}`);
-  console.debug(`${context.isActivating ? 'Activating' : 'Not activating'} ${getName(context.connector)}`);
-  console.debug(`${context.isActive ? 'Active' : 'Not active'} ${getName(context.connector)}`);
+  console.debug(`Priority Connector is: ${getName(context.connector)}, chainId is ${context.chainId}`);
+  console.debug(`${context.account ? 'Account given' : 'no account'}`);
+  console.debug(`${context.isActive ? 'Active' : 'Not active'}`);
+  console.debug(`${context.isActivating ? 'Activating' : 'Not activating'}`);
   return null;
 }
 

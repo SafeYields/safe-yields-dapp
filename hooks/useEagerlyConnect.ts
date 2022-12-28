@@ -1,6 +1,6 @@
 import { Connector } from '@web3-react/types';
 import { useEffect } from 'react';
-import { ConnectionType, getConnection, networkConnection } from 'utils/connectors';
+import { ConnectionType, getConnection } from 'utils/connectors';
 
 async function connect(connector: Connector) {
   try {
@@ -16,10 +16,12 @@ async function connect(connector: Connector) {
 
 export default function useEagerlyConnect() {
   const selectedConnection = getConnection(ConnectionType.INJECTED);
+  const networkConnection = getConnection(ConnectionType.NETWORK);
   useEffect(() => {
     connect(networkConnection.connector);
     if (selectedConnection) {
       connect(selectedConnection.connector);
     } // The dependency list is empty so this is only run once on mount
+    connect(networkConnection.connector);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 }

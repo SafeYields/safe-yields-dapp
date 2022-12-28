@@ -20,10 +20,11 @@ type ChainConfig = {
 type ChainsConfig = Record<number, ChainConfig>;
 
 
-const chainId = process.env.NEXT_PUBLIC_CHAIN_ID;
-if (chainId === undefined) {
+const envChainId = process.env.NEXT_PUBLIC_CHAIN_ID;
+if (envChainId === undefined) {
   throw new Error('CHAIN_ID is not defined');
 }
+export const chainId = parseInt(envChainId, 10);
 
 const config: ChainsConfig = {
   56: {

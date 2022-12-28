@@ -3,15 +3,14 @@ import { NotificationsProvider } from '@mantine/notifications';
 import { NextPageWithLayout } from 'next';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
-
-import { GlobalStyleProvider } from '../style/GlobalStyleProvider';
+import { GlobalStyleProvider } from 'style/GlobalStyleProvider';
 
 
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout;
 }
 
-const Web3Provider = dynamic(() => import('../components/Web3Provider/index'), { ssr: false });
+const Web3Provider = dynamic(() => import('components/Web3Provider/index'), { ssr: false });
 
 function _App({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
