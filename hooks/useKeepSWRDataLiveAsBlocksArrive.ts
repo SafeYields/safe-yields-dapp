@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import useBlockNumber from './useBlockNumber';
+import useNetworkBlockNumber from './useNetworkBlockNumber';
 
 export default function useKeepSWRDataLiveAsBlocksArrive(
   mutate: () => Promise<any>,
@@ -13,7 +13,7 @@ export default function useKeepSWRDataLiveAsBlocksArrive(
   });
 
   // then, whenever a new block arrives, trigger a mutation
-  const { data } = useBlockNumber();
+  const { data } = useNetworkBlockNumber();
 
   useEffect(() => {
     mutateRef.current();

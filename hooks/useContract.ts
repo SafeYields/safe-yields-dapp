@@ -1,24 +1,37 @@
 import { Contract } from '@ethersproject/contracts';
-import { useWeb3React } from '@web3-react/core';
-import { useMemo } from 'react';
+import { Web3ReactHooks } from '@web3-react/core';
+import { Connector } from '@web3-react/types';
+import { isAddress } from 'ethers/lib/utils';
+import { useEffect, useMemo } from 'react';
+
 
 export default function useContract<T extends Contract = Contract>(
+  hooks: Web3ReactHooks,
+  connector: Connector,
   address: string,
   ABI: any,
 ): T | null {
-  const { library, account, chainId } = useWeb3React();
+  const { useChainId, useIsActive, useProvider } = hooks;
+  useEffect(() => {
+    void connector.activate()?.catch(() => {
+      console.error('Failed to connect to network');
+    });
+  }, []);
+  const chainId = useChainId();
+  const isActive = useIsActive();
+  const provider = useProvider();
 
   return useMemo(() => {
-    if (!address || !ABI || !library || !chainId) {
+
+    if (!address || !ABI || !isAddress(address) || !isActive || !provider || !chainId) {
       return null;
     }
 
     try {
-      return new Contract(address, ABI, library.getSigner(account));
+      return new Contract(address, ABI, provider.getSigner());
     } catch (error) {
       console.error('Failed To Get Contract', error);
-
       return null;
     }
-  }, [address, ABI, library, account]) as T;
-}
+  }, [address, ABI, connector]) as T;
+};

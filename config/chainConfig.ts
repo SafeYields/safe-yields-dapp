@@ -1,28 +1,28 @@
-type ChainConfig = Record<number,
-  {
-    chainId: number;
-    chainName: string;
-    chainShortName: string;
-    nativeCurrency: {
-      name: string;
-      symbol: string;
-      decimals: number;
-    },
-    rpcUrls: string[];
-    blockExplorerUrls?: string[];
-    addresses: {
-      treasury: string;
-      management: string;
-      busd: string;
-      safe: string;
-      vault: string;
-      nft: string;
-    }
-  }>;
+import { AddEthereumChainParameter } from '@web3-react/types';
 
-const chainId = { mainnet: 56, testnet: 97 }[process.env.NETWORK || 'localhost'] || 1337;
+type ChainConfig = {
+  chainId: number;
+  chainName: string;
+  chainShortName: string;
+  nativeCurrency: AddEthereumChainParameter['nativeCurrency'],
+  rpcUrls: string[];
+  blockExplorerUrls: AddEthereumChainParameter['blockExplorerUrls'],
+  addresses: {
+    treasury: string;
+    management: string;
+    busd: string;
+    safe: string;
+    vault: string;
+    nft: string;
+  }
+};
 
-const config: ChainConfig = {
+type ChainsConfig = Record<number, ChainConfig>;
+
+
+const chainId = parseInt(process.env.CHAIN_ID || '1337');
+
+const config: ChainsConfig = {
   56: {
     chainName: 'Binance Smart Chain',
     chainId: 56,
@@ -69,7 +69,7 @@ const config: ChainConfig = {
       chainName: 'Localhost',
       chainId: 1337,
       chainShortName: 'HH',
-      rpcUrls: [],
+      rpcUrls: ['http://localhost:8545'],
       nativeCurrency: {
         name: 'BNB',
         symbol: 'BNB',
@@ -88,3 +88,4 @@ const config: ChainConfig = {
 };
 
 export const chainConfig = config[chainId];
+export const urlMap = { [chainId]: config[chainId].rpcUrls };
