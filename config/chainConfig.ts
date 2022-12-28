@@ -24,7 +24,7 @@ const envChainId = process.env.NEXT_PUBLIC_CHAIN_ID;
 if (envChainId === undefined) {
   throw new Error('CHAIN_ID is not defined');
 }
-export const chainId = parseInt(envChainId, 10);
+export const supportedChainId = parseInt(envChainId, 10);
 
 const config: ChainsConfig = {
   56: {
@@ -91,5 +91,5 @@ const config: ChainsConfig = {
     },
 };
 
-export const chainConfig = config[chainId];
-export const urlMap = { [chainId]: config[chainId].rpcUrls };
+export const chainConfig = config[supportedChainId];
+export const urlMap = { [supportedChainId]: config[supportedChainId].rpcUrls };

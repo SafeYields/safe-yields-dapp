@@ -5,6 +5,8 @@ import { Download, Link, Unlink } from 'tabler-icons-react';
 import { hooksMetamask, metaMask } from 'utils/connectors';
 import { shortenHex } from 'utils/web3utils';
 
+import { supportedChainId } from '../../config/chainConfig';
+
 
 const { useChainId, useAccount, useIsActivating, useIsActive, useProvider, useENSName } = hooksMetamask;
 
@@ -90,12 +92,9 @@ export const Account = () => {
   }, [active, error, stopOnboarding]);
 
   const ENSName = useENSName();
+  const unsupportedChain = chainId && chainId !== supportedChainId;
 
-  // if (error) {
-  //   return null;
-  // }
-
-  if (typeof account !== 'string') {
+  if (typeof account !== 'string' || unsupportedChain) {
     return (
       <div>
         {web3Available ? (
@@ -119,7 +118,7 @@ export const Account = () => {
             }}
             onClick={() => {
               setConnecting(true);
-              metaMask.activate().catch((error) => {
+              metaMask.activate(supportedChainId).catch((error) => {
                 // ignore the error if it's a user rejected request
                 if (error instanceof Error) {
                   setConnecting(false);
@@ -129,7 +128,8 @@ export const Account = () => {
               });
             }}
           >
-            {isMetaMaskInstalled ? 'Connect to MetaMask' : 'Connect to Wallet'}
+            {(typeof account !== 'string') && !unsupportedChain && (isMetaMaskInstalled ? 'Connect to MetaMask' : 'Connect to Wallet')}
+            {unsupportedChain && 'Wrong Network'}
           </Button>
         ) : (
           <Button className={cx(classes.button)} radius='xl'
