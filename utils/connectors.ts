@@ -2,8 +2,7 @@ import { initializeConnector, Web3ReactHooks } from '@web3-react/core';
 import { MetaMask } from '@web3-react/metamask';
 import { Network } from '@web3-react/network';
 import { Connector } from '@web3-react/types';
-
-import { urlMap } from '../config/chainConfig';
+import { chainConfig, urlMap } from 'config/chainConfig';
 
 export enum ConnectionType {
   INJECTED = 'INJECTED',
@@ -39,7 +38,7 @@ export const [metaMask, hooksMetamask] = initializeConnector<MetaMask>((actions)
 export const [network, hooksNetwork] = initializeConnector<Network>((actions) => new Network({
   actions,
   urlMap,
-  defaultChainId: 1337,
+  defaultChainId: chainConfig.chainId,
 }));
 
 export const injectedConnection: Connection = {
@@ -67,6 +66,9 @@ export const CONNECTIONS = [
   injectedConnection,
   networkConnection,
 ];
+
+export const connectors: [Connector, Web3ReactHooks][] = CONNECTIONS.map(({ hooks, connector }) => [connector, hooks]);
+
 
 export function getConnection(c: Connector | ConnectionType) {
   if (c instanceof Connector) {
