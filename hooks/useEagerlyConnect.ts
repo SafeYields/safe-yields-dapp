@@ -2,12 +2,14 @@ import { Connector } from '@web3-react/types';
 import { useEffect } from 'react';
 import { ConnectionType, getConnection } from 'utils/connectors';
 
+import { supportedChainId } from '../config/chainConfig';
+
 async function connect(connector: Connector) {
   try {
     if (connector.connectEagerly) {
-      await connector.connectEagerly();
+      await connector.connectEagerly(supportedChainId);
     } else {
-      await connector.activate();
+      await connector.activate(supportedChainId);
     }
   } catch (error) {
     console.debug(`web3-react eager connection error: ${error}`);
