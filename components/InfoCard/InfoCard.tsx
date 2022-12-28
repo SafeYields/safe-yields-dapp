@@ -1,16 +1,20 @@
-import { Badge, Box, createStyles, Group, Stack, Text } from '@mantine/core';
-import useNetworkSafeTokenPrice from 'hooks/useNetworkSafeTokenPrice';
+import { Box, createStyles, Loader, Text } from '@mantine/core';
+import { FC } from 'react';
+import { SWRResponse } from 'swr';
 
-export const InfoCard = () => {
+type InfoCardProps = {
+  header: string;
+  feeder: () => SWRResponse;
+}
+
+export const InfoCard: FC<InfoCardProps> = ({ header, feeder }) => {
 
     const useStyles = createStyles<string>((theme, params, getRef) => {
         return {
           card: {
             ...theme.fn.focusStyles(),
-            width: '500px',
-            display: 'flex',
             margin: 'auto',
-            alignItems: 'center',
+            textAlign: 'center',
             columnGap: theme.spacing.sm,
             textDecoration: 'none',
             fontSize: theme.fontSizes.md,
@@ -33,10 +37,13 @@ export const InfoCard = () => {
           },
           cardInner: {
             ...theme.fn.focusStyles(),
-            width: '500px',
+            minWidth: '250px',
+            minHeight: '100px',
             display: 'flex',
-            margin: 'auto',
             alignItems: 'center',
+            justifyContent: 'center',
+            margin: 'auto',
+            textAlign: 'center',
             columnGap: theme.spacing.sm,
             textDecoration: 'none',
             fontSize: theme.fontSizes.md,
@@ -59,40 +66,29 @@ export const InfoCard = () => {
 
           cardHeader: {
             ...theme.fn.focusStyles(),
-            marginTop: '0',
+            fontStyle: 'normal',
+            fontWeight: '400',
+            fontSize: '24px',
             position: 'absolute',
+            top: '-12px',
+            paddingLeft: '10px',
+            paddingRight: '10px',
             background: theme.colors.veryDarkGreen[0],
-            alignSelf: 'flex-center',
           },
         };
       },
     );
     const { classes, cx } = useStyles();
+    const feed = feeder();
+    console.log(`infocard feed: ${JSON.stringify(feed)}`);
     return (
       <Box className={classes.card}>
         <Box className={classes.cardInner}>
-          <Stack>
-            <Text className={classes.cardHeader}>Header</Text>
-            {/* <Card.Section>*/}
-            {/*  <Image*/}
-            {/*    src='https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80'*/}
-            {/*    height={160}*/}
-            {/*    alt='Norway'*/}
-            {/*  />*/}
-            {/* </Card.Section>*/}
-
-            <Group position='apart' mt='md' mb='xs'>
-              <Text weight={500}>Safe Yields Stats</Text>
-              <Badge color='pink' variant='light'>
-                <div>{useNetworkSafeTokenPrice().data?.toString() || 'Querying...'}</div>
-              </Badge>
-            </Group>
-
-            <Text size='sm' color='dimmed'>
-              Blockchains are a new technology that allows for the creation of decentralized applications.
-            </Text>
-
-          </Stack>
+          <Text className={classes.cardHeader}>{header}</Text>
+          {feed.data ?
+            <h1>{feed.data}</h1>
+            :
+            <Loader size='lg' color='green' />}
         </Box>
       </Box>
     );

@@ -20,14 +20,18 @@ type ChainConfig = {
 type ChainsConfig = Record<number, ChainConfig>;
 
 
-const chainId = parseInt(process.env.CHAIN_ID || '1337');
+const envChainId = process.env.NEXT_PUBLIC_CHAIN_ID;
+if (envChainId === undefined) {
+  throw new Error('CHAIN_ID is not defined');
+}
+export const chainId = parseInt(envChainId, 10);
 
 const config: ChainsConfig = {
   56: {
     chainName: 'Binance Smart Chain',
     chainId: 56,
     chainShortName: 'BSC',
-    rpcUrls: ['https://bsc-dataseed.binance.org/'],
+    rpcUrls: ['https://bsc-dataseed.binance.org/', 'https://frosty-compatible-spring.bsc.discover.quiknode.pro/'],
     nativeCurrency: {
       name: 'BNB',
       symbol: 'BNB',
@@ -48,7 +52,7 @@ const config: ChainsConfig = {
       chainName: 'Binance Smart Chain Testnet',
       chainId: 97,
       chainShortName: 'BSC',
-      rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+      rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/', 'https://nd-857-662-920.p2pify.com/045f60a37f84045653ad2e32c6c2d637'],
       nativeCurrency: {
         name: 'TBNB',
         symbol: 'TBNB',

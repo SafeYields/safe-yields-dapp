@@ -1,30 +1,17 @@
 import {
   Connection,
-  CONNECTIONS,
+  CONNECTIONS, connectors,
   getConnectionName,
-  hooksMetamask,
-  hooksNetwork,
-  metaMask,
-  network,
 } from '@utils/connectors';
 import { getName } from '@utils/getName';
-import { useWeb3React, Web3ReactHooks, Web3ReactProvider } from '@web3-react/core';
-import { MetaMask } from '@web3-react/metamask';
-import { Network } from '@web3-react/network';
-import { Connector } from '@web3-react/types';
+import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
 import useEagerlyConnect from 'hooks/useEagerlyConnect';
 import { ReactNode, useEffect, useMemo } from 'react';
 
 
-const connectors: [MetaMask | Network, Web3ReactHooks][] = [
-  [metaMask, hooksMetamask],
-  [network, hooksNetwork],
-];
-
 
 export default function Web3Provider({ children }: { children: ReactNode }) {
   useEagerlyConnect();
-  const connectors: [Connector, Web3ReactHooks][] = CONNECTIONS.map(({ hooks, connector }) => [connector, hooks]);
 
   const key = useMemo(() => CONNECTIONS.map(({ type }: Connection) => getConnectionName(type)).join('-'), [CONNECTIONS]);
 
@@ -38,8 +25,11 @@ export default function Web3Provider({ children }: { children: ReactNode }) {
 }
 
 function Web3Status() {
-  const { connector } = useWeb3React();
-  console.log(`Priority Connector is: ${getName(connector)}`);
+  const context = useWeb3React();
+  console.debug(`Priority Connector is: ${getName(context.connector)}, chainId is ${context.chainId}`);
+  console.debug(`${context.account ? 'Account given' : 'no account'}`);
+  console.debug(`${context.isActive ? 'Active' : 'Not active'}`);
+  console.debug(`${context.isActivating ? 'Activating' : 'Not activating'}`);
   return null;
 }
 

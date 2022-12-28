@@ -91,9 +91,9 @@ export const Account = () => {
 
   const ENSName = useENSName();
 
-  if (error) {
-    return null;
-  }
+  // if (error) {
+  //   return null;
+  // }
 
   if (typeof account !== 'string') {
     return (
@@ -132,7 +132,15 @@ export const Account = () => {
             {isMetaMaskInstalled ? 'Connect to MetaMask' : 'Connect to Wallet'}
           </Button>
         ) : (
-          <Button onClick={startOnboarding}>Install Metamask</Button>
+          <Button className={cx(classes.button)} radius='xl'
+                  size='md'
+                  leftIcon={
+                    <Download size={20} />
+                  }
+                  styles={{
+                    root: { paddingRight: 14, height: 48 },
+                    leftIcon: { marginLeft: 0 },
+                  }} onClick={startOnboarding}>Install Metamask</Button>
         )}
       </div>
     );
