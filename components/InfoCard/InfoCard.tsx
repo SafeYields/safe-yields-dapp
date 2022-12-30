@@ -85,10 +85,7 @@ export const InfoCard: FC<InfoCardProps> = ({ header, feeder }) => {
       <Box className={classes.card}>
         <Box className={classes.cardInner}>
           <Text className={classes.cardHeader}>{header}</Text>
-          {feed.data ?
-            <h1>{feed.data}</h1>
-            :
-            <Loader size='lg' color='green' />}
+          <h1>{feed.data ?? <Loader size='lg' color='green' />}</h1>
         </Box>
       </Box>
     );

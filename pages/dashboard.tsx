@@ -5,6 +5,7 @@ import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
 
 import useMetaMaskSafeTokenBalance from '../hooks/useMetaMaskSafeTokenBalance';
+import useNetworkSafeNFTFairPrice from '../hooks/useNetworkSafeNFTFairPrice';
 import useNetworkSafeTokenPrice from '../hooks/useNetworkSafeTokenPrice';
 
 const Home: NextPageWithLayout = () => {
@@ -12,6 +13,7 @@ const Home: NextPageWithLayout = () => {
     <PageContainer title='Dashboard'>
       <Flex gap={'md'} wrap={'wrap'}>
         <InfoCard header={'Safe Price'} feeder={useNetworkSafeTokenPrice} />
+        <InfoCard header={'Safe NFT Fair Price'} feeder={useNetworkSafeNFTFairPrice} />
         <InfoCard header={'Your Safe Holdings'} feeder={useMetaMaskSafeTokenBalance} />
       </Flex>
     </PageContainer>
