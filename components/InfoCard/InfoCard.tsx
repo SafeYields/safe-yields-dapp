@@ -34,7 +34,7 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header }) => {
             // background: theme.colors.veryDarkGreen[0],
 
             '&:hover': {
-              boxShadow: '0 4px 15px 0 rgba(229, 66, 10, 0.50)',
+              boxShadow: '0 7px 15px 0 rgba(229, 66, 10, 0.50)',
               mozTransition: 'all 0.4s ease-in-out',
               oTransition: 'all 0.4s ease-in-out',
               webkitTransition: 'all 0.4s ease-in-out',

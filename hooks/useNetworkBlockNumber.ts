@@ -1,9 +1,8 @@
-import { hooksNetwork } from '@utils/connectors';
+import { useWeb3React } from '@web3-react/core';
 import useSWR from 'swr';
 
 export default function useNetworkBlockNumber() {
-  const { useProvider } = hooksNetwork;
-  const provider = useProvider();
+  const { provider } = useWeb3React();
 
   return useSWR(
     provider ? ['BlockNumber'] : null,
