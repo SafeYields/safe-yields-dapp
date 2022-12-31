@@ -10,12 +10,7 @@ const useSafeTokenPrice = () => {
   const safeTokenContract = useContract<SafeToken>(chainConfig.addresses.safe, SafeTokenAbi.abi);
   return useSWR(
     'useSafePrice',
-    async () => {
-      console.debug(`useSWR: Fetching Safe Price, safeTokenContract: ${JSON.stringify(safeTokenContract?.address?.toString())}`);
-      const price = safeTokenContract ? parseBalance(await safeTokenContract.price()) : null;
-      console.debug(`useSWR: Fetched Safe Price: ${price}`);
-      return price;
-    },
+    async () => safeTokenContract ? parseBalance(await safeTokenContract.price()) : null,
     {
       refreshInterval: 10 * 1000,
     },
