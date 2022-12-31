@@ -1,13 +1,12 @@
-import { Box, createStyles, Loader, Text } from '@mantine/core';
-import { FC } from 'react';
-import { SWRResponse } from 'swr';
+import { Box, createStyles, Text } from '@mantine/core';
+import { FC, ReactNode } from 'react';
 
 type InfoCardProps = {
+  children: ReactNode;
   header: string;
-  feeder: () => SWRResponse;
 }
 
-export const InfoCard: FC<InfoCardProps> = ({ header, feeder }) => {
+export const InfoCard: FC<InfoCardProps> = ({ children, header }) => {
 
     const useStyles = createStyles<string>((theme, params, getRef) => {
         return {
@@ -79,13 +78,11 @@ export const InfoCard: FC<InfoCardProps> = ({ header, feeder }) => {
       },
     );
     const { classes, cx } = useStyles();
-    const feed = feeder();
-    console.log(`infocard feed: ${JSON.stringify(feed)}`);
     return (
       <Box className={classes.card}>
         <Box className={classes.cardInner}>
           <Text className={classes.cardHeader}>{header}</Text>
-          <h1>{feed.data ?? <Loader size='lg' color='green' />}</h1>
+          {children}
         </Box>
       </Box>
     );

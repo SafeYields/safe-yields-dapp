@@ -37,7 +37,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
               sm: 12,
               md: 15,
               lg: 16,
-              xl: 80,
+              xl: 20,
             },
             primaryColor: 'white',
             loader: 'dots',

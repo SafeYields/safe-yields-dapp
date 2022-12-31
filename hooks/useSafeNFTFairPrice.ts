@@ -6,17 +6,14 @@ import SafeNFTAbi from '../artifacts/contracts/SafeNFT.sol/SafeNFT.json';
 import { chainConfig } from '../config';
 import useContract from './useContract';
 
-const useNetworkSafeTokenPrice = () => {
-  const safeNFTContract = useContract<SafeNFT>(chainConfig.addresses.safe, SafeNFTAbi.abi);
+const useSafeNFTFairPrice = () => {
+  const safeNFTContract = useContract<SafeNFT>(chainConfig.addresses.nft, SafeNFTAbi.abi);
   return useSWR(
     'useSafeNFT',
     async () => {
-      return safeNFTContract ? (await safeNFTContract.getFairPriceTable()).map(value => parseBalance(value)) : null;
-    },
-    {
-      refreshInterval: 100 * 1000,
+        return safeNFTContract ? (await safeNFTContract.getFairPriceTable()).map(value => parseBalance(value)) : null;
     },
   );
 };
 
-export default useNetworkSafeTokenPrice;
+export default useSafeNFTFairPrice;

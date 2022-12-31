@@ -6,8 +6,8 @@ import SafeTokenAbi from '../artifacts/contracts/SafeToken.sol/SafeToken.json';
 import { chainConfig } from '../config';
 import useContract from './useContract';
 
-const useNetworkSafeTokenPrice = () => {
-  const safeTokenContract =  useContract<SafeToken>(chainConfig.addresses.safe, SafeTokenAbi.abi);
+const useSafeTokenPrice = () => {
+  const safeTokenContract = useContract<SafeToken>(chainConfig.addresses.safe, SafeTokenAbi.abi);
   return useSWR(
     'useSafePrice',
     async () => {
@@ -17,9 +17,9 @@ const useNetworkSafeTokenPrice = () => {
       return price;
     },
     {
-      refreshInterval: 1 * 1000,
+      refreshInterval: 10 * 1000,
     },
   );
 };
 
-export default useNetworkSafeTokenPrice;
+export default useSafeTokenPrice;
