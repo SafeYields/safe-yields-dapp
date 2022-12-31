@@ -32,6 +32,11 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header }) => {
 
             background: theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0]),
             // background: theme.colors.veryDarkGreen[0],
+            boxShadow: 'none',
+            mozTransition: 'all 0.4s ease-in-out',
+            oTransition: 'all 0.4s ease-in-out',
+            webkitTransition: 'all 0.4s ease-in-out',
+            transition: 'all 0.4s ease-in-out',
 
             '&:hover': {
               boxShadow: '0 7px 15px 0 rgba(229, 66, 10, 0.50)',
@@ -77,9 +82,12 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header }) => {
             fontWeight: '400',
             fontSize: '24px',
             position: 'absolute',
-            top: '-12px',
+            top: '-20px',
             paddingLeft: '10px',
             paddingRight: '10px',
+            paddingTop: '10px',
+            paddingBottom: '10px',
+            borderRadius: '10px',
             background: theme.colors.veryDarkGreen[0],
           },
         };
