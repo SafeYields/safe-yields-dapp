@@ -33,11 +33,19 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header }) => {
             background: theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0]),
             // background: theme.colors.veryDarkGreen[0],
 
+            '&:hover': {
+              boxShadow: '0 4px 15px 0 rgba(229, 66, 10, 0.50)',
+              mozTransition: 'all 0.4s ease-in-out',
+              oTransition: 'all 0.4s ease-in-out',
+              webkitTransition: 'all 0.4s ease-in-out',
+              transition: 'all 0.4s ease-in-out',
+            },
+
           },
           cardInner: {
             ...theme.fn.focusStyles(),
             minWidth: '250px',
-            minHeight: '100px',
+            minHeight: '220px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

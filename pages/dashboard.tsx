@@ -12,7 +12,7 @@ const Home: NextPageWithLayout = () => {
   const { data: fairPrice } = useSafeNFTFairPrice();
   return (
     <PageContainer title='Dashboard'>
-      <Flex gap={'md'} wrap={'wrap'}>
+      <Flex gap={'xl'} wrap={'wrap'}>
         <InfoCard header={'Safe Price'}>
           <h1>{useSafeTokenPrice().data ?? <Loader size='lg' color='green' />}</h1>
         </InfoCard>
@@ -36,8 +36,19 @@ const Home: NextPageWithLayout = () => {
             </Table>
             : <Loader size='lg' color='green' />}
         </InfoCard>
-
+        <InfoCard header={'Safe APR'}>
+          <Loader size='lg' color='red' />
+        </InfoCard>
+        <InfoCard header={'NFTs APR'}>
+          <Loader size='lg' color='red' />
+        </InfoCard>
         <InfoCard header={'Your Safe Holdings'}>
+          <h1>{useMetaMaskSafeTokenBalance().data ?? <Loader size='lg' color='green' />}</h1>
+        </InfoCard>
+        <InfoCard header={'Your NFTs'}>
+          <h1>{useMetaMaskSafeTokenBalance().data ?? <Loader size='lg' color='green' />}</h1>
+        </InfoCard>
+        <InfoCard header={'Pending Rewards'}>
           <h1>{useMetaMaskSafeTokenBalance().data ?? <Loader size='lg' color='green' />}</h1>
         </InfoCard>
       </Flex>
