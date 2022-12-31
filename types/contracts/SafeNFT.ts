@@ -36,17 +36,32 @@ export interface SafeNFTInterface extends utils.Interface {
     "PAUSER_ROLE()": FunctionFragment;
     "TIERS()": FunctionFragment;
     "WALLETS()": FunctionFragment;
+    "alreadyDistributedAmount(uint256,uint256,address)": FunctionFragment;
+    "alreadyDistributedAmountByTier(uint256,uint256)": FunctionFragment;
     "balanceOf(address,uint256)": FunctionFragment;
     "balanceOfBatch(address[],uint256[])": FunctionFragment;
     "burn(address,uint256,uint256)": FunctionFragment;
     "burnBatch(address,uint256[],uint256[])": FunctionFragment;
     "buy(uint8,uint256)": FunctionFragment;
-    "claimReward()": FunctionFragment;
-    "distributeRewards(uint256)": FunctionFragment;
+    "claimReward(uint8,uint256)": FunctionFragment;
+    "claimRewardsTotal()": FunctionFragment;
+    "currentDistributionId()": FunctionFragment;
+    "distributeProfit(uint256)": FunctionFragment;
+    "distributionByTier(uint256,uint256)": FunctionFragment;
+    "distributionOfProfit(uint256)": FunctionFragment;
+    "distributionTotalSupplySnapshot(uint256,uint256)": FunctionFragment;
     "exists(uint256)": FunctionFragment;
+    "getFairPrice(uint8)": FunctionFragment;
+    "getFairPriceTable()": FunctionFragment;
+    "getMyPendingRewardsTotal()": FunctionFragment;
+    "getPendingRewards(address,uint8,uint256)": FunctionFragment;
+    "getPrice(uint8)": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "getRoleMember(bytes32,uint256)": FunctionFragment;
     "getRoleMemberCount(bytes32)": FunctionFragment;
+    "getTotalSupplyAllTiers()": FunctionFragment;
+    "getTreasuryCost()": FunctionFragment;
+    "getUnclaimedRewards()": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
     "initialize(string,uint256[4],uint256[4],address,uint256[2],uint256[2])": FunctionFragment;
@@ -57,7 +72,6 @@ export interface SafeNFTInterface extends utils.Interface {
     "name()": FunctionFragment;
     "pause()": FunctionFragment;
     "paused()": FunctionFragment;
-    "pendingRewards()": FunctionFragment;
     "percentOfTreasury()": FunctionFragment;
     "price(uint256)": FunctionFragment;
     "priceDistributionOnMint(uint256)": FunctionFragment;
@@ -84,17 +98,32 @@ export interface SafeNFTInterface extends utils.Interface {
       | "PAUSER_ROLE"
       | "TIERS"
       | "WALLETS"
+      | "alreadyDistributedAmount"
+      | "alreadyDistributedAmountByTier"
       | "balanceOf"
       | "balanceOfBatch"
       | "burn"
       | "burnBatch"
       | "buy"
       | "claimReward"
-      | "distributeRewards"
+      | "claimRewardsTotal"
+      | "currentDistributionId"
+      | "distributeProfit"
+      | "distributionByTier"
+      | "distributionOfProfit"
+      | "distributionTotalSupplySnapshot"
       | "exists"
+      | "getFairPrice"
+      | "getFairPriceTable"
+      | "getMyPendingRewardsTotal"
+      | "getPendingRewards"
+      | "getPrice"
       | "getRoleAdmin"
       | "getRoleMember"
       | "getRoleMemberCount"
+      | "getTotalSupplyAllTiers"
+      | "getTreasuryCost"
+      | "getUnclaimedRewards"
       | "grantRole"
       | "hasRole"
       | "initialize"
@@ -105,7 +134,6 @@ export interface SafeNFTInterface extends utils.Interface {
       | "name"
       | "pause"
       | "paused"
-      | "pendingRewards"
       | "percentOfTreasury"
       | "price"
       | "priceDistributionOnMint"
@@ -140,6 +168,18 @@ export interface SafeNFTInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "TIERS", values?: undefined): string;
   encodeFunctionData(functionFragment: "WALLETS", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "alreadyDistributedAmount",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "alreadyDistributedAmountByTier",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "balanceOf",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
@@ -169,14 +209,58 @@ export interface SafeNFTInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "claimReward",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "claimRewardsTotal",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "distributeRewards",
+    functionFragment: "currentDistributionId",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "distributeProfit",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "distributionByTier",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "distributionOfProfit",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "distributionTotalSupplySnapshot",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "exists",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getFairPrice",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getFairPriceTable",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getMyPendingRewardsTotal",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPendingRewards",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPrice",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -190,6 +274,18 @@ export interface SafeNFTInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getRoleMemberCount",
     values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTotalSupplyAllTiers",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTreasuryCost",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getUnclaimedRewards",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "grantRole",
@@ -249,10 +345,6 @@ export interface SafeNFTInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "pendingRewards",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "percentOfTreasury",
     values?: undefined
@@ -336,6 +428,14 @@ export interface SafeNFTInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "TIERS", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "WALLETS", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "alreadyDistributedAmount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "alreadyDistributedAmountByTier",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "balanceOfBatch",
@@ -349,10 +449,47 @@ export interface SafeNFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "distributeRewards",
+    functionFragment: "claimRewardsTotal",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "currentDistributionId",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "distributeProfit",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "distributionByTier",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "distributionOfProfit",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "distributionTotalSupplySnapshot",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "exists", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getFairPrice",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getFairPriceTable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getMyPendingRewardsTotal",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getPendingRewards",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getPrice", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
     data: BytesLike
@@ -363,6 +500,18 @@ export interface SafeNFTInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getRoleMemberCount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTotalSupplyAllTiers",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTreasuryCost",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getUnclaimedRewards",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
@@ -378,10 +527,6 @@ export interface SafeNFTInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "pendingRewards",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "percentOfTreasury",
     data: BytesLike
@@ -586,6 +731,19 @@ export interface SafeNFT extends BaseContract {
 
     WALLETS(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    alreadyDistributedAmount(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    alreadyDistributedAmountByTier(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     balanceOf(
       account: PromiseOrValue<string>,
       id: PromiseOrValue<BigNumberish>,
@@ -619,18 +777,66 @@ export interface SafeNFT extends BaseContract {
     ): Promise<ContractTransaction>;
 
     claimReward(
+      _tier: PromiseOrValue<BigNumberish>,
+      _distributionId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    distributeRewards(
+    claimRewardsTotal(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    currentDistributionId(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    distributionByTier(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    distributionOfProfit(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    distributionTotalSupplySnapshot(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     exists(
       id: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    getFairPrice(
+      _tier: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getFairPriceTable(overrides?: CallOverrides): Promise<[BigNumber[]]>;
+
+    getMyPendingRewardsTotal(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    getPendingRewards(
+      _user: PromiseOrValue<string>,
+      _tier: PromiseOrValue<BigNumberish>,
+      _distributionId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    getPrice(
+      _tier: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     getRoleAdmin(
       role: PromiseOrValue<BytesLike>,
@@ -647,6 +853,18 @@ export interface SafeNFT extends BaseContract {
       role: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    getTotalSupplyAllTiers(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    getTreasuryCost(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    getUnclaimedRewards(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     grantRole(
       role: PromiseOrValue<BytesLike>,
@@ -720,10 +938,6 @@ export interface SafeNFT extends BaseContract {
     ): Promise<ContractTransaction>;
 
     paused(overrides?: CallOverrides): Promise<[boolean]>;
-
-    pendingRewards(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     percentOfTreasury(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -821,6 +1035,19 @@ export interface SafeNFT extends BaseContract {
 
   WALLETS(overrides?: CallOverrides): Promise<BigNumber>;
 
+  alreadyDistributedAmount(
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<BigNumberish>,
+    arg2: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  alreadyDistributedAmountByTier(
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   balanceOf(
     account: PromiseOrValue<string>,
     id: PromiseOrValue<BigNumberish>,
@@ -854,18 +1081,66 @@ export interface SafeNFT extends BaseContract {
   ): Promise<ContractTransaction>;
 
   claimReward(
+    _tier: PromiseOrValue<BigNumberish>,
+    _distributionId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  distributeRewards(
+  claimRewardsTotal(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  currentDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
+
+  distributeProfit(
     _amountUSD: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  distributionByTier(
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  distributionOfProfit(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  distributionTotalSupplySnapshot(
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   exists(
     id: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  getFairPrice(
+    _tier: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getFairPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
+
+  getMyPendingRewardsTotal(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  getPendingRewards(
+    _user: PromiseOrValue<string>,
+    _tier: PromiseOrValue<BigNumberish>,
+    _distributionId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  getPrice(
+    _tier: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   getRoleAdmin(
     role: PromiseOrValue<BytesLike>,
@@ -882,6 +1157,18 @@ export interface SafeNFT extends BaseContract {
     role: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  getTotalSupplyAllTiers(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  getTreasuryCost(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  getUnclaimedRewards(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   grantRole(
     role: PromiseOrValue<BytesLike>,
@@ -955,10 +1242,6 @@ export interface SafeNFT extends BaseContract {
   ): Promise<ContractTransaction>;
 
   paused(overrides?: CallOverrides): Promise<boolean>;
-
-  pendingRewards(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   percentOfTreasury(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1056,6 +1339,19 @@ export interface SafeNFT extends BaseContract {
 
     WALLETS(overrides?: CallOverrides): Promise<BigNumber>;
 
+    alreadyDistributedAmount(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    alreadyDistributedAmountByTier(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     balanceOf(
       account: PromiseOrValue<string>,
       id: PromiseOrValue<BigNumberish>,
@@ -1088,17 +1384,63 @@ export interface SafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    claimReward(overrides?: CallOverrides): Promise<void>;
+    claimReward(
+      _tier: PromiseOrValue<BigNumberish>,
+      _distributionId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    distributeRewards(
+    claimRewardsTotal(overrides?: CallOverrides): Promise<void>;
+
+    currentDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    distributionByTier(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    distributionOfProfit(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    distributionTotalSupplySnapshot(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     exists(
       id: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    getFairPrice(
+      _tier: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getFairPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
+
+    getMyPendingRewardsTotal(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getPendingRewards(
+      _user: PromiseOrValue<string>,
+      _tier: PromiseOrValue<BigNumberish>,
+      _distributionId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getPrice(
+      _tier: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getRoleAdmin(
       role: PromiseOrValue<BytesLike>,
@@ -1115,6 +1457,12 @@ export interface SafeNFT extends BaseContract {
       role: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getTotalSupplyAllTiers(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getTreasuryCost(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getUnclaimedRewards(overrides?: CallOverrides): Promise<BigNumber>;
 
     grantRole(
       role: PromiseOrValue<BytesLike>,
@@ -1186,8 +1534,6 @@ export interface SafeNFT extends BaseContract {
     pause(overrides?: CallOverrides): Promise<void>;
 
     paused(overrides?: CallOverrides): Promise<boolean>;
-
-    pendingRewards(overrides?: CallOverrides): Promise<BigNumber>;
 
     percentOfTreasury(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1370,6 +1716,19 @@ export interface SafeNFT extends BaseContract {
 
     WALLETS(overrides?: CallOverrides): Promise<BigNumber>;
 
+    alreadyDistributedAmount(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    alreadyDistributedAmountByTier(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     balanceOf(
       account: PromiseOrValue<string>,
       id: PromiseOrValue<BigNumberish>,
@@ -1403,16 +1762,64 @@ export interface SafeNFT extends BaseContract {
     ): Promise<BigNumber>;
 
     claimReward(
+      _tier: PromiseOrValue<BigNumberish>,
+      _distributionId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    distributeRewards(
+    claimRewardsTotal(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    currentDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    distributionByTier(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    distributionOfProfit(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    distributionTotalSupplySnapshot(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     exists(
       id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getFairPrice(
+      _tier: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getFairPriceTable(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getMyPendingRewardsTotal(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    getPendingRewards(
+      _user: PromiseOrValue<string>,
+      _tier: PromiseOrValue<BigNumberish>,
+      _distributionId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    getPrice(
+      _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1430,6 +1837,18 @@ export interface SafeNFT extends BaseContract {
     getRoleMemberCount(
       role: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTotalSupplyAllTiers(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    getTreasuryCost(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    getUnclaimedRewards(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     grantRole(
@@ -1504,10 +1923,6 @@ export interface SafeNFT extends BaseContract {
     ): Promise<BigNumber>;
 
     paused(overrides?: CallOverrides): Promise<BigNumber>;
-
-    pendingRewards(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
 
     percentOfTreasury(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1608,6 +2023,19 @@ export interface SafeNFT extends BaseContract {
 
     WALLETS(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    alreadyDistributedAmount(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    alreadyDistributedAmountByTier(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     balanceOf(
       account: PromiseOrValue<string>,
       id: PromiseOrValue<BigNumberish>,
@@ -1641,16 +2069,66 @@ export interface SafeNFT extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     claimReward(
+      _tier: PromiseOrValue<BigNumberish>,
+      _distributionId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    distributeRewards(
+    claimRewardsTotal(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    currentDistributionId(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    distributionByTier(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    distributionOfProfit(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    distributionTotalSupplySnapshot(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     exists(
       id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getFairPrice(
+      _tier: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getFairPriceTable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getMyPendingRewardsTotal(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getPendingRewards(
+      _user: PromiseOrValue<string>,
+      _tier: PromiseOrValue<BigNumberish>,
+      _distributionId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getPrice(
+      _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1668,6 +2146,18 @@ export interface SafeNFT extends BaseContract {
     getRoleMemberCount(
       role: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getTotalSupplyAllTiers(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getTreasuryCost(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getUnclaimedRewards(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     grantRole(
@@ -1742,10 +2232,6 @@ export interface SafeNFT extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    pendingRewards(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
 
     percentOfTreasury(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
