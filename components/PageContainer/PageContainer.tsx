@@ -19,14 +19,3 @@ export const PageContainer: FC<PageContainerProps> = ({ children, title, backgro
     </Container>
   );
 };
-
-//
-// styles={_ => ({
-//   body: {
-//     backgroundImage: 'assets/background-abstraction.svg',
-//     backgroundSize: 'cover',
-//     backgroundPosition: 'center',
-//     backgroundRepeat: 'no-repeat',
-//     minHeight: '100vh',
-//   },
-// })}
