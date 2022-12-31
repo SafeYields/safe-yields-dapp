@@ -41,12 +41,12 @@ export interface ISafeNFTInterface extends utils.Interface {
     "getFairPrice(uint8)": FunctionFragment;
     "getFairPriceTable()": FunctionFragment;
     "getMyPendingRewardsTotal()": FunctionFragment;
+    "getMyShareOfTreasury()": FunctionFragment;
     "getPendingRewards(address,uint8,uint256)": FunctionFragment;
     "getPrice(uint8)": FunctionFragment;
     "getTreasuryCost()": FunctionFragment;
     "getUnclaimedRewards()": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
-    "percentOfTreasury()": FunctionFragment;
     "safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "safeTransferFrom(address,address,uint256,uint256,bytes)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
@@ -65,12 +65,12 @@ export interface ISafeNFTInterface extends utils.Interface {
       | "getFairPrice"
       | "getFairPriceTable"
       | "getMyPendingRewardsTotal"
+      | "getMyShareOfTreasury"
       | "getPendingRewards"
       | "getPrice"
       | "getTreasuryCost"
       | "getUnclaimedRewards"
       | "isApprovedForAll"
-      | "percentOfTreasury"
       | "safeBatchTransferFrom"
       | "safeTransferFrom"
       | "setApprovalForAll"
@@ -118,6 +118,10 @@ export interface ISafeNFTInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "getMyShareOfTreasury",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getPendingRewards",
     values: [
       PromiseOrValue<string>,
@@ -140,10 +144,6 @@ export interface ISafeNFTInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "isApprovedForAll",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "percentOfTreasury",
-    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "safeBatchTransferFrom",
@@ -209,6 +209,10 @@ export interface ISafeNFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getMyShareOfTreasury",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getPendingRewards",
     data: BytesLike
   ): Result;
@@ -223,10 +227,6 @@ export interface ISafeNFTInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "isApprovedForAll",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "percentOfTreasury",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -362,9 +362,7 @@ export interface ISafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    currentDistributionId(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    currentDistributionId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
@@ -373,46 +371,36 @@ export interface ISafeNFT extends BaseContract {
 
     getFairPrice(
       _tier: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
-    getFairPriceTable(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    getFairPriceTable(overrides?: CallOverrides): Promise<[BigNumber[]]>;
 
-    getMyPendingRewardsTotal(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    getMyPendingRewardsTotal(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getMyShareOfTreasury(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getPendingRewards(
       _user: PromiseOrValue<string>,
       _tier: PromiseOrValue<BigNumberish>,
       _distributionId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     getPrice(
       _tier: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
-    getTreasuryCost(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    getTreasuryCost(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    getUnclaimedRewards(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    getUnclaimedRewards(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     isApprovedForAll(
       account: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
-
-    percentOfTreasury(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     safeBatchTransferFrom(
       from: PromiseOrValue<string>,
@@ -472,9 +460,7 @@ export interface ISafeNFT extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  currentDistributionId(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  currentDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
 
   distributeProfit(
     _amountUSD: PromiseOrValue<BigNumberish>,
@@ -483,46 +469,36 @@ export interface ISafeNFT extends BaseContract {
 
   getFairPrice(
     _tier: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
-  getFairPriceTable(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  getFairPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
 
-  getMyPendingRewardsTotal(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  getMyPendingRewardsTotal(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getMyShareOfTreasury(overrides?: CallOverrides): Promise<BigNumber>;
 
   getPendingRewards(
     _user: PromiseOrValue<string>,
     _tier: PromiseOrValue<BigNumberish>,
     _distributionId: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   getPrice(
     _tier: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
-  getTreasuryCost(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  getTreasuryCost(overrides?: CallOverrides): Promise<BigNumber>;
 
-  getUnclaimedRewards(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  getUnclaimedRewards(overrides?: CallOverrides): Promise<BigNumber>;
 
   isApprovedForAll(
     account: PromiseOrValue<string>,
     operator: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
-
-  percentOfTreasury(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   safeBatchTransferFrom(
     from: PromiseOrValue<string>,
@@ -596,6 +572,8 @@ export interface ISafeNFT extends BaseContract {
 
     getMyPendingRewardsTotal(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getMyShareOfTreasury(overrides?: CallOverrides): Promise<BigNumber>;
+
     getPendingRewards(
       _user: PromiseOrValue<string>,
       _tier: PromiseOrValue<BigNumberish>,
@@ -617,8 +595,6 @@ export interface ISafeNFT extends BaseContract {
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
-
-    percentOfTreasury(overrides?: CallOverrides): Promise<BigNumber>;
 
     safeBatchTransferFrom(
       from: PromiseOrValue<string>,
@@ -728,9 +704,7 @@ export interface ISafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    currentDistributionId(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    currentDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
 
     distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
@@ -739,45 +713,35 @@ export interface ISafeNFT extends BaseContract {
 
     getFairPrice(
       _tier: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getFairPriceTable(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    getFairPriceTable(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getMyPendingRewardsTotal(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    getMyPendingRewardsTotal(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getMyShareOfTreasury(overrides?: CallOverrides): Promise<BigNumber>;
 
     getPendingRewards(
       _user: PromiseOrValue<string>,
       _tier: PromiseOrValue<BigNumberish>,
       _distributionId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getPrice(
       _tier: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getTreasuryCost(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    getTreasuryCost(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getUnclaimedRewards(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    getUnclaimedRewards(overrides?: CallOverrides): Promise<BigNumber>;
 
     isApprovedForAll(
       account: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    percentOfTreasury(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     safeBatchTransferFrom(
@@ -840,7 +804,7 @@ export interface ISafeNFT extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     currentDistributionId(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     distributeProfit(
@@ -850,45 +814,41 @@ export interface ISafeNFT extends BaseContract {
 
     getFairPrice(
       _tier: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getFairPriceTable(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    getFairPriceTable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getMyPendingRewardsTotal(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getMyShareOfTreasury(
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getPendingRewards(
       _user: PromiseOrValue<string>,
       _tier: PromiseOrValue<BigNumberish>,
       _distributionId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getPrice(
       _tier: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getTreasuryCost(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    getTreasuryCost(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getUnclaimedRewards(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     isApprovedForAll(
       account: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    percentOfTreasury(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     safeBatchTransferFrom(
