@@ -4,9 +4,10 @@ import { FC, ReactNode } from 'react';
 type InfoCardProps = {
   children: ReactNode;
   header: string;
+  displayCondition?: boolean;
 }
 
-export const InfoCard: FC<InfoCardProps> = ({ children, header }) => {
+export const InfoCard: FC<InfoCardProps> = ({ children, header, displayCondition = true }) => {
 
     const useStyles = createStyles<string>((theme, params, getRef) => {
         return {
@@ -37,6 +38,7 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header }) => {
             oTransition: 'all 0.4s ease-in-out',
             webkitTransition: 'all 0.4s ease-in-out',
             transition: 'all 0.4s ease-in-out',
+            willChange: 'transform',
 
             '&:hover': {
               boxShadow: '0 7px 15px 0 rgba(229, 66, 10, 0.50)',
@@ -95,12 +97,17 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header }) => {
     );
     const { classes, cx } = useStyles();
     return (
-      <Box className={classes.card}>
-        <Box className={classes.cardInner}>
-          <Text className={classes.cardHeader}>{header}</Text>
-          {children}
-        </Box>
-      </Box>
+      <>
+        {displayCondition && (
+          <Box className={classes.card}>
+            <Box className={classes.cardInner}>
+              <Text className={classes.cardHeader}>{header}</Text>
+              {children}
+            </Box>
+          </Box>
+        )
+        }
+      </>
     );
   }
 ;
