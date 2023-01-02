@@ -8,11 +8,14 @@ import type { NextPageWithLayout } from 'next';
 
 import useSafeNFTFairPrice from '../hooks/useSafeNFTFairPrice';
 import useSafeTokenAPR from '../hooks/useSafeTokenAPR';
+import useWalletConnected from '../hooks/useWalletConnected';
+
 
 const Home: NextPageWithLayout = () => {
   const { data: fairPrice } = useSafeNFTFairPrice();
+  const injectedWalletConnected = useWalletConnected();
   return (
-    <PageContainer title='Dashboard' background='assets/background-abstraction.svg'>
+     <PageContainer title='Dashboard'>
       <Flex gap={'xl'} wrap={'wrap'}>
         <InfoCard header={'Safe Price'}>
           <h1>{useSafeTokenPrice().data?.concat(' $') ?? <Loader size='lg' color='green' />}</h1>
@@ -43,13 +46,13 @@ const Home: NextPageWithLayout = () => {
         <InfoCard header={'NFTs APR'}>
           <Loader size='lg' color='red' />
         </InfoCard>
-        <InfoCard header={'Your Safe Holdings'}>
+        <InfoCard header={'Your Safe Holdings'} displayCondition={injectedWalletConnected}>
           <h1>{useMetaMaskSafeTokenBalance().data?.concat(' $') ?? <Loader size='lg' color='green' />}</h1>
         </InfoCard>
-        <InfoCard header={'Your NFTs'}>
+        <InfoCard header={'Your NFTs'} displayCondition={injectedWalletConnected}>
           <h1>{useMetaMaskSafeTokenBalance().data ?? <Loader size='lg' color='green' />}</h1>
         </InfoCard>
-        <InfoCard header={'Pending Rewards'}>
+        <InfoCard header={'Pending Rewards'} displayCondition={injectedWalletConnected}>
           <h1>{useMetaMaskSafeTokenBalance().data ?? <Loader size='lg' color='green' />}</h1>
         </InfoCard>
       </Flex>
