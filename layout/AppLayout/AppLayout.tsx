@@ -29,9 +29,11 @@ export const AppLayout: CustomLayout = (page) => {
           minHeight: '100vh',
           maxWidth: '100vw',
           overflowX: 'hidden',
-          backgroundColor: theme.colors.veryDarkGreen[0],
+          backgroundImage: 'url(/assets/background.png)',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize:'cover',
       },
-        main: { padding: 0, backgroundColor: theme.colors.veryDarkGreen[0] },
+        main: { padding: 0 },
       })}
       navbar={
         <>
@@ -53,7 +55,7 @@ export const AppLayout: CustomLayout = (page) => {
         }
       />}
     >
-      <BackgroundImage src={'assets/background-abstraction.svg'} py={100}>
+      <BackgroundImage src={''} py={100}>
       <Box py='xl' px='md' sx={{ marginTop: '10px' }}>
           <LayoutErrorBoundary>{page}</LayoutErrorBoundary>
       </Box>

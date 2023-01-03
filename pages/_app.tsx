@@ -24,10 +24,9 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
           theme={{
             colorScheme: 'dark',
             colors: {
-              veryDarkGreen: ['#040A01'],
               highlightGreen: ['#D1DE5D'],
               mustardGreen: ['#C9D94E'],
-              orange: ['#F08906'],
+              orange: ['#F28705'],
               white: ['#FFFFFF'],
             },
             fontFamily: 'Gotham, sans-serif',

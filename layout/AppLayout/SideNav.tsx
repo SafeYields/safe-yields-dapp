@@ -24,7 +24,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
   return {
     navbar: {
       position: 'sticky',
-      backgroundColor: theme.colors.veryDarkGreen[0],
+      backgroundColor: 'transparent',
       top: 0,
       width: params?.collapsed ? 120 : 315,
       transition: params?.collapsed ? 'width 0.1s linear' : 'none',
@@ -77,7 +77,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       backgroundClip: 'padding-box',
       position: 'relative',
       boxSizing: 'border-box',
-      background: theme.colors.veryDarkGreen[0],
+      background: 'transparent',
 
       '&:hover': {
         borderRadius: '50px',
@@ -101,7 +101,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
     linkActive: {
       '&, &:hover': {
         // background: 'transparent',
-        background: theme.colors.veryDarkGreen[0],
+        background: 'transparent',
         '&:before': {
           content: '""',
           position: 'absolute',

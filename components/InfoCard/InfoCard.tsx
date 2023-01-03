@@ -32,7 +32,7 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header, displayCondition
             // background: theme.fn.linearGradient(0, theme.colors.mustardGreen[0], theme.colors.orange[0]),
 
             background: theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0]),
-            // background: theme.colors.veryDarkGreen[0],
+            // background: 'transparent',
             boxShadow: 'none',
             mozTransition: 'all 0.4s ease-in-out',
             oTransition: 'all 0.4s ease-in-out',
@@ -74,7 +74,7 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header, displayCondition
             boxSizing: 'border-box',
             // background: theme.fn.linearGradient(0, theme.colors.mustardGreen[0], theme.colors.orange[0]),
 
-            background: theme.colors.veryDarkGreen[0],
+            background: 'transparent',
 
           },
 
@@ -90,7 +90,7 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header, displayCondition
             paddingTop: '10px',
             paddingBottom: '10px',
             borderRadius: '10px',
-            background: theme.colors.veryDarkGreen[0],
+            background: 'transparent',
           },
         };
       },
