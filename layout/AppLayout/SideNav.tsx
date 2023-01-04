@@ -121,7 +121,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
         borderRadius: '50px',
         borderWidth: '1px',
         borderStyle: 'solid',
-        background: `url(/assets/background.png) padding-box fixed, ${theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0])} border-box`,
+        background: `url(/assets/background.jpg) padding-box fixed, ${theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0])} border-box`,
         // background: theme.colors.sideMenuBackgroundBlue[0],
 
         '&:before': {
