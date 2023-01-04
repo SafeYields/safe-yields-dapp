@@ -31,7 +31,12 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header, displayCondition
             boxSizing: 'border-box',
             // background: theme.fn.linearGradient(0, theme.colors.mustardGreen[0], theme.colors.orange[0]),
 
-            background: theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0]),
+            background: theme.fn.linearGradient(180, 'rgba(217, 217, 217, 0.3) 0%', 'rgba(217, 217, 217, 0.3) 0.01%', 'rgba(217, 217, 217, 0.09) 100%'),
+            // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            // backdrop-filter: blur(3px);
+            /* Note: backdrop-filter has minimal browser support */
+
+            // border-radius: 21px;
             // background: 'transparent',
             boxShadow: 'none',
             mozTransition: 'all 0.4s ease-in-out',

@@ -29,9 +29,9 @@ export const AppLayout: CustomLayout = (page) => {
           minHeight: '100vh',
           maxWidth: '100vw',
           overflowX: 'hidden',
-          backgroundImage: 'url(/assets/background.png)',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize:'cover',
+          background: 'url(/assets/background.png) fixed',
+          // backgroundRepeat: 'no-repeat',
+          // backgroundSize:'cover',
       },
         main: { padding: 0 },
       })}

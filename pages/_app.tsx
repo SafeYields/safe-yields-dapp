@@ -24,9 +24,11 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
           theme={{
             colorScheme: 'dark',
             colors: {
+              sideMenuBackgroundBlue: ['#013D43'],
               highlightGreen: ['#D1DE5D'],
-              mustardGreen: ['#C9D94E'],
-              orange: ['#F28705'],
+              mustardGreen: ['#CEDB3F'],
+              limeGreen: ['#D9E022'],
+              orange: ['#E89B17'],
               white: ['#FFFFFF'],
             },
             fontFamily: 'Gotham, sans-serif',
