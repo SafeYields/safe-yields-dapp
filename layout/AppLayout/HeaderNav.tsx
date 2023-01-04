@@ -49,7 +49,7 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 400,
     fontFamily: 'Inter, sans-serif',
     lineHeight: '19px',
-    backgroundColor: theme.colors.veryDarkGreen[0],
+    backgroundColor: 'transparent',
 
     '&:hover': {
       color: theme.colors.highlightGreen[0],
@@ -94,8 +94,8 @@ export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
     <Header height={{ base: 50, md: 70 }} p='md' mb={120}
             sx={(theme) => ({
               padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
-              borderBottom: `1px solid ${theme.colors.veryDarkGreen[0]}`,
-              backgroundColor: theme.colors.veryDarkGreen[0],
+              borderBottom: `1px solid ${'transparent'}`,
+              backgroundColor: 'transparent',
             })}
     >
       <Container className={classes.header}>

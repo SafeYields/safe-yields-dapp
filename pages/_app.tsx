@@ -24,11 +24,14 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
           theme={{
             colorScheme: 'dark',
             colors: {
-              veryDarkGreen: ['#040A01'],
+              sideMenuBackgroundBlue: ['#013D43'],
               highlightGreen: ['#D1DE5D'],
-              mustardGreen: ['#C9D94E'],
-              orange: ['#F08906'],
-              white: ['#FFFFFF'],
+              mustardGreen: ['#CEDB3F'],
+              limeGreen: ['#D9E022'],
+              orange: ['#E89B17'],
+              white: ['#F2ECE4'],
+              greenGray: ['#36676A'],
+              almostWhite: ['#F5F5F5'],
             },
             fontFamily: 'Gotham, sans-serif',
             lineHeight: '19px',
@@ -41,11 +44,12 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
             },
             primaryColor: 'white',
             loader: 'dots',
-            spacing: { xs: 15, sm: 20, md: 25, lg: 30, xl: 40 },
+            spacing: { xs: 10, sm: 20, md: 25, lg: 30, xl: 64 },
             headings: {
               fontFamily: 'Gotham, sans-serif',
+              fontWeight: 450,
               sizes: {
-                h1: { fontSize: 80 },
+                h1: { fontSize: 36, lineHeight: '43px' },
               },
             },
             defaultGradient: {

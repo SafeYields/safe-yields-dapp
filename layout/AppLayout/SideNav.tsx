@@ -24,22 +24,26 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
   return {
     navbar: {
       position: 'sticky',
-      backgroundColor: theme.colors.veryDarkGreen[0],
+      backgroundColor: 'transparent',
       top: 0,
+      borderColor: theme.colors.greenGray[0],
+      borderWidth: '1px',
       width: params?.collapsed ? 120 : 315,
       transition: params?.collapsed ? 'width 0.1s linear' : 'none',
     },
 
     header: {
-      paddingBottom: theme.spacing.xs,
+      paddingBottom: theme.spacing.xl,
       marginBottom: theme.spacing.md,
-      borderBottom: `1px solid ${theme.colors.gray[2]}`,
+      paddingRight: theme.spacing.xs,
+      margin: 'auto',
+      width: params?.collapsed ? 90 : 205,
+      height: 140
     },
 
     footer: {
       paddingTop: theme.spacing.xs,
       marginTop: theme.spacing.md,
-      borderTop: `1px solid ${theme.colors.gray[2]}`,
     },
 
     logo: {
@@ -56,7 +60,45 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       fontWeight: 700,
     },
 
-    link: {
+
+    collapse: {
+      ...theme.fn.focusStyles(),
+      display: 'flex',
+      marginLeft:  params?.collapsed ? 13 : 25,
+      alignItems: 'start',
+      columnGap: theme.spacing.sm,
+      textDecoration: 'none',
+      fontSize: theme.fontSizes.md,
+      background: theme.colors.limeGreen[0],
+      color: 'black',
+      padding: '10px 10px',
+      lineHeight: '18px',
+      fontWeight: 325,
+      borderRadius: '50px',
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderColor: 'transparent',
+      boxShadow: 'none',
+      mozTransition: 'all 0.4s ease-in-out',
+      oTransition: 'all 0.4s ease-in-out',
+      webkitTransition: 'all 0.4s ease-in-out',
+      transition: 'all 0.4s ease-in-out',
+      willChange: 'transform',
+
+      '&:hover': {
+        boxShadow: '0 2px 15px 0 rgba(200, 180, 80, 0.50)',
+        mozTransition: 'all 0.4s ease-in-out',
+        oTransition: 'all 0.4s ease-in-out',
+        webkitTransition: 'all 0.4s ease-in-out',
+        transition: 'all 0.4s ease-in-out',
+      },
+    },
+    collapseIcon: {
+      ref: icon,
+      color: 'black',
+    },
+
+      link: {
       ...theme.fn.focusStyles(),
       width: '100%',
       display: 'flex',
@@ -66,23 +108,24 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       columnGap: theme.spacing.sm,
       textDecoration: 'none',
       fontSize: theme.fontSizes.md,
-      color: theme.colors[theme.primaryColor][0],
+      color: 'white',
       padding: `${theme.spacing.sm}px ${theme.spacing.md}px`,
       lineHeight: '18px',
       fontWeight: 325,
       borderRadius: '50px',
-      borderWidth: '2px',
+      borderWidth: '1px',
       borderStyle: 'solid',
       borderColor: 'transparent',
-      backgroundClip: 'padding-box',
       position: 'relative',
-      boxSizing: 'border-box',
-      background: theme.colors.veryDarkGreen[0],
+
 
       '&:hover': {
         borderRadius: '50px',
-        borderWidth: '2px',
+        borderWidth: '1px',
         borderStyle: 'solid',
+        background: `url(/assets/background.jpg) padding-box fixed, ${theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0])} border-box`,
+        // background: theme.colors.sideMenuBackgroundBlue[0],
+
         '&:before': {
           content: '""',
           position: 'absolute',
@@ -91,36 +134,16 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
           bottom: 0,
           left: 0,
           zIndex: -1,
-          margin: '-4px',
+          margin: '-1px',
           borderRadius: 'inherit',
-          background: theme.fn.linearGradient(0, theme.colors.mustardGreen[0], theme.colors.orange[0]),
+          background: theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0]),
         },
       },
     },
 
     linkActive: {
-      '&, &:hover': {
-        // background: 'transparent',
-        background: theme.colors.veryDarkGreen[0],
-        '&:before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
-          zIndex: -1,
-          margin: '-4px',
-          borderRadius: 'inherit',
-          background: theme.fn.linearGradient(0, theme.colors.mustardGreen[0], theme.colors.orange[0]),
-        },
-        // borderRadius: '50px',
-        // borderWidth: '2px',
-        // borderStyle: 'solid',
-        // borderColor: theme.colors[theme.primaryColor][0],
-        [`& .${icon}`]: {
-          color: theme.colors[theme.primaryColor][7],
-        },
+      [`& .${icon}`]: {
+        color: theme.colors[theme.primaryColor][7],
       },
     },
 
@@ -181,24 +204,24 @@ export const SideNav: FC<{ className?: string }> = ({ className }) => {
                   </a>
                 );
               }}
-                </ActiveLink>
-                </Tooltip>
-                ))}
-            </Navbar.Section>
+            </ActiveLink>
+          </Tooltip>
+        ))}
+      </Navbar.Section>
 
-            <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-              <Navbar.Section className={classes.footer}>
-                <UnstyledButton className={classes.link} onClick={handlers.toggle}>
-                  {collapsed ? (
-                    <ArrowRight className={classes.linkIcon} />
-                  ) : (
-                    <>
-                      <ArrowLeft className={classes.linkIcon} />
-                    </>
-                  )}
-                </UnstyledButton>
-              </Navbar.Section>
-            </MediaQuery>
-          </Navbar>
-        );
-        };
+      <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
+        <Navbar.Section className={classes.footer}>
+          <UnstyledButton className={classes.collapse} onClick={handlers.toggle}>
+            {collapsed ? (
+              <ArrowRight className={classes.collapseIcon} />
+            ) : (
+              <>
+                <ArrowLeft className={classes.collapseIcon} />
+              </>
+            )}
+          </UnstyledButton>
+        </Navbar.Section>
+      </MediaQuery>
+    </Navbar>
+  );
+};

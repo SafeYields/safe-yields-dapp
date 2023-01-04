@@ -1,4 +1,4 @@
-import { ActionIcon, AppShell, BackgroundImage, Box, CloseButton, Drawer, MediaQuery } from '@mantine/core';
+import { ActionIcon, AppShell, Box, CloseButton, Drawer, MediaQuery } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { CustomLayout } from 'next';
 import dynamic from 'next/dynamic';
@@ -29,9 +29,11 @@ export const AppLayout: CustomLayout = (page) => {
           minHeight: '100vh',
           maxWidth: '100vw',
           overflowX: 'hidden',
-          backgroundColor: theme.colors.veryDarkGreen[0],
+          background: 'url(/assets/background.jpg) fixed',
+          // backgroundRepeat: 'no-repeat',
+          // backgroundSize:'cover',
       },
-        main: { padding: 0, backgroundColor: theme.colors.veryDarkGreen[0] },
+        main: { padding: 0 },
       })}
       navbar={
         <>
@@ -53,11 +55,9 @@ export const AppLayout: CustomLayout = (page) => {
         }
       />}
     >
-      <BackgroundImage src={'assets/background-abstraction.svg'} py={100}>
-      <Box py='xl' px='md' sx={{ marginTop: '10px' }}>
+      <Box py='xs' px='md' sx={{ marginTop: '130px' }}>
           <LayoutErrorBoundary>{page}</LayoutErrorBoundary>
       </Box>
-      </BackgroundImage>
     </AppShell>
   );
 };
