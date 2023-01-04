@@ -1,4 +1,4 @@
-import { ActionIcon, AppShell, BackgroundImage, Box, CloseButton, Drawer, MediaQuery } from '@mantine/core';
+import { ActionIcon, AppShell, Box, CloseButton, Drawer, MediaQuery } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { CustomLayout } from 'next';
 import dynamic from 'next/dynamic';
@@ -55,11 +55,9 @@ export const AppLayout: CustomLayout = (page) => {
         }
       />}
     >
-      <BackgroundImage src={''} py={100}>
-      <Box py='xl' px='md' sx={{ marginTop: '10px' }}>
+      <Box py='xs' px='md' sx={{ marginTop: '130px' }}>
           <LayoutErrorBoundary>{page}</LayoutErrorBoundary>
       </Box>
-      </BackgroundImage>
     </AppShell>
   );
 };

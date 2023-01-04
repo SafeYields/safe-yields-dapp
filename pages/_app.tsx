@@ -29,8 +29,9 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
               mustardGreen: ['#CEDB3F'],
               limeGreen: ['#D9E022'],
               orange: ['#E89B17'],
-              white: ['#FFFFFF'],
-              greenGray: ['#36676A']
+              white: ['#F2ECE4'],
+              greenGray: ['#36676A'],
+              almostWhite: ['#F5F5F5'],
             },
             fontFamily: 'Gotham, sans-serif',
             lineHeight: '19px',
@@ -46,8 +47,9 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
             spacing: { xs: 10, sm: 20, md: 25, lg: 30, xl: 64 },
             headings: {
               fontFamily: 'Gotham, sans-serif',
+              fontWeight: 450,
               sizes: {
-                h1: { fontSize: 80 },
+                h1: { fontSize: 36, lineHeight: '43px' },
               },
             },
             defaultGradient: {
