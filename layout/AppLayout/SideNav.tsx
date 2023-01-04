@@ -33,10 +33,12 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
     },
 
     header: {
-      paddingBottom: theme.spacing.xs,
+      paddingBottom: theme.spacing.xl,
       marginBottom: theme.spacing.md,
+      paddingRight: theme.spacing.xs,
       margin: 'auto',
       width: params?.collapsed ? 90 : 205,
+      height: 140
     },
 
     footer: {
