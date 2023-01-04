@@ -26,7 +26,8 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       position: 'sticky',
       backgroundColor: 'transparent',
       top: 0,
-      borderColor: 'white',
+      borderColor: theme.colors.greenGray[0],
+      borderWidth: '1px',
       width: params?.collapsed ? 120 : 315,
       transition: params?.collapsed ? 'width 0.1s linear' : 'none',
     },
@@ -34,6 +35,8 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
     header: {
       paddingBottom: theme.spacing.xs,
       marginBottom: theme.spacing.md,
+      margin: 'auto',
+      width: params?.collapsed ? 90 : 205,
     },
 
     footer: {
@@ -55,7 +58,45 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       fontWeight: 700,
     },
 
-    link: {
+
+    collapse: {
+      ...theme.fn.focusStyles(),
+      display: 'flex',
+      marginLeft:  params?.collapsed ? 13 : 25,
+      alignItems: 'start',
+      columnGap: theme.spacing.sm,
+      textDecoration: 'none',
+      fontSize: theme.fontSizes.md,
+      background: theme.colors.limeGreen[0],
+      color: 'black',
+      padding: '10px 10px',
+      lineHeight: '18px',
+      fontWeight: 325,
+      borderRadius: '50px',
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderColor: 'transparent',
+      boxShadow: 'none',
+      mozTransition: 'all 0.4s ease-in-out',
+      oTransition: 'all 0.4s ease-in-out',
+      webkitTransition: 'all 0.4s ease-in-out',
+      transition: 'all 0.4s ease-in-out',
+      willChange: 'transform',
+
+      '&:hover': {
+        boxShadow: '0 3px 15px 0 rgba(200, 180, 80, 0.50)',
+        mozTransition: 'all 0.4s ease-in-out',
+        oTransition: 'all 0.4s ease-in-out',
+        webkitTransition: 'all 0.4s ease-in-out',
+        transition: 'all 0.4s ease-in-out',
+      },
+    },
+    collapseIcon: {
+      ref: icon,
+      color: 'black',
+    },
+
+      link: {
       ...theme.fn.focusStyles(),
       width: '100%',
       display: 'flex',
@@ -168,12 +209,12 @@ export const SideNav: FC<{ className?: string }> = ({ className }) => {
 
       <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
         <Navbar.Section className={classes.footer}>
-          <UnstyledButton className={classes.link} onClick={handlers.toggle}>
+          <UnstyledButton className={classes.collapse} onClick={handlers.toggle}>
             {collapsed ? (
-              <ArrowRight className={classes.linkIcon} />
+              <ArrowRight className={classes.collapseIcon} />
             ) : (
               <>
-                <ArrowLeft className={classes.linkIcon} />
+                <ArrowLeft className={classes.collapseIcon} />
               </>
             )}
           </UnstyledButton>

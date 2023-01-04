@@ -30,6 +30,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
               limeGreen: ['#D9E022'],
               orange: ['#E89B17'],
               white: ['#FFFFFF'],
+              greenGray: ['#36676A']
             },
             fontFamily: 'Gotham, sans-serif',
             lineHeight: '19px',
