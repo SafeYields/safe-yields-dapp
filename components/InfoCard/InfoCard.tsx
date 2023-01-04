@@ -22,8 +22,8 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header, displayCondition
             padding: '0',
             lineHeight: '18px',
             fontWeight: 325,
-            borderRadius: '30px',
-            borderWidth: '2px',
+            borderRadius: '21px',
+            borderWidth: '0px',
             borderStyle: 'solid',
             borderColor: 'transparent',
             backgroundClip: 'padding-box',
@@ -31,14 +31,18 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header, displayCondition
             boxSizing: 'border-box',
             // background: theme.fn.linearGradient(0, theme.colors.mustardGreen[0], theme.colors.orange[0]),
 
-            background: theme.fn.linearGradient(180, 'rgba(217, 217, 217, 0.3) 0%', 'rgba(217, 217, 217, 0.3) 0.01%', 'rgba(217, 217, 217, 0.09) 100%'),
+            // background: theme.fn.linearGradient(180, 'rgba(217, 217, 217, 0.3) 0%', 'rgba(217, 217, 217, 0.3) 0.01%', 'rgba(217, 217, 217, 0.09) 100%'),
+            background: 'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
+            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+            backdropFilter: 'blur(3px)',
+      /* Note: backdrop-filter has minimal browser support */
+
             // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             // backdrop-filter: blur(3px);
             /* Note: backdrop-filter has minimal browser support */
 
             // border-radius: 21px;
             // background: 'transparent',
-            boxShadow: 'none',
             mozTransition: 'all 0.4s ease-in-out',
             oTransition: 'all 0.4s ease-in-out',
             webkitTransition: 'all 0.4s ease-in-out',
@@ -46,7 +50,7 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header, displayCondition
             willChange: 'transform',
 
             '&:hover': {
-              boxShadow: '0 7px 15px 0 rgba(229, 66, 10, 0.50)',
+              boxShadow: '0 7px 15px 0 rgba(200, 180, 80, 0.50)',
               mozTransition: 'all 0.4s ease-in-out',
               oTransition: 'all 0.4s ease-in-out',
               webkitTransition: 'all 0.4s ease-in-out',

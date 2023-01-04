@@ -86,7 +86,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       willChange: 'transform',
 
       '&:hover': {
-        boxShadow: '0 3px 15px 0 rgba(200, 180, 80, 0.50)',
+        boxShadow: '0 2px 15px 0 rgba(200, 180, 80, 0.50)',
         mozTransition: 'all 0.4s ease-in-out',
         oTransition: 'all 0.4s ease-in-out',
         webkitTransition: 'all 0.4s ease-in-out',
