@@ -3,7 +3,9 @@ import { useDisclosure } from '@mantine/hooks';
 import type { CustomLayout } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { FC,useEffect } from 'react';
+import { FC, useEffect } from 'react';
+// @ts-ignore
+import GalaxyBackground from 'react-animated-stars';
 import { Menu2 } from 'tabler-icons-react';
 
 import { LayoutErrorBoundary } from '../LayoutErrorBoundary';
@@ -22,6 +24,7 @@ export const AppLayout: CustomLayout = (page) => {
   const [opened, handlers] = useDisclosure(false);
 
   return (
+    <GalaxyBackground starCount={50} rotationSpeed={0.03} bgColor={'transparent'} maxSize={3} innerRadius={200}>
       <AppShell
         padding='md'
         styles={(theme) => ({
@@ -59,6 +62,7 @@ export const AppLayout: CustomLayout = (page) => {
           <LayoutErrorBoundary>{page}</LayoutErrorBoundary>
         </Box>
       </AppShell>
+    </GalaxyBackground>
   );
 };
 
