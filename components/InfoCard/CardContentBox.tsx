@@ -1,4 +1,4 @@
-import { Box, createStyles } from '@mantine/core';
+import { Box, createStyles, Text } from '@mantine/core';
 import { FC, ReactNode } from 'react';
 
 type InfoCardProps = {
@@ -109,6 +109,7 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header, displayCondition
         {displayCondition && (
           <Box className={classes.card}>
             <Box className={classes.cardInner}>
+              <Text className={classes.cardHeader}>{header}</Text>
               {children}
             </Box>
           </Box>

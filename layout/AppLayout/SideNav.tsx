@@ -1,3 +1,4 @@
+import { keyframes } from '@emotion/react';
 import { createStyles, Group, Image, MediaQuery, Navbar, Tooltip, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
@@ -18,6 +19,19 @@ import { getPath } from 'utils';
 // eslint-disable-next-line no-duplicate-imports
 import { ActiveLink } from 'utils';
 
+const glowing = keyframes`
+  0% {
+    filter: drop-shadow( 0 0 5px #062C2D) drop-shadow( 0 0 15px #062C2D) drop-shadow( 0 0 20px #062C2D);
+  }
+  90% {
+    filter: drop-shadow( 0 0 5px #062C2D) drop-shadow( 0 0 15px #062C2D) drop-shadow( 0 0 20px #062C2D);
+  }
+  
+  100% {
+    filter: drop-shadow( 0 0 20px #D1DE5D) drop-shadow( 0 0 25px #D9E022) drop-shadow( 0 0 40px #E89B17);
+  }
+`;
+
 const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, getRef) => {
   const icon: string = getRef('icon');
 
@@ -32,34 +46,29 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       transition: params?.collapsed ? 'width 0.1s linear' : 'none',
     },
 
-    header: {
-      paddingBottom: theme.spacing.xl,
-      marginBottom: theme.spacing.md,
+    safeYieldsLogo: {
       paddingRight: theme.spacing.xs,
+      paddingTop: 35,
+      paddingBottom: 35,
       margin: 'auto',
       width: params?.collapsed ? 90 : 205,
-      height: 140
+      height: 170,
     },
+
+    glowingLogo: {
+      animationDelay:'10s',
+      borderRadius:'100%',
+      background: 'transparent',
+      webkitAnimation: `${glowing} 30s ease-in-out infinite alternate`,
+      animation: `${glowing} 30s ease-in-out infinite alternate`,
+      mozAnimation: `${glowing} 30s ease-in-out infinite alternate`,
+    },
+
 
     footer: {
       paddingTop: theme.spacing.xs,
       marginTop: theme.spacing.md,
     },
-
-    logo: {
-      ...theme.fn.focusStyles(),
-      width: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      columnGap: theme.spacing.sm,
-      textDecoration: 'none',
-      fontSize: theme.fontSizes.sm,
-      color: theme.colors.gray[7],
-      padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
-      borderRadius: theme.radius.sm,
-      fontWeight: 700,
-    },
-
 
     collapse: {
       ...theme.fn.focusStyles(),
@@ -142,6 +151,24 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
     },
 
     linkActive: {
+      borderRadius: '50px',
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      background: `url(/assets/background.jpg) padding-box fixed, ${theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0])} border-box`,
+      // background: theme.colors.sideMenuBackgroundBlue[0],
+
+      '&:before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        zIndex: -1,
+        margin: '-1px',
+        borderRadius: 'inherit',
+        background: theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0]),
+      },
       [`& .${icon}`]: {
         color: theme.colors[theme.primaryColor][7],
       },
@@ -149,7 +176,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
 
     linkIcon: {
       ref: icon,
-      color: theme.colors.gray[3],
+      color: theme.colors.almostWhite[0],
     },
 
     linkLabel: params?.collapsed ? { display: 'none' } : {},
@@ -174,11 +201,12 @@ export const SideNav: FC<{ className?: string }> = ({ className }) => {
   return (
     <Navbar p='md' className={cx(classes.navbar, className)}>
       <Navbar.Section grow>
-        <Group className={classes.header} position='apart'>
-          <Link href={getPath('HOME')}>
+        <Group className={classes.safeYieldsLogo} position='apart'>
+          <Link href={getPath('DASHBOARD')}>
             <Image
               src='/assets/safe-yields-logo.svg'
               alt='Safe Yields Logo'
+              className={classes.glowingLogo}
             />
           </Link>
         </Group>
