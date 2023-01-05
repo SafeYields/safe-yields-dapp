@@ -44,7 +44,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
             },
             primaryColor: 'white',
             loader: 'dots',
-            spacing: { xs: 10, sm: 20, md: 25, lg: 30, xl: 64 },
+            spacing: { xs: 12, sm: 20, md: 25, lg: 30, xl: 64 },
             headings: {
               fontFamily: 'Gotham, sans-serif',
               fontWeight: 450,

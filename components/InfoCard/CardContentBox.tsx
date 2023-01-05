@@ -1,13 +1,14 @@
 import { Box, createStyles, Text } from '@mantine/core';
 import { FC, ReactNode } from 'react';
 
-type InfoCardProps = {
+type CardContentBoxProps = {
   children: ReactNode;
   header: string;
-  displayCondition?: boolean;
+  accent?: boolean;
+
 }
 
-export const InfoCard: FC<InfoCardProps> = ({ children, header, displayCondition = true }) => {
+export const CardContentBox: FC<CardContentBoxProps> = ({ children, header, displayCondition = true }) => {
 
     const useStyles = createStyles<string>((theme, params, getRef) => {
         return {
