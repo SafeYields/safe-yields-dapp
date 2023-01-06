@@ -1,9 +1,8 @@
-import { createStyles, MantineProvider } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { NextPageWithLayout } from 'next';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
-import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { GlobalStyleProvider } from 'style/GlobalStyleProvider';
 
 interface AppPropsWithLayout extends AppProps {
@@ -12,42 +11,9 @@ interface AppPropsWithLayout extends AppProps {
 
 const Web3Provider = dynamic(() => import('components/Web3Provider/index'), { ssr: false });
 
-
-const useStyles = createStyles<string>((theme, params, getRef) => {
-    return {
-      app: {
-        '&-appear': {
-          opacity: 0.01,
-        },
-        '&-appear-active': {
-          opacity: 1,
-          transition: 'opacity 0.5s ease-in',
-        },
-        '&-enter': {
-          opacity: 0,
-        },
-        '&-enter-active': {
-          opacity: 1,
-          transition: 'opacity 300ms',
-        },
-        '&-exit': {
-          opacity: 1,
-        },
-        '&-exit-active': {
-          opacity: 0,
-          transition: 'opacity 300ms',
-        },
-
-      },
-    };
-  },
-);
-
-
 function _App({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
   const getPageLayout = Component.getLayout || ((page) => page);
-  const { classes, cx } = useStyles();
   return (
     <Web3Provider>
       <GlobalStyleProvider>
@@ -115,11 +81,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
           }}
         >
           <NotificationsProvider>
-            <SwitchTransition mode='out-in'>
-              <CSSTransition key={'start'} appear={true} classNames={classes.app} timeout={700}>
                 {getPageLayout(<Component {...pageProps} />)}
-              </CSSTransition>
-            </SwitchTransition>
           </NotificationsProvider>
         </MantineProvider>
       </GlobalStyleProvider>

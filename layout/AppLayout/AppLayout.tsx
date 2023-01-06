@@ -1,13 +1,13 @@
-import { ActionIcon, AppShell, Box, CloseButton, Drawer, MediaQuery } from '@mantine/core';
+import { ActionIcon, AppShell, Box, CloseButton, createStyles, Drawer, MediaQuery } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { CustomLayout } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
 // @ts-ignore
-import GalaxyBackground from 'react-animated-stars';
 import { Menu2 } from 'tabler-icons-react';
 
+import { FancyBackground } from '../../components/FancyBackground';
 import { LayoutErrorBoundary } from '../LayoutErrorBoundary';
 
 const HeaderNav = dynamic(async () => {
@@ -20,11 +20,44 @@ const SideNav = dynamic(async () => {
   return SideNav;
 });
 
+
+const useStyles = createStyles<string>((theme, params, getRef) => {
+    return {
+      app: {
+        '&-appear': {
+          opacity: 0.01,
+        },
+        '&-appear-active': {
+          opacity: 1,
+          transition: 'opacity 0.5s ease-in',
+        },
+        '&-enter': {
+          opacity: 0,
+        },
+        '&-enter-active': {
+          opacity: 1,
+          transition: 'opacity 300ms',
+        },
+        '&-exit': {
+          opacity: 1,
+        },
+        '&-exit-active': {
+          opacity: 0,
+          transition: 'opacity 300ms',
+        },
+
+      },
+    };
+  },
+);
+
+
 export const AppLayout: CustomLayout = (page) => {
   const [opened, handlers] = useDisclosure(false);
+  const { classes, cx } = useStyles();
 
   return (
-    <GalaxyBackground starCount={50} rotationSpeed={0.03} bgColor={'transparent'} maxSize={3} innerRadius={200}>
+    <FancyBackground>
       <AppShell
         padding='md'
         styles={(theme) => ({
@@ -62,7 +95,7 @@ export const AppLayout: CustomLayout = (page) => {
           <LayoutErrorBoundary>{page}</LayoutErrorBoundary>
         </Box>
       </AppShell>
-    </GalaxyBackground>
+    </FancyBackground>
   );
 };
 
