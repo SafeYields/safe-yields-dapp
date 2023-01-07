@@ -23,8 +23,12 @@ const Home: NextPageWithLayout = () => {
       <Grid grow gutter={'sm'} align={'center'}>
         <Grid.Col span={6}>
           <InfoCard>
-            <CardContentBox header={'SAFE Holdings'} footer={safeTokenBalance && safeTokenPrice ? (parseInt(safeTokenBalance)*parseInt(safeTokenPrice)).toFixed(DECIMALS_TO_DISPLAY) : undefined}>
-              <h1>{safeTokenBalance ? safeTokenBalance.concat(' SAFE') : <Loader size='lg' color='green' />}</h1>
+            <CardContentBox header={'SAFE Holdings'}
+                            footer={safeTokenBalance && safeTokenPrice ? (parseInt(safeTokenBalance) * parseInt(safeTokenPrice)).toFixed(DECIMALS_TO_DISPLAY).concat(' $BUSD') : undefined}>
+              <h1>{
+                injectedWalletConnected ?
+                  safeTokenBalance ? safeTokenBalance.concat(' SAFE') :
+                    <Loader size='lg' color='green' /> : '⸻'}</h1>
             </CardContentBox>
           </InfoCard>
         </Grid.Col>

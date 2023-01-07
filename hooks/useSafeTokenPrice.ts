@@ -5,16 +5,23 @@ import useSWR from 'swr';
 import SafeTokenAbi from '../artifacts/contracts/SafeToken.sol/SafeToken.json';
 import { chainConfig } from '../config';
 import useContract from './useContract';
+import useKeepSWRDataLiveAsBlocksArrive from './useKeepSWRDataLiveAsBlocksArrive';
 
-const useSafeTokenPrice = () => {
+const useSafeTokenPrice = (suspense = false) => {
   const safeTokenContract = useContract<SafeToken>(chainConfig.addresses.safe, SafeTokenAbi.abi);
-  return useSWR(
-    'useSafePrice',
-    async () => safeTokenContract ? parseBalance(await safeTokenContract.price()) : null,
+  const shouldFetch = !!safeTokenContract;
+  const result = useSWR(
+    shouldFetch ? ['TokenBalance'] : null,
+    async () => {
+      return safeTokenContract ? parseBalance(await safeTokenContract.price()) : null;
+    },
     {
-      refreshInterval: 10 * 1000,
+      suspense,
     },
   );
+  useKeepSWRDataLiveAsBlocksArrive(result.mutate);
+
+  return result;
 };
 
 export default useSafeTokenPrice;

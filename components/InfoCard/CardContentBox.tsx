@@ -27,7 +27,23 @@ export const CardContentBox: FC<CardContentBoxProps> = ({ children, header, foot
         borderRadius: '10px',
         background: 'transparent',
       },
-    };
+    cardFooter: {
+    ...theme.fn.focusStyles(),
+        fontStyle: 'normal',
+        fontWeight: '325',
+        fontSize: '14px',
+        lineHeight: '17px',
+        position: 'absolute',
+        color: theme.colors.almostWhite[0],
+        bottom: '10px',
+        paddingLeft: '10px',
+        paddingRight: '10px',
+        paddingTop: '10px',
+        paddingBottom: '10px',
+        borderRadius: '10px',
+        background: 'transparent',
+    },
+  };
   });
       const { classes, cx } = useStyles();
       return (
@@ -36,7 +52,7 @@ export const CardContentBox: FC<CardContentBoxProps> = ({ children, header, foot
             <>
               <Text className={classes.cardHeader}>{header}</Text>
               {children}
-              <Text className={classes.cardHeader}>{footer}</Text>
+              <Text className={classes.cardFooter}>{footer}</Text>
             </>
           }
         </>
