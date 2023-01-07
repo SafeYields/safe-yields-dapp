@@ -1,7 +1,7 @@
-import { ActionIcon, AppShell, Box, CloseButton, createStyles, Drawer, MediaQuery } from '@mantine/core';
+import { keyframes } from '@emotion/react';
+import { ActionIcon, AppShell, Box, CloseButton, Drawer, MediaQuery } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { CustomLayout } from 'next';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
 // @ts-ignore
@@ -9,53 +9,33 @@ import { Menu2 } from 'tabler-icons-react';
 
 import { FancyBackground } from '../../components/FancyBackground';
 import { LayoutErrorBoundary } from '../LayoutErrorBoundary';
+import { HeaderNav } from './HeaderNav';
+import { SideNav } from './SideNav';
 
-const HeaderNav = dynamic(async () => {
-  const { HeaderNav } = await import('./HeaderNav');
-  return HeaderNav;
-});
+// const HeaderNav = dynamic(async () => {
+//   const { HeaderNav } = await import('./HeaderNav');
+//   return HeaderNav;
+// });
 
-const SideNav = dynamic(async () => {
-  const { SideNav } = await import('./SideNav');
-  return SideNav;
-});
+// const SideNav = dynamic(async () => {
+//   const { SideNav } = await import('./SideNav');
+//   return SideNav;
+// });
 
 
-const useStyles = createStyles<string>((theme, params, getRef) => {
-    return {
-      app: {
-        '&-appear': {
-          opacity: 0.01,
-        },
-        '&-appear-active': {
-          opacity: 1,
-          transition: 'opacity 0.5s ease-in',
-        },
-        '&-enter': {
-          opacity: 0,
-        },
-        '&-enter-active': {
-          opacity: 1,
-          transition: 'opacity 300ms',
-        },
-        '&-exit': {
-          opacity: 1,
-        },
-        '&-exit-active': {
-          opacity: 0,
-          transition: 'opacity 300ms',
-        },
-
-      },
-    };
-  },
-);
-
+const slide = keyframes`
+  100% {
+    left: 0;
+    opacity: 1;
+  }
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+`;
 
 export const AppLayout: CustomLayout = (page) => {
   const [opened, handlers] = useDisclosure(false);
-  const { classes, cx } = useStyles();
-
   return (
     <FancyBackground>
       <AppShell
@@ -66,10 +46,10 @@ export const AppLayout: CustomLayout = (page) => {
             maxWidth: '100vw',
             overflowX: 'hidden',
             background: 'url(/assets/background.jpg) fixed',
-            // backgroundRepeat: 'no-repeat',
-            // backgroundSize:'cover',
           },
-          main: { padding: 0 },
+          main: {
+            padding: 0,
+          },
         })}
         navbar={
           <>

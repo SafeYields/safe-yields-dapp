@@ -21,14 +21,20 @@ import { ActiveLink } from 'utils';
 
 const glowing = keyframes`
   0% {
-    filter: drop-shadow( 0 0 5px #062C2D) drop-shadow( 0 0 15px #062C2D) drop-shadow( 0 0 20px #062C2D);
+    filter: drop-shadow(0 0 5px #062C2D) drop-shadow(0 0 15px #062C2D) drop-shadow(0 0 20px #062C2D);
   }
   90% {
-    filter: drop-shadow( 0 0 5px #062C2D) drop-shadow( 0 0 15px #062C2D) drop-shadow( 0 0 20px #062C2D);
+    filter: drop-shadow(0 0 5px #062C2D) drop-shadow(0 0 15px #062C2D) drop-shadow(0 0 20px #062C2D);
   }
-  
+
   100% {
-    filter: drop-shadow( 0 0 20px #D1DE5D) drop-shadow( 0 0 25px #D9E022) drop-shadow( 0 0 40px #E89B17);
+    filter: drop-shadow(0 0 20px #D1DE5D) drop-shadow(0 0 25px #D9E022) drop-shadow(0 0 40px #E89B17);
+  }
+`;
+
+const slide = keyframes`
+  100% {
+    left: 0;
   }
 `;
 
@@ -56,8 +62,8 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
     },
 
     glowingLogo: {
-      animationDelay:'10s',
-      borderRadius:'100%',
+      animationDelay: '10s',
+      borderRadius: '100%',
       background: 'transparent',
       webkitAnimation: `${glowing} 30s ease-in-out infinite alternate`,
       animation: `${glowing} 30s ease-in-out infinite alternate`,
@@ -73,7 +79,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
     collapse: {
       ...theme.fn.focusStyles(),
       display: 'flex',
-      marginLeft:  params?.collapsed ? 13 : 25,
+      marginLeft: params?.collapsed ? 13 : 25,
       alignItems: 'start',
       columnGap: theme.spacing.sm,
       textDecoration: 'none',
@@ -107,7 +113,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       color: 'black',
     },
 
-      link: {
+    link: {
       ...theme.fn.focusStyles(),
       width: '100%',
       display: 'flex',
@@ -197,59 +203,58 @@ const ITEMS = [
 export const SideNav: FC<{ className?: string }> = ({ className }) => {
   const [collapsed, handlers] = useDisclosure(false);
   const { classes, cx } = useStyles({ collapsed });
-
   return (
-    <Navbar p='md' className={cx(classes.navbar, className)}>
-      <Navbar.Section grow>
-        <Group className={classes.safeYieldsLogo} position='apart'>
-          <Link href={getPath('DASHBOARD')}>
-            <Image
-              src='/assets/safe-yields-logo.svg'
-              alt='Safe Yields Logo'
-              className={classes.glowingLogo}
-            />
-          </Link>
-        </Group>
-        {ITEMS.map(({ label, href, Icon }) => (
-          <Tooltip
-            key={label}
-            label={label}
-            disabled={!collapsed}
-            position='right'
-            withArrow
-            sx={{ width: '100%' }}
-          >
-            <ActiveLink href={href} passHref>
-              {(isActive) => {
-                return (
-                  <a
-                    className={cx(classes.link, {
-                      [classes.linkActive]: isActive,
-                    })}
-                  >
-                    <Icon className={classes.linkIcon} />
-                    <span className={classes.linkLabel}>{label}</span>
-                  </a>
-                );
-              }}
-            </ActiveLink>
-          </Tooltip>
-        ))}
-      </Navbar.Section>
-
-      <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-        <Navbar.Section className={classes.footer}>
-          <UnstyledButton className={classes.collapse} onClick={handlers.toggle}>
-            {collapsed ? (
-              <ArrowRight className={classes.collapseIcon} />
-            ) : (
-              <>
-                <ArrowLeft className={classes.collapseIcon} />
-              </>
-            )}
-          </UnstyledButton>
+      <Navbar p='md' className={cx(classes.navbar, className)}>
+        <Navbar.Section grow>
+          <Group className={classes.safeYieldsLogo} position='apart'>
+            <Link href={getPath('DASHBOARD')}>
+              <Image
+                src='/assets/safe-yields-logo.svg'
+                alt='Safe Yields Logo'
+                className={classes.glowingLogo}
+              />
+            </Link>
+          </Group>
+          {ITEMS.map(({ label, href, Icon }) => (
+            <Tooltip
+              key={label}
+              label={label}
+              disabled={!collapsed}
+              position='right'
+              withArrow
+              sx={{ width: '100%' }}
+            >
+              <ActiveLink href={href} passHref>
+                {(isActive) => {
+                  return (
+                    <a
+                      className={cx(classes.link, {
+                        [classes.linkActive]: isActive,
+                      })}
+                    >
+                      <Icon className={classes.linkIcon} />
+                      <span className={classes.linkLabel}>{label}</span>
+                    </a>
+                  );
+                }}
+              </ActiveLink>
+            </Tooltip>
+          ))}
         </Navbar.Section>
-      </MediaQuery>
-    </Navbar>
+
+        <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
+          <Navbar.Section className={classes.footer}>
+            <UnstyledButton className={classes.collapse} onClick={handlers.toggle}>
+              {collapsed ? (
+                <ArrowRight className={classes.collapseIcon} />
+              ) : (
+                <>
+                  <ArrowLeft className={classes.collapseIcon} />
+                </>
+              )}
+            </UnstyledButton>
+          </Navbar.Section>
+        </MediaQuery>
+      </Navbar>
   );
 };
