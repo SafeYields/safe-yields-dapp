@@ -27,9 +27,9 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
         marginRight: 'auto',
         borderRadius:'100%',
         background: 'transparent',
-        webkitAnimation: `${fading} 10s ease-in-out infinite alternate`,
-        animation: `${fading} 10s ease-in-out infinite alternate`,
-        mozAnimation: `${fading} 10s ease-in-out infinite alternate`,
+        webkitAnimation: `${fading} 50s ease-in-out infinite alternate`,
+        animation: `${fading} 50s ease-in-out infinite alternate`,
+        mozAnimation: `${fading} 50s ease-in-out infinite alternate`,
       },
       app: {
         '&-appear': {
@@ -111,8 +111,8 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
               />
             <div
               style={{
-                left: 200,
-                top: 100,
+                left: 50,
+                top: 50,
                 width: 800,
                 opacity: 0.7,
                 marginLeft: 'auto',
