@@ -19,6 +19,18 @@ const fading = keyframes`
   }
 `;
 
+const unfading = keyframes`
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.3;
+  }
+`;
+
 const useStyles = createStyles<string>((theme, params, getRef) => {
     return {
       glowingBoreal: {
@@ -27,9 +39,19 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
         marginRight: 'auto',
         borderRadius: '100%',
         background: 'transparent',
-        webkitAnimation: `${fading} 50s ease-in-out infinite alternate`,
-        animation: `${fading} 50s ease-in-out infinite alternate`,
-        mozAnimation: `${fading} 50s ease-in-out infinite alternate`,
+        webkitAnimation: `${fading} 30s ease-in-out infinite alternate`,
+        animation: `${fading} 30s ease-in-out infinite alternate`,
+        mozAnimation: `${fading} 30s ease-in-out infinite alternate`,
+      },
+      unGlowingBoreal: {
+        position: 'absolute',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        borderRadius: '100%',
+        background: 'transparent',
+        webkitAnimation: `${unfading} 10s ease-in-out  infinite alternate`,
+        animation: `${unfading} 10s ease-in-out  infinite alternate`,
+        mozAnimation: `${unfading} 10s ease-in-out  infinite alternate`,
       },
       app: {
         '&-appear': {
@@ -123,6 +145,7 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
             }}>
             <Image
               src='/assets/boreal2.svg'
+              className={classes.unGlowingBoreal}
             />
           </div>
           {children}

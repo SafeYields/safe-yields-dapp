@@ -249,6 +249,25 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "_user",
+        type: "address",
+      },
+    ],
+    name: "getBalanceTable",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "enum ISafeNFT.Tiers",
         name: "_tier",
         type: "uint8",
@@ -268,6 +287,19 @@ const _abi = [
   {
     inputs: [],
     name: "getFairPriceTable",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getMyBalanceTable",
     outputs: [
       {
         internalType: "uint256[]",

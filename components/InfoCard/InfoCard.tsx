@@ -1,11 +1,12 @@
-import { Box, createStyles } from '@mantine/core';
+import { Box, createStyles, Text } from '@mantine/core';
 import { FC, ReactNode } from 'react';
 
 type InfoCardProps = {
   children: ReactNode;
+  header: ReactNode
 }
 
-export const InfoCard: FC<InfoCardProps> = ({ children }) => {
+export const InfoCard: FC<InfoCardProps> = ({ children,header }) => {
 
   const useStyles = createStyles<string>((theme, params, getRef) => {
       return {
@@ -105,6 +106,7 @@ export const InfoCard: FC<InfoCardProps> = ({ children }) => {
   return (
     <Box className={classes.card}>
       <Box className={classes.cardInner}>
+        <Text className={classes.cardHeader}>{header}</Text>
         {children}
       </Box>
     </Box>
