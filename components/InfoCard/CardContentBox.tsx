@@ -30,7 +30,7 @@ export const CardContentBox: FC<CardContentBoxProps> = ({ children, footer }) =>
     return (
       <Stack spacing={0} mt={15}>
         {children}
-        {footer && <Text className={classes.cardFooter}>{footer}</Text>}
+        {typeof(footer)!== 'undefined' && <Text className={classes.cardFooter}>{footer}</Text>}
       </Stack>
     );
   }
