@@ -11,6 +11,7 @@ import useNFTOfTreasury from '../hooks/useNFTOfTreasury';
 import useNFTRewards from '../hooks/useNFTRewards';
 import useSafeNFTBalance from '../hooks/useSafeNFTBalance';
 import useSafeNFTFairPrice from '../hooks/useSafeNFTFairPrice';
+import useSafeTokenAPR from '../hooks/useSafeTokenAPR';
 import useSafeTokenBalance from '../hooks/useSafeTokenBalance';
 import useWalletConnected from '../hooks/useWalletConnected';
 
@@ -23,6 +24,7 @@ const Home: NextPageWithLayout = () => {
   const NFTRewards = useNFTRewards()?.data;
   const safeNFTFairPrice = useSafeNFTFairPrice()?.data;
   const safeNFTBalance = useSafeNFTBalance()?.data;
+  const safeTokenAPR = useSafeTokenAPR()?.data;
 
   const displayBUSDPrice = (priceData: string | null | undefined) =>
     injectedWalletConnected && priceData && safeTokenPrice ? (parseInt(priceData) * parseInt(safeTokenPrice)).toFixed(DECIMALS_TO_DISPLAY).concat(' $BUSD') : undefined;
@@ -31,7 +33,7 @@ const Home: NextPageWithLayout = () => {
     <h1>{
       injectedWalletConnected ?
         priceData ? priceData.concat(unit) :
-          <Loader size='lg' color='green' /> : '⸻'}
+          <Loader size='lg' color='#F5F5F5' /> : '⸻'}
     </h1>;
   return (
     <PageContainer title='Dashboard'>
@@ -53,51 +55,74 @@ const Home: NextPageWithLayout = () => {
         <Grid.Col span={12}>
           <InfoCard header={'Your NFTs'}>
             <Flex
-              mih={50}
-              gap='md'
-              justify='flex-start'
-              align='flex-start'
+              gap='xl'
+              justify='space-between'
+              align='center'
               direction='row'
               wrap='wrap'
             >
               {[0,1,2,3].map(( tier) =>
                 (<CardContentBox key={`NFTBalanceTier${tier+1}`}
                                  footer={injectedWalletConnected ? safeNFTBalance && safeNFTBalance[tier] ? `Total: ${parseInt(safeNFTBalance[tier])}` :
-                                   <Loader size='xs' color='green' /> : '⸻'}>
-                  <h1>Tier{tier+1}</h1>
+                                   <Loader size='xs' color='#F5F5F5' /> : '⸻'}>
+                  <h1>Tier {tier+1}</h1>
                 </CardContentBox>))}
             </Flex>
           </InfoCard>
         </Grid.Col>
         <Grid.Col span={12}>
           <Text align={'center'}>Total Treasury Ownership: {useNFTOfTreasury()?.data?.concat(' %') ??
-            <Loader size='xs' color='yellow' />}</Text>
+            <Loader size='xs' color='#F5F5F5' />}</Text>
         </Grid.Col>
         <Grid.Col span={4}>
           <InfoCard header={'SAFE Price'}>
             <CardContentBox>
-              <h1 style={{ color: 'white' }}>{
+              <h1 style={{ color: '#F5F5F5' }}>{
                 safeTokenPrice ? safeTokenPrice.concat(' $BUSD') :
-                  <Loader size='lg' color='yellow' />}
-              </h1>;
+                  <Loader size='lg' color='#F5F5F5' />}
+              </h1>
+              <br/>
             </CardContentBox>
           </InfoCard>
         </Grid.Col>
         <Grid.Col span={4}>
           <InfoCard header={'SAFE APR'}>
-            <h1>SAFE APR</h1>
+            <CardContentBox footer={'Last 30 days'}>
+              <h1 style={{ color: '#F5F5F5' }}>{
+                safeTokenAPR ? safeTokenAPR.concat(' %') :
+                  <Loader size='lg' color='#F5F5F5' />}
+              </h1>
+            </CardContentBox>
           </InfoCard>
         </Grid.Col>
         <Grid.Col span={4}>
           <InfoCard header={'NFT APR'}>
-            <h1>NFT APR</h1>
+            <CardContentBox footer={'Last 30 days'}>
+              <h1 style={{ color: '#F5F5F5' }}>{
+                safeTokenAPR ? safeTokenAPR.concat('%') :
+                  <Loader size='lg'  color='#F5F5F5' />}
+              </h1>
+            </CardContentBox>
           </InfoCard>
         </Grid.Col>
-        {/* <Grid.Col span={12}>*/}
-        {/*  <InfoCard header={'NFTs Fair Value'}>*/}
-        {/*    <h1>NFTs Fair Value</h1>*/}
-        {/*  </InfoCard>*/}
-        {/* </Grid.Col>*/}
+        <Grid.Col span={12}>
+          <InfoCard header={'NFTs Fair Value'}>
+            <Flex
+              gap='xl'
+              justify='space-between'
+              align='center'
+              direction='row'
+              wrap='wrap'
+            >
+              {[0,1,2,3].map(( tier) =>
+                (<CardContentBox key={`safeNFTFairPrice${tier+1}`}
+                                 footer={injectedWalletConnected ? safeNFTFairPrice && safeNFTFairPrice[tier] ? `${safeNFTFairPrice[tier]} $BUSD` :
+                                   <Loader size='xs' color='#F5F5F5' /> : '⸻'}>
+                  <h1 color={'#F5F5F5'}>Tier {tier+1}</h1>
+                </CardContentBox>))}
+            </Flex>
+          </InfoCard>
+        </Grid.Col>
       </Grid>
     </PageContainer>
   );
