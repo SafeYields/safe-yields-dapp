@@ -5,13 +5,24 @@ import useSWR from 'swr';
 import SafeNFTAbi from '../artifacts/contracts/SafeNFT.sol/SafeNFT.json';
 import { chainConfig } from '../config';
 import useContract from './useContract';
+import useKeepSWRDataLiveAsBlocksArrive from './useKeepSWRDataLiveAsBlocksArrive';
 
-const useSafeNFTFairPrice = () => {
+const useSafeNFTBalance = (suspense = false) => {
   const safeNFTContract = useContract<SafeNFT>(chainConfig.addresses.nft, SafeNFTAbi.abi);
-  return useSWR(
-    'useSafeNFT',
-    async () => safeNFTContract ? (await safeNFTContract.getFairPriceTable()).map(value => parseBalance(value)) : null,
+  const shouldFetch = !!safeNFTContract;
+  const result = useSWR(
+    shouldFetch ? ['SafeNFTBalance'] : null,
+    async () => {
+      const address = await safeNFTContract?.signer?.getAddress();
+      return address ? (await safeNFTContract?.getBalanceTable(address))?.map(value => parseBalance(value)) : undefined;
+    },
+    {
+      suspense,
+    },
   );
+  useKeepSWRDataLiveAsBlocksArrive(result.mutate);
+
+  return result;
 };
 
-export default useSafeNFTFairPrice;
+export default useSafeNFTBalance;

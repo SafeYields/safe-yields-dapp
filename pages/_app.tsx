@@ -5,7 +5,6 @@ import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import { GlobalStyleProvider } from 'style/GlobalStyleProvider';
 
-
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout;
 }
@@ -44,7 +43,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
             },
             primaryColor: 'white',
             loader: 'dots',
-            spacing: { xs: 10, sm: 20, md: 25, lg: 30, xl: 64 },
+            spacing: { xs: 12, sm: 20, md: 25, lg: 30, xl: 64 },
             headings: {
               fontFamily: 'Gotham, sans-serif',
               fontWeight: 450,
@@ -82,7 +81,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
           }}
         >
           <NotificationsProvider>
-            {getPageLayout(<Component {...pageProps} />)}
+                {getPageLayout(<Component {...pageProps} />)}
           </NotificationsProvider>
         </MantineProvider>
       </GlobalStyleProvider>

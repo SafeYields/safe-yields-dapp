@@ -1,64 +1,81 @@
+import { keyframes } from '@emotion/react';
 import { ActionIcon, AppShell, Box, CloseButton, Drawer, MediaQuery } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { CustomLayout } from 'next';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
+// @ts-ignore
 import { Menu2 } from 'tabler-icons-react';
 
+import { FancyBackground } from '../../components/FancyBackground';
 import { LayoutErrorBoundary } from '../LayoutErrorBoundary';
+import { HeaderNav } from './HeaderNav';
+import { SideNav } from './SideNav';
 
-const HeaderNav = dynamic(async () => {
-  const { HeaderNav } = await import('./HeaderNav');
-  return HeaderNav;
-});
+// const HeaderNav = dynamic(async () => {
+//   const { HeaderNav } = await import('./HeaderNav');
+//   return HeaderNav;
+// });
 
-const SideNav = dynamic(async () => {
-  const { SideNav } = await import('./SideNav');
-  return SideNav;
-});
+// const SideNav = dynamic(async () => {
+//   const { SideNav } = await import('./SideNav');
+//   return SideNav;
+// });
+
+
+const slide = keyframes`
+  100% {
+    left: 0;
+    opacity: 1;
+  }
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+`;
 
 export const AppLayout: CustomLayout = (page) => {
   const [opened, handlers] = useDisclosure(false);
-
   return (
-    <AppShell
-      padding='md'
-      styles={(theme) => ({
-        body: {
-          minHeight: '100vh',
-          maxWidth: '100vw',
-          overflowX: 'hidden',
-          background: 'url(/assets/background.jpg) fixed',
-          // backgroundRepeat: 'no-repeat',
-          // backgroundSize:'cover',
-      },
-        main: { padding: 0 },
-      })}
-      navbar={
-        <>
-          <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-            <SideNav />
-          </MediaQuery>
-          <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
-            <DrawerNav opened={opened} handleClose={handlers.close} />
-          </MediaQuery>
-        </>
-      }
-      header={<HeaderNav
-        left={
-          <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
-            <ActionIcon variant='default' radius='xl' size={40} onClick={handlers.open}>
-              <Menu2 />
-            </ActionIcon>
-          </MediaQuery>
+    <FancyBackground>
+      <AppShell
+        padding='md'
+        styles={(theme) => ({
+          body: {
+            minHeight: '100vh',
+            maxWidth: '100vw',
+            overflowX: 'hidden',
+            background: 'url(/assets/background.jpg) fixed',
+          },
+          main: {
+            padding: 0,
+          },
+        })}
+        navbar={
+          <>
+            <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
+              <SideNav />
+            </MediaQuery>
+            <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
+              <DrawerNav opened={opened} handleClose={handlers.close} />
+            </MediaQuery>
+          </>
         }
-      />}
-    >
-      <Box py='xs' px='md' sx={{ marginTop: '130px' }}>
+        header={<HeaderNav
+          left={
+            <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
+              <ActionIcon variant='default' radius='xl' size={40} onClick={handlers.open}>
+                <Menu2 />
+              </ActionIcon>
+            </MediaQuery>
+          }
+        />}
+      >
+        <Box py='xs' px='md' sx={{ marginTop: '130px' }}>
           <LayoutErrorBoundary>{page}</LayoutErrorBoundary>
-      </Box>
-    </AppShell>
+        </Box>
+      </AppShell>
+    </FancyBackground>
   );
 };
 

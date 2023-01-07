@@ -38,8 +38,10 @@ export interface ISafeNFTInterface extends utils.Interface {
     "claimRewardsTotal()": FunctionFragment;
     "currentDistributionId()": FunctionFragment;
     "distributeProfit(uint256)": FunctionFragment;
+    "getBalanceTable(address)": FunctionFragment;
     "getFairPrice(uint8)": FunctionFragment;
     "getFairPriceTable()": FunctionFragment;
+    "getMyBalanceTable()": FunctionFragment;
     "getMyPendingRewardsTotal()": FunctionFragment;
     "getMyShareOfTreasury()": FunctionFragment;
     "getPendingRewards(address,uint8,uint256)": FunctionFragment;
@@ -62,8 +64,10 @@ export interface ISafeNFTInterface extends utils.Interface {
       | "claimRewardsTotal"
       | "currentDistributionId"
       | "distributeProfit"
+      | "getBalanceTable"
       | "getFairPrice"
       | "getFairPriceTable"
+      | "getMyBalanceTable"
       | "getMyPendingRewardsTotal"
       | "getMyShareOfTreasury"
       | "getPendingRewards"
@@ -106,11 +110,19 @@ export interface ISafeNFTInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "getBalanceTable",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getFairPrice",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getFairPriceTable",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getMyBalanceTable",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -197,11 +209,19 @@ export interface ISafeNFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getBalanceTable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getFairPrice",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "getFairPriceTable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getMyBalanceTable",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -369,12 +389,19 @@ export interface ISafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    getBalanceTable(
+      _user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]]>;
+
     getFairPrice(
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     getFairPriceTable(overrides?: CallOverrides): Promise<[BigNumber[]]>;
+
+    getMyBalanceTable(overrides?: CallOverrides): Promise<[BigNumber[]]>;
 
     getMyPendingRewardsTotal(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -467,12 +494,19 @@ export interface ISafeNFT extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  getBalanceTable(
+    _user: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
+
   getFairPrice(
     _tier: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   getFairPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
+
+  getMyBalanceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
 
   getMyPendingRewardsTotal(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -563,12 +597,19 @@ export interface ISafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    getBalanceTable(
+      _user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
+
     getFairPrice(
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getFairPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
+
+    getMyBalanceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
 
     getMyPendingRewardsTotal(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -711,12 +752,19 @@ export interface ISafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    getBalanceTable(
+      _user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getFairPrice(
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getFairPriceTable(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getMyBalanceTable(overrides?: CallOverrides): Promise<BigNumber>;
 
     getMyPendingRewardsTotal(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -812,12 +860,19 @@ export interface ISafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    getBalanceTable(
+      _user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getFairPrice(
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getFairPriceTable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getMyBalanceTable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getMyPendingRewardsTotal(
       overrides?: CallOverrides

@@ -1,0 +1,1 @@
+export { FancyBackground } from './FancyBackground';
