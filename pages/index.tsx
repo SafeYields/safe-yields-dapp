@@ -25,7 +25,7 @@ const Home: NextPageWithLayout = () => {
   const safeNFTBalance = useSafeNFTBalance()?.data;
 
   const displayBUSDPrice = (priceData: string | null | undefined) =>
-    priceData && safeTokenPrice ? (parseInt(priceData) * parseInt(safeTokenPrice)).toFixed(DECIMALS_TO_DISPLAY).concat(' $BUSD') : undefined;
+    injectedWalletConnected && priceData && safeTokenPrice ? (parseInt(priceData) * parseInt(safeTokenPrice)).toFixed(DECIMALS_TO_DISPLAY).concat(' $BUSD') : undefined;
 
   const displaySafeValue = (priceData: string | null | undefined, unit = ' SAFE') =>
     <h1>{
@@ -60,18 +60,18 @@ const Home: NextPageWithLayout = () => {
               direction='row'
               wrap='wrap'
             >
-              {safeNFTBalance && safeNFTBalance.map((tierBalance, tier) =>
-                (<CardContentBox key={`NFTBalanceTier${tier}`}
-                                 footer={injectedWalletConnected ? tierBalance ? `Total: ${parseInt(tierBalance)}` :
+              {[0,1,2,3].map(( tier) =>
+                (<CardContentBox key={`NFTBalanceTier${tier+1}`}
+                                 footer={injectedWalletConnected ? safeNFTBalance && safeNFTBalance[tier] ? `Total: ${parseInt(safeNFTBalance[tier])}` :
                                    <Loader size='xs' color='green' /> : '⸻'}>
-                  <h1>Tier{tier}</h1>
+                  <h1>Tier{tier+1}</h1>
                 </CardContentBox>))}
             </Flex>
           </InfoCard>
         </Grid.Col>
         <Grid.Col span={12}>
           <Text align={'center'}>Total Treasury Ownership: {useNFTOfTreasury()?.data?.concat(' %') ??
-            <Loader size='xs' color='white' />}</Text>
+            <Loader size='xs' color='yellow' />}</Text>
         </Grid.Col>
         <Grid.Col span={4}>
           <InfoCard header={'SAFE Price'}>
