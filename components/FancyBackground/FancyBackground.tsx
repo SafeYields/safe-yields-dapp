@@ -21,13 +21,13 @@ const fading = keyframes`
 
 const unfading = keyframes`
   0% {
-    opacity: 0.8;
+    opacity: 0.3;
   }
   50% {
     opacity: 0.8;
   }
   100% {
-    opacity: 0.3;
+    opacity: 0.8;
   }
 `;
 
@@ -39,9 +39,9 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
         marginRight: 'auto',
         borderRadius: '100%',
         background: 'transparent',
-        webkitAnimation: `${fading} 30s ease-in-out infinite alternate`,
-        animation: `${fading} 30s ease-in-out infinite alternate`,
-        mozAnimation: `${fading} 30s ease-in-out infinite alternate`,
+        webkitAnimation: `${fading} 50s ease-in-out infinite alternate`,
+        animation: `${fading} 50s ease-in-out infinite alternate`,
+        mozAnimation: `${fading} 50s ease-in-out infinite alternate`,
       },
       unGlowingBoreal: {
         position: 'absolute',
@@ -49,9 +49,9 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
         marginRight: 'auto',
         borderRadius: '100%',
         background: 'transparent',
-        webkitAnimation: `${unfading} 10s ease-in-out  infinite alternate`,
-        animation: `${unfading} 10s ease-in-out  infinite alternate`,
-        mozAnimation: `${unfading} 10s ease-in-out  infinite alternate`,
+        webkitAnimation: `${unfading} 20s ease-in-out  infinite alternate`,
+        animation: `${unfading} 20s ease-in-out  infinite alternate`,
+        mozAnimation: `${unfading} 20s ease-in-out  infinite alternate`,
       },
       app: {
         '&-appear': {
