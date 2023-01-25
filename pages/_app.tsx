@@ -20,7 +20,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
       <Head>
         <link rel='icon' href='/favicon.svg' sizes='any' type='image/svg+xml' />
         <link rel='apple-touch-icon' sizes='180x180' href='/favicon.svg' />
-        <meta name='theme-color' content='##D9E022' />
+        <meta name='theme-color' content='#D9E022' />
       </Head>
       <Web3Provider>
         <GlobalStyleProvider>
@@ -28,7 +28,8 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
             withGlobalStyles
             withNormalizeCSS
             theme={{
-              colorScheme: 'dark',
+              colorScheme: 'light',
+              black: 'white',
               colors: {
                 sideMenuBackgroundBlue: ['#013D43'],
                 highlightGreen: ['#D1DE5D'],

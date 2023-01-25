@@ -5,7 +5,7 @@ const PATH = {
   YIELD: '/yield',
   EMMA: '/emma-the-bot',
   SAFE: '/trade-safe',
-  NFT: '/buy-nft',
+  NFT: '/nft',
   INVESTMENT: '/investment-pool',
   EXPENSE: '/expense-log',
   WHITEPAPER: '/whitepaper',
