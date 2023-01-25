@@ -1,19 +1,19 @@
 import { Grid, Loader, Title } from '@mantine/core';
+import { FancyButton } from 'components/FancyButton';
 import { InfoCard } from 'components/InfoCard';
+import { CardContentBox } from 'components/InfoCard/CardContentBox';
 import { PageContainer } from 'components/PageContainer';
+import useNFTRewards from 'hooks/useNFTRewards';
+import useSafeNFTBalance from 'hooks/useSafeNFTBalance';
+import useSafeNFTFairPrice from 'hooks/useSafeNFTFairPrice';
+import useSafeTokenAPR from 'hooks/useSafeTokenAPR';
+import useSafeTokenBalance from 'hooks/useSafeTokenBalance';
 import useSafeTokenPrice from 'hooks/useSafeTokenPrice';
+import useWalletConnected from 'hooks/useWalletConnected';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
 
-import { CardContentBox } from '../components/InfoCard/CardContentBox';
 import { DECIMALS_TO_DISPLAY } from '../config';
-import useNFTRewards from '../hooks/useNFTRewards';
-import useSafeNFTBalance from '../hooks/useSafeNFTBalance';
-import useSafeNFTFairPrice from '../hooks/useSafeNFTFairPrice';
-import useSafeTokenAPR from '../hooks/useSafeTokenAPR';
-import useSafeTokenBalance from '../hooks/useSafeTokenBalance';
-import useWalletConnected from '../hooks/useWalletConnected';
-
 
 const Home: NextPageWithLayout = () => {
   const { data: fairPrice } = useSafeNFTFairPrice();
@@ -35,20 +35,20 @@ const Home: NextPageWithLayout = () => {
           <Loader size='lg' color='#F5F5F5' /> : '⸻'}
     </h1>;
   return (
-    <PageContainer title='Buy NFT' >
+    <PageContainer title='Buy NFT'>
       <Grid grow gutter={'md'} align={'center'} justify={'space-between'} mt={'lg'} style={{ textAlign: 'center' }}>
         <Grid.Col span={12}>
           <Title order={1}>Choose the best TIER for you</Title>
         </Grid.Col>
-        {[0,1,2,3].map(( tier) => (
-        <Grid.Col span={3} key={tier}>
-          <InfoCard header={`Tier ${tier+1}`}>
-            <CardContentBox footer={displayBUSDPrice(NFTRewards)}>
-              {displaySafeValue(NFTRewards)}
-            </CardContentBox>
-          </InfoCard>
-        </Grid.Col>
-          ))}
+        {[0, 1, 2, 3].map((tier) => (
+          <Grid.Col span={3} key={tier}>
+            <InfoCard header={`Tier ${tier + 1}`}>
+              <CardContentBox footer={displayBUSDPrice(NFTRewards)}>
+                <FancyButton>Buy</FancyButton>
+              </CardContentBox>
+            </InfoCard>
+          </Grid.Col>
+        ))}
         <Grid.Col span={12} mt={'lg'}>
           <Title order={2}>Don’t know how our NFTs work? Read our Whitepaper</Title>
         </Grid.Col>

@@ -16,7 +16,7 @@ import {
 } from 'tabler-icons-react';
 import { getPath } from 'utils';
 
-import { Account } from '../../components/Account';
+import { Account } from 'components/Account';
 
 
 const useStyles = createStyles((theme) => ({

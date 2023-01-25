@@ -1,13 +1,13 @@
 import { keyframes } from '@emotion/react';
 import { ActionIcon, AppShell, Box, CloseButton, Drawer, MediaQuery } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { FancyBackground } from 'components/FancyBackground';
 import type { CustomLayout } from 'next';
 import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
 // @ts-ignore
 import { Menu2 } from 'tabler-icons-react';
 
-import { FancyBackground } from '../../components/FancyBackground';
 import { LayoutErrorBoundary } from '../LayoutErrorBoundary';
 import { HeaderNav } from './HeaderNav';
 import { SideNav } from './SideNav';

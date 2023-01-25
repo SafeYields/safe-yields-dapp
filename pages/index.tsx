@@ -1,19 +1,19 @@
 import { Flex, Grid, Loader, Text } from '@mantine/core';
 import { InfoCard } from 'components/InfoCard';
+import { CardContentBox } from 'components/InfoCard/CardContentBox';
 import { PageContainer } from 'components/PageContainer';
+import useNFTOfTreasury from 'hooks/useNFTOfTreasury';
+import useNFTRewards from 'hooks/useNFTRewards';
+import useSafeNFTBalance from 'hooks/useSafeNFTBalance';
+import useSafeNFTFairPrice from 'hooks/useSafeNFTFairPrice';
+import useSafeTokenAPR from 'hooks/useSafeTokenAPR';
+import useSafeTokenBalance from 'hooks/useSafeTokenBalance';
 import useSafeTokenPrice from 'hooks/useSafeTokenPrice';
+import useWalletConnected from 'hooks/useWalletConnected';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
 
-import { CardContentBox } from '../components/InfoCard/CardContentBox';
 import { DECIMALS_TO_DISPLAY } from '../config';
-import useNFTOfTreasury from '../hooks/useNFTOfTreasury';
-import useNFTRewards from '../hooks/useNFTRewards';
-import useSafeNFTBalance from '../hooks/useSafeNFTBalance';
-import useSafeNFTFairPrice from '../hooks/useSafeNFTFairPrice';
-import useSafeTokenAPR from '../hooks/useSafeTokenAPR';
-import useSafeTokenBalance from '../hooks/useSafeTokenBalance';
-import useWalletConnected from '../hooks/useWalletConnected';
 
 
 const Home: NextPageWithLayout = () => {
