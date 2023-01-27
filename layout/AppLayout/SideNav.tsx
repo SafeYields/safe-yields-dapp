@@ -1,4 +1,4 @@
-import { keyframes } from '@emotion/react';
+import { css,keyframes } from '@emotion/react';
 import { createStyles, Group, Image, MediaQuery, Navbar, Tooltip, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
@@ -65,9 +65,9 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       animationDelay: '10s',
       borderRadius: '100%',
       background: 'transparent',
-      webkitAnimation: `${glowing} 30s ease-in-out infinite alternate`,
-      animation: `${glowing} 30s ease-in-out infinite alternate`,
-      mozAnimation: `${glowing} 30s ease-in-out infinite alternate`,
+      webkitAnimation: css`${glowing} 30s ease-in-out infinite alternate`,
+      animation: css`${glowing} 30s ease-in-out infinite alternate`,
+      mozAnimation: css`${glowing} 30s ease-in-out infinite alternate`,
     },
 
 

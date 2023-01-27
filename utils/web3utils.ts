@@ -9,9 +9,9 @@ export function shortenHex(hex: string, length = 4) {
   )}`;
 }
 
-const BSCSCAN_PREFIXES: Record<number, string> = {
-  56: '',
-  97: 'testnet.',
+const ARBISCAN_PREFIXES: Record<number, string> = {
+  42161: '',
+  421613: 'testnet.',
 };
 
 export function formatEtherscanLink(
@@ -21,11 +21,11 @@ export function formatEtherscanLink(
   switch (type) {
     case 'Account': {
       const [chainId, address] = data;
-      return `https://${BSCSCAN_PREFIXES[chainId]}bscscan.io/address/${address}`;
+      return `https://${ARBISCAN_PREFIXES[chainId]}arbiscan.io/address/${address}`;
     }
     case 'Transaction': {
       const [chainId, hash] = data;
-      return `https://${BSCSCAN_PREFIXES[chainId]}bscscan.io/tx/${hash}`;
+      return `https://${ARBISCAN_PREFIXES[chainId]}arbiscan.io/tx/${hash}`;
     }
   }
 }
