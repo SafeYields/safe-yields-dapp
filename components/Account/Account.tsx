@@ -92,9 +92,8 @@ export const Account = () => {
   }, [active, error, stopOnboarding]);
 
   const ENSName = useENSName();
-  const unsupportedChain = chainId && chainId !== supportedChainId;
 
-  if (typeof account !== 'string' || unsupportedChain) {
+  if (typeof account !== 'string' || (chainId && chainId !== supportedChainId)) {
     return (
       <div>
         {web3Available ? (
@@ -118,18 +117,23 @@ export const Account = () => {
             }}
             onClick={() => {
               setConnecting(true);
-              metaMask.activate(supportedChainId).catch((error) => {
-                // ignore the error if it's a user rejected request
-                if (error instanceof Error) {
+              metaMask.activate(supportedChainId)
+                .then(() => {
                   setConnecting(false);
-                } else {
-                  setError(error);
-                }
-              });
+                  setError(undefined);
+                })
+                .catch((error) => {
+                  // ignore the error if it's a user rejected request
+                  if (error instanceof Error) {
+                    setConnecting(false);
+                  } else {
+                    setError(error);
+                  }
+                });
             }}
           >
-            {(typeof account !== 'string') && !unsupportedChain && (isMetaMaskInstalled ? 'Connect to MetaMask' : 'Connect to Wallet')}
-            {unsupportedChain && 'Wrong Network'}
+            {(typeof account !== 'string') && !(chainId && chainId !== supportedChainId) && (isMetaMaskInstalled ? 'Connect to MetaMask' : 'Connect to Wallet')}
+            {chainId && chainId !== supportedChainId && 'Wrong Network'}
           </Button>
         ) : (
           <Button className={cx(classes.button)} radius='xl'
