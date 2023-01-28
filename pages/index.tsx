@@ -26,8 +26,8 @@ const Home: NextPageWithLayout = () => {
   const safeNFTBalance = useSafeNFTBalance()?.data;
   const safeTokenAPR = useSafeTokenAPR()?.data;
 
-  const displayBUSDPrice = (priceData: string | null | undefined) =>
-    injectedWalletConnected && priceData && safeTokenPrice ? (parseInt(priceData) * parseInt(safeTokenPrice)).toFixed(DECIMALS_TO_DISPLAY).concat(' $BUSD') : undefined;
+  const displayUSDCPrice = (priceData: string | null | undefined) =>
+    injectedWalletConnected && priceData && safeTokenPrice ? (parseInt(priceData) * parseInt(safeTokenPrice)).toFixed(DECIMALS_TO_DISPLAY).concat(' $USDC') : undefined;
 
   const displaySafeValue = (priceData: string | null | undefined, unit = ' SAFE') =>
     <h1>{
@@ -40,14 +40,14 @@ const Home: NextPageWithLayout = () => {
       <Grid grow gutter={'sm'} align={'center'}>
         <Grid.Col span={6}>
           <InfoCard header={'SAFE Holdings'}>
-            <CardContentBox footer={displayBUSDPrice(safeTokenBalance)}>
+            <CardContentBox footer={displayUSDCPrice(safeTokenBalance)}>
               {displaySafeValue(safeTokenBalance)}
             </CardContentBox>
           </InfoCard>
         </Grid.Col>
         <Grid.Col span={6}>
           <InfoCard header={'NFT Rewards'}>
-            <CardContentBox footer={displayBUSDPrice(NFTRewards)}>
+            <CardContentBox footer={displayUSDCPrice(NFTRewards)}>
               {displaySafeValue(NFTRewards)}
             </CardContentBox>
           </InfoCard>
@@ -78,7 +78,7 @@ const Home: NextPageWithLayout = () => {
           <InfoCard header={'SAFE Price'}>
             <CardContentBox>
               <h1 style={{ color: '#F5F5F5' }}>{
-                safeTokenPrice ? safeTokenPrice.concat(' $BUSD') :
+                safeTokenPrice ? safeTokenPrice.concat(' $USDC') :
                   <Loader size='lg' color='#F5F5F5' />}
               </h1>
               <br/>
@@ -116,7 +116,7 @@ const Home: NextPageWithLayout = () => {
             >
               {[0,1,2,3].map(( tier) =>
                 (<CardContentBox key={`safeNFTFairPrice${tier+1}`}
-                                 footer={injectedWalletConnected ? safeNFTFairPrice && safeNFTFairPrice[tier] ? `${safeNFTFairPrice[tier]} $BUSD` :
+                                 footer={injectedWalletConnected ? safeNFTFairPrice && safeNFTFairPrice[tier] ? `${safeNFTFairPrice[tier]} $USDC` :
                                    <Loader size='xs' color='#F5F5F5' /> : '⸻'}>
                   <h1 color={'#F5F5F5'}>Tier {tier+1}</h1>
                 </CardContentBox>))}

@@ -26,8 +26,8 @@ const Home: NextPageWithLayout = () => {
   const safeNFTBalance = useSafeNFTBalance()?.data;
   const safeTokenAPR = useSafeTokenAPR()?.data;
 
-  const displayBUSDPrice = (priceData: string | null | undefined) =>
-    injectedWalletConnected && priceData && safeTokenPrice ? (parseInt(priceData) * parseInt(safeTokenPrice)).toFixed(DECIMALS_TO_DISPLAY).concat(' $BUSD') : undefined;
+  const displayUSDCPrice = (priceData: string | null | undefined) =>
+    injectedWalletConnected && priceData && safeTokenPrice ? (parseInt(priceData) * parseInt(safeTokenPrice)).toFixed(DECIMALS_TO_DISPLAY).concat(' $USDC') : undefined;
 
   const displaySafeValue = (priceData: string | null | undefined, unit = ' SAFE') =>
     <h1>{
@@ -37,8 +37,11 @@ const Home: NextPageWithLayout = () => {
     </h1>;
 
   const TierHeader: FC<{ tier: number }> = (props) =>
-    (<Title order={2} style={{ color: '#CBDA49' }
-  }>Tier {props.tier}</Title>);
+    (<Title order={3} sx={theme => {
+      return {
+        color: theme.colors.limeGreen[1],
+      };
+    }}> Tier {props.tier}</Title>);
 
   return (
     <PageContainer title='Buy NFT'>
@@ -49,7 +52,7 @@ const Home: NextPageWithLayout = () => {
         {[0, 1, 2, 3].map((tier) => (
           <Grid.Col span={3} key={tier}>
             <InfoCard header={<TierHeader tier={tier + 1} />}>
-              <CardContentBox footer={displayBUSDPrice(NFTRewards)}>
+              <CardContentBox footer={displayUSDCPrice(NFTRewards)}>
                 <FancyButton> Buy</FancyButton>
               </CardContentBox>
             </InfoCard>

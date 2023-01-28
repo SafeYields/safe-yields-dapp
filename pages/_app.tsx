@@ -34,7 +34,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 sideMenuBackgroundBlue: ['#013D43'],
                 highlightGreen: ['#D1DE5D'],
                 mustardGreen: ['#CEDB3F'],
-                limeGreen: ['#D9E022'],
+                limeGreen: ['#D9E022', '#CBDA49'],
                 orange: ['#E89B17'],
                 white: ['#F2ECE4'],
                 greenGray: ['#36676A'],
@@ -57,6 +57,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 fontWeight: 450,
                 sizes: {
                   h1: { fontSize: 36, lineHeight: '43px' },
+                  h3: { fontSize: 24, lineHeight: '29px', fontWeight: 700 },
                 },
               },
               defaultGradient: {
