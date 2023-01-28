@@ -92,6 +92,7 @@ export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
   return (
     <Header height={{ base: 50, md: 70 }} p='md' mb={120} mt={15}
             sx={(theme) => ({
+              position: 'absolute',
               padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
               borderBottom: `1px solid ${'transparent'}`,
               backgroundColor: 'transparent',
