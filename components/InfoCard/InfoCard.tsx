@@ -88,7 +88,6 @@ export const InfoCard: FC<InfoCardProps> = ({ children,header }) => {
           fontStyle: 'normal',
           fontWeight: '350',
           fontSize: '15px',
-          lineHeight: '18px',
           position: 'relative',
           color: theme.colors.almostWhite[0],
           top: '10px',
@@ -106,7 +105,7 @@ export const InfoCard: FC<InfoCardProps> = ({ children,header }) => {
   const { classes, cx } = useStyles();
   return (
     <Box className={classes.card}>
-      <Stack className={classes.cardInner}>
+      <Stack spacing={0} className={classes.cardInner}>
         <Text className={classes.cardHeader}>{header}</Text>
         {children}
       </Stack>
