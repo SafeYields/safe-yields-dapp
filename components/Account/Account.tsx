@@ -93,6 +93,8 @@ export const Account = () => {
 
   const ENSName = useENSName();
 
+  const testnetNotification = process.env.NEXT_PUBLIC_CHAIN_ID === '42161' ? '' : '(Testnet)';
+
   if (typeof account !== 'string' || (chainId && chainId !== supportedChainId)) {
     return (
       <div>
@@ -132,7 +134,7 @@ export const Account = () => {
                 });
             }}
           >
-            {(typeof account !== 'string') && !(chainId && chainId !== supportedChainId) && (isMetaMaskInstalled ? 'Connect to MetaMask' : 'Connect to Wallet')}
+            {(typeof account !== 'string') && !(chainId && chainId !== supportedChainId) && (isMetaMaskInstalled ? `Connect to MetaMask ${testnetNotification}` : `Connect to Wallet ${testnetNotification}`)}
             {chainId && chainId !== supportedChainId && 'Wrong Network'}
           </Button>
         ) : (
@@ -162,7 +164,7 @@ export const Account = () => {
                 leftIcon: { marginLeft: 0 },
               }}
       >
-        {ENSName || `${shortenHex(account, 7)}`}
+        {ENSName || `${shortenHex(account, 7)} ${testnetNotification}`}
       </Button>
     </div>
   );

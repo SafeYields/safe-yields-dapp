@@ -1,4 +1,4 @@
-import { css, keyframes } from '@emotion/react';
+import { keyframes } from '@emotion/react';
 import { createStyles, Image } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { FC, ReactNode } from 'react';
@@ -39,9 +39,9 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
         marginRight: 'auto',
         borderRadius: '100%',
         background: 'transparent',
-        webkitAnimation: css`${fading} 50s ease-in-out infinite alternate`,
-        animation: css`${fading} 50s ease-in-out infinite alternate`,
-        mozAnimation: css`${fading} 50s ease-in-out infinite alternate`,
+        webkitAnimation: `${fading} 50s ease-in-out infinite alternate`,
+        animation: `${fading} 50s ease-in-out infinite alternate`,
+        mozAnimation: `${fading} 50s ease-in-out infinite alternate`,
       },
       unGlowingBoreal: {
         position: 'absolute',
@@ -49,9 +49,9 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
         marginRight: 'auto',
         borderRadius: '100%',
         background: 'transparent',
-        webkitAnimation: css`${unfading} 20s ease-in-out  infinite alternate`,
-        animation: css`${unfading} 20s ease-in-out  infinite alternate`,
-        mozAnimation: css`${unfading} 20s ease-in-out  infinite alternate`,
+        webkitAnimation: `${unfading} 20s ease-in-out  infinite alternate`,
+        animation: `${unfading} 20s ease-in-out  infinite alternate`,
+        mozAnimation: `${unfading} 20s ease-in-out  infinite alternate`,
       },
       app: {
         '&-appear': {
