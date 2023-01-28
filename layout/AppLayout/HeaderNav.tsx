@@ -6,6 +6,7 @@ import {
   Indicator,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { Account } from 'components/Account';
 import Link from 'next/link';
 import { FC, ReactNode, useState } from 'react';
 import {
@@ -15,8 +16,6 @@ import {
   UserCircle,
 } from 'tabler-icons-react';
 import { getPath } from 'utils';
-
-import { Account } from 'components/Account';
 
 
 const useStyles = createStyles((theme) => ({
@@ -91,7 +90,7 @@ export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
   ));
 
   return (
-    <Header height={{ base: 50, md: 70 }} p='md' mb={120}
+    <Header height={{ base: 50, md: 70 }} p='md' mb={120} mt={15}
             sx={(theme) => ({
               padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
               borderBottom: `1px solid ${'transparent'}`,
