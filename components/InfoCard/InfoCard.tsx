@@ -1,4 +1,4 @@
-import { Box, createStyles, Text } from '@mantine/core';
+import { Box, createStyles, Stack, Text } from '@mantine/core';
 import { FC, ReactNode } from 'react';
 
 type InfoCardProps = {
@@ -89,14 +89,15 @@ export const InfoCard: FC<InfoCardProps> = ({ children,header }) => {
           fontWeight: '350',
           fontSize: '15px',
           lineHeight: '18px',
-          position: 'absolute',
+          position: 'relative',
           color: theme.colors.almostWhite[0],
           top: '10px',
           paddingLeft: '10px',
           paddingRight: '10px',
-          paddingTop: '10px',
-          paddingBottom: '10px',
+          paddingTop: '0px',
+          paddingBottom: '0px',
           borderRadius: '10px',
+          margin: '0px 0px',
           background: 'transparent',
         },
       };
@@ -105,10 +106,10 @@ export const InfoCard: FC<InfoCardProps> = ({ children,header }) => {
   const { classes, cx } = useStyles();
   return (
     <Box className={classes.card}>
-      <Box className={classes.cardInner}>
+      <Stack className={classes.cardInner}>
         <Text className={classes.cardHeader}>{header}</Text>
         {children}
-      </Box>
+      </Stack>
     </Box>
   );
 };

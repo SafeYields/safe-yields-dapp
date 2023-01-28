@@ -1,5 +1,6 @@
 import { Button, createStyles } from '@mantine/core';
-import { FC, ReactNode } from 'react';
+import { ButtonProps } from '@mantine/core/lib/Button/Button';
+import { FC } from 'react';
 import { hooksMetamask } from 'utils/connectors';
 
 
@@ -49,13 +50,14 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
   };
 });
 
-export const FancyButton: FC<{ children: ReactNode }> = ({ children }) => {
+export const FancyButton: FC<ButtonProps> = ({ children, ...restProps }) => {
   const { classes, cx } = useStyles();
   return (
     <Button className={cx(classes.button, classes.buttonActive)}
             variant='light'
             radius='xl'
             size='sm'
+            {...restProps}
     >
       {children}
     </Button>

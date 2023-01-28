@@ -18,6 +18,7 @@ export const CardContentBox: FC<CardContentBoxProps> = ({ children, footer }) =>
           lineHeight: '17px',
           color: theme.colors.almostWhite[0],
           bottom: '10px',
+          marginTop: '10px',
           paddingLeft: '10px',
           paddingRight: '10px',
           paddingBottom: '10px',

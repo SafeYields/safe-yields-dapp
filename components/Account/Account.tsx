@@ -5,7 +5,7 @@ import { Download, Link, Unlink } from 'tabler-icons-react';
 import { hooksMetamask, metaMask } from 'utils/connectors';
 import { shortenHex } from 'utils/web3utils';
 
-import { supportedChainId } from '../../config/chainConfig';
+import { chainConfig, supportedChainId } from '../../config/chainConfig';
 import useStyles from './Account.styles';
 
 const { useChainId, useAccount, useIsActivating, useIsActive, useProvider, useENSName } = hooksMetamask;
@@ -44,6 +44,7 @@ export const Account = () => {
     }
   }, [active, error, stopOnboarding]);
 
+
   const ENSName = useENSName();
 
   const testnetNotification = process.env.NEXT_PUBLIC_CHAIN_ID === '42161' ? '' : '(Testnet)';
@@ -71,20 +72,22 @@ export const Account = () => {
               leftIcon: { marginLeft: 0 },
             }}
             onClick={() => {
-              setConnecting(true);
-              metaMask.activate(supportedChainId)
-                .then(() => {
-                  setConnecting(false);
-                  setError(undefined);
-                })
-                .catch((error) => {
-                  // ignore the error if it's a user rejected request
-                  if (error instanceof Error) {
+              if (!connecting) {
+                setConnecting(true);
+                metaMask.activate(chainConfig)
+                  .then(() => {
                     setConnecting(false);
-                  } else {
-                    setError(error);
-                  }
-                });
+                    setError(undefined);
+                  })
+                  .catch((error) => {
+                    // ignore the error if it's a user rejected request
+                    if (error instanceof Error) {
+                      setConnecting(false);
+                    } else {
+                      setError(error);
+                    }
+                  });
+              }
             }}
           >
             {(typeof account !== 'string') && !(chainId && chainId !== supportedChainId) && (isMetaMaskInstalled ? `Connect to MetaMask ${testnetNotification}` : `Connect to Wallet ${testnetNotification}`)}
