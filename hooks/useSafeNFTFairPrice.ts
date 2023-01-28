@@ -10,7 +10,7 @@ const useSafeNFTFairPrice = () => {
   const safeNFTContract = useContract<SafeNFT>(chainConfig.addresses.nft, SafeNFTAbi.abi);
   return useSWR(
     'useSafeNFT',
-    async () => safeNFTContract ? (await safeNFTContract.getFairPriceTable()).map(value => parseBalance(value)) : null,
+    async () => safeNFTContract ? (await safeNFTContract.getFairPriceTable()).map(value => parseBalance(value,6)) : null,
   );
 };
 

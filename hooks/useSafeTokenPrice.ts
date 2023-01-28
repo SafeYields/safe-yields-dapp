@@ -13,7 +13,7 @@ const useSafeTokenPrice = (suspense = false) => {
   const result = useSWR(
     shouldFetch ? ['TokenBalance'] : null,
     async () => {
-      return safeTokenContract ? parseBalance(await safeTokenContract.price()) : null;
+      return safeTokenContract ? parseBalance(await safeTokenContract.price(), 6) : null;
     },
     {
       suspense,

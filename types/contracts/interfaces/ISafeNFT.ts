@@ -46,6 +46,7 @@ export interface ISafeNFTInterface extends utils.Interface {
     "getMyShareOfTreasury()": FunctionFragment;
     "getPendingRewards(address,uint8,uint256)": FunctionFragment;
     "getPrice(uint8)": FunctionFragment;
+    "getPriceTable()": FunctionFragment;
     "getTreasuryCost()": FunctionFragment;
     "getUnclaimedRewards()": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
@@ -72,6 +73,7 @@ export interface ISafeNFTInterface extends utils.Interface {
       | "getMyShareOfTreasury"
       | "getPendingRewards"
       | "getPrice"
+      | "getPriceTable"
       | "getTreasuryCost"
       | "getUnclaimedRewards"
       | "isApprovedForAll"
@@ -144,6 +146,10 @@ export interface ISafeNFTInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getPrice",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPriceTable",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getTreasuryCost",
@@ -237,6 +243,10 @@ export interface ISafeNFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getPrice", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getPriceTable",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getTreasuryCost",
     data: BytesLike
@@ -419,6 +429,8 @@ export interface ISafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    getPriceTable(overrides?: CallOverrides): Promise<[BigNumber[]]>;
+
     getTreasuryCost(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getUnclaimedRewards(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -524,6 +536,8 @@ export interface ISafeNFT extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  getPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
+
   getTreasuryCost(overrides?: CallOverrides): Promise<BigNumber>;
 
   getUnclaimedRewards(overrides?: CallOverrides): Promise<BigNumber>;
@@ -626,6 +640,8 @@ export interface ISafeNFT extends BaseContract {
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
 
     getTreasuryCost(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -782,6 +798,8 @@ export interface ISafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getPriceTable(overrides?: CallOverrides): Promise<BigNumber>;
+
     getTreasuryCost(overrides?: CallOverrides): Promise<BigNumber>;
 
     getUnclaimedRewards(overrides?: CallOverrides): Promise<BigNumber>;
@@ -893,6 +911,8 @@ export interface ISafeNFT extends BaseContract {
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    getPriceTable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getTreasuryCost(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

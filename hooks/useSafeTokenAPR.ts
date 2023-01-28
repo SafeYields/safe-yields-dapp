@@ -21,7 +21,7 @@ const useSafeTokenAPR = () => {
       if (!safeTokenContract || !currentBlock || !currentPrice || isNaN(Number(currentBlock)) || isNaN(Number(currentPrice))) {
         return null;
       }
-      const priceMonthAgo = parseBalance(await safeTokenContract.price({ blockTag: Number(currentBlock) - blocksInMonth }));
+      const priceMonthAgo = parseBalance(await safeTokenContract.price({ blockTag: Number(currentBlock) - blocksInMonth }),6);
       const priceChange = parseFloat(currentPrice) - parseFloat(priceMonthAgo);
       if (priceChange <= 0)
         return null;

@@ -59,6 +59,7 @@ export interface SafeNFTInterface extends utils.Interface {
     "getMyShareOfTreasury()": FunctionFragment;
     "getPendingRewards(address,uint8,uint256)": FunctionFragment;
     "getPrice(uint8)": FunctionFragment;
+    "getPriceTable()": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "getRoleMember(bytes32,uint256)": FunctionFragment;
     "getRoleMemberCount(bytes32)": FunctionFragment;
@@ -123,6 +124,7 @@ export interface SafeNFTInterface extends utils.Interface {
       | "getMyShareOfTreasury"
       | "getPendingRewards"
       | "getPrice"
+      | "getPriceTable"
       | "getRoleAdmin"
       | "getRoleMember"
       | "getRoleMemberCount"
@@ -278,6 +280,10 @@ export interface SafeNFTInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getPrice",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPriceTable",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
@@ -514,6 +520,10 @@ export interface SafeNFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getPrice", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getPriceTable",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
     data: BytesLike
@@ -865,6 +875,8 @@ export interface SafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    getPriceTable(overrides?: CallOverrides): Promise<[BigNumber[]]>;
+
     getRoleAdmin(
       role: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -1166,6 +1178,8 @@ export interface SafeNFT extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  getPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
+
   getRoleAdmin(
     role: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
@@ -1464,6 +1478,8 @@ export interface SafeNFT extends BaseContract {
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
 
     getRoleAdmin(
       role: PromiseOrValue<BytesLike>,
@@ -1851,6 +1867,8 @@ export interface SafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getPriceTable(overrides?: CallOverrides): Promise<BigNumber>;
+
     getRoleAdmin(
       role: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -2160,6 +2178,8 @@ export interface SafeNFT extends BaseContract {
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    getPriceTable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getRoleAdmin(
       role: PromiseOrValue<BytesLike>,

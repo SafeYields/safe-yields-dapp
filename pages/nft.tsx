@@ -5,6 +5,7 @@ import { CardContentBox } from 'components/InfoCard/CardContentBox';
 import { PageContainer } from 'components/PageContainer';
 import useNFTRewards from 'hooks/useNFTRewards';
 import useSafeNFTBalance from 'hooks/useSafeNFTBalance';
+import useSafeNFTBuyPrice from 'hooks/useSafeNFTBuyPrice';
 import useSafeNFTFairPrice from 'hooks/useSafeNFTFairPrice';
 import useSafeTokenAPR from 'hooks/useSafeTokenAPR';
 import useSafeTokenBalance from 'hooks/useSafeTokenBalance';
@@ -14,7 +15,8 @@ import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
 import { FC } from 'react';
 
-import { DECIMALS_TO_DISPLAY } from '../config';
+import { FormatPrice } from '../components/FormatPrice';
+
 
 const Home: NextPageWithLayout = () => {
   const { data: fairPrice } = useSafeNFTFairPrice();
@@ -23,11 +25,9 @@ const Home: NextPageWithLayout = () => {
   const safeTokenBalance = useSafeTokenBalance()?.data;
   const NFTRewards = useNFTRewards()?.data;
   const safeNFTFairPrice = useSafeNFTFairPrice()?.data;
+  const nftPrice = useSafeNFTBuyPrice()?.data;
   const safeNFTBalance = useSafeNFTBalance()?.data;
   const safeTokenAPR = useSafeTokenAPR()?.data;
-
-  const displayUSDCPrice = (priceData: string | null | undefined) =>
-    injectedWalletConnected && priceData && safeTokenPrice ? (parseInt(priceData) * parseInt(safeTokenPrice)).toFixed(DECIMALS_TO_DISPLAY).concat(' $USDC') : undefined;
 
   const displaySafeValue = (priceData: string | null | undefined, unit = ' SAFE') =>
     <h1>{
@@ -52,8 +52,8 @@ const Home: NextPageWithLayout = () => {
         {[0, 1, 2, 3].map((tier) => (
           <Grid.Col span={3} key={tier}>
             <InfoCard header={<TierHeader tier={tier + 1} />}>
-              <CardContentBox footer={displayUSDCPrice(NFTRewards)}>
-                <FancyButton> Buy</FancyButton>
+              <CardContentBox footer={<FancyButton> Buy</FancyButton>}>
+                <FormatPrice price={!(nftPrice) || nftPrice[tier]} />
               </CardContentBox>
             </InfoCard>
           </Grid.Col>
