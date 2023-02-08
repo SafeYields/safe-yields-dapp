@@ -1,16 +1,13 @@
-import { SafeNFT } from '@contractTypes/contracts';
-import { parseBalance } from '@utils/web3utils';
+import { fromWeiToString } from '@utils/web3utils';
 import useSWR from 'swr';
 
-import SafeNFTAbi from '../artifacts/contracts/SafeNFT.sol/SafeNFT.json';
-import { chainConfig } from '../config';
-import useContract from './useContract';
+import useNFTContract from './useNFTContract';
 
 const useSafeNFTBuyPrice = () => {
-  const safeNFTContract = useContract<SafeNFT>(chainConfig.addresses.nft, SafeNFTAbi.abi);
+  const safeNFTContract = useNFTContract();
   return useSWR(
     'useSafeNFT',
-    async () => safeNFTContract ? (await safeNFTContract.getPriceTable()).map(value => parseBalance(value,6)) : null,
+    async () => safeNFTContract ? (await safeNFTContract.getPriceTable()).map(value => fromWeiToString(value,6)) : null,
   );
 };
 

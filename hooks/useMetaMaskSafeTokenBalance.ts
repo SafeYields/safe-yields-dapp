@@ -1,4 +1,4 @@
-import { parseBalance } from '@utils/web3utils';
+import { fromWeiToString } from '@utils/web3utils';
 import useSWR from 'swr';
 
 import useKeepSWRDataLiveAsBlocksArrive from './useKeepSWRDataLiveAsBlocksArrive';
@@ -16,7 +16,7 @@ export default function useMetaMaskSafeTokenBalance(
     async () => {
       const address = await contract?.signer?.getAddress();
       const balance = address ? await contract?.balanceOf(address) : undefined;
-      return address && balance !== undefined ? parseBalance(balance) : null;
+      return address && balance !== undefined ? fromWeiToString(balance) : null;
     },
     {
       suspense,

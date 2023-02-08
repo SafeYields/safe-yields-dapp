@@ -1,5 +1,6 @@
 import { Button } from '@mantine/core';
 import useMetaMaskOnboarding from 'hooks/useMetaMaskOnboarding';
+import { atom, useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
 import { Download, Link, Unlink } from 'tabler-icons-react';
 import { hooksMetamask, metaMask } from 'utils/connectors';
@@ -8,12 +9,14 @@ import { shortenHex } from 'utils/web3utils';
 import { chainConfig, supportedChainId } from '../../config/chainConfig';
 import useStyles from './Account.styles';
 
-const { useChainId, useAccount, useIsActivating, useIsActive, useProvider, useENSName } = hooksMetamask;
 
+const { useChainId, useAccount, useIsActivating, useIsActive, useProvider, useENSName } = hooksMetamask;
+export const transactionInProgressAtom = atom(false);
 
 export const Account = () => {
   const { classes, cx } = useStyles();
 
+  const inProgress = useAtomValue(transactionInProgressAtom);
   const chainId = useChainId();
   const account = useAccount();
   const isActivating = useIsActivating();
@@ -55,7 +58,7 @@ export const Account = () => {
         {web3Available ? (
           <Button
             className={cx(classes.button)}
-            loading={connecting}
+            loading={connecting || inProgress}
             loaderProps={{ color: 'yellow', size: 'sm', variant: 'dots' }}
             variant='light'
             leftIcon={

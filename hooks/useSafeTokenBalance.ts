@@ -1,5 +1,5 @@
 import { SafeToken } from '@contractTypes/contracts';
-import { parseBalance } from '@utils/web3utils';
+import { fromWeiToString } from '@utils/web3utils';
 import useSWR from 'swr';
 
 import SafeTokenAbi from '../artifacts/contracts/SafeToken.sol/SafeToken.json';
@@ -15,7 +15,7 @@ const useSafeTokenBalance = (suspense = false) => {
     async () => {
       const address = await safeTokenContract?.signer?.getAddress();
       const balance = address ? await safeTokenContract?.balanceOf(address) : undefined;
-      return address && balance !== undefined ? parseBalance(balance) : null;
+      return address && balance !== undefined ? fromWeiToString(balance) : null;
     },
     {
       suspense,

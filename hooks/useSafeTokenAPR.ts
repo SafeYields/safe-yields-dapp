@@ -1,5 +1,5 @@
 import { SafeToken } from '@contractTypes/contracts';
-import { parseBalance } from '@utils/web3utils';
+import { fromWeiToString } from '@utils/web3utils';
 import useSWR from 'swr';
 
 import SafeTokenAbi from '../artifacts/contracts/SafeToken.sol/SafeToken.json';
@@ -21,7 +21,7 @@ const useSafeTokenAPR = () => {
       if (!safeTokenContract || !currentBlock || !currentPrice || isNaN(Number(currentBlock)) || isNaN(Number(currentPrice))) {
         return null;
       }
-      const priceMonthAgo = parseBalance(await safeTokenContract.price({ blockTag: Number(currentBlock) - blocksInMonth }),6);
+      const priceMonthAgo = fromWeiToString(await safeTokenContract.price({ blockTag: Number(currentBlock) - blocksInMonth }),6);
       const priceChange = parseFloat(currentPrice) - parseFloat(priceMonthAgo);
       if (priceChange <= 0)
         return null;

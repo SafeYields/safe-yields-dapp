@@ -30,7 +30,7 @@ export function formatEtherscanLink(
   }
 }
 
-export const parseBalance = (
+export const fromWeiToString = (
   value: BigNumberish,
   decimals = 18,
   decimalsToDisplay = DECIMALS_TO_DISPLAY,
