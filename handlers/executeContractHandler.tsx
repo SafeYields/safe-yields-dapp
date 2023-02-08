@@ -15,7 +15,7 @@ export const executeContractHandler = async (setExecutionInProgress: (progress: 
   try {
     const tx = await smartContractCallback();
     showNotification({
-      message: 'Smart contract transaction sent. Please wait for confirmation.',
+      message: 'Smart contract transaction sent. Please wait for the confirmation.',
     });
     await tx.wait();
     showNotification({

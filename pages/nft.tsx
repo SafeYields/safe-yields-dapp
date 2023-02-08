@@ -1,9 +1,9 @@
+import { MaxUint256 } from '@ethersproject/constants';
 import { Grid, Loader, Title } from '@mantine/core';
 import { FancyButton } from 'components/FancyButton';
 import { InfoCard } from 'components/InfoCard';
 import { CardContentBox } from 'components/InfoCard/CardContentBox';
 import { PageContainer } from 'components/PageContainer';
-import { ethers } from 'ethers';
 import useNFTContract from 'hooks/useNFTContract';
 import useNFTRewards from 'hooks/useNFTRewards';
 import useSafeNFTBalance from 'hooks/useSafeNFTBalance';
@@ -16,6 +16,7 @@ import useWalletConnected from 'hooks/useWalletConnected';
 import { useAtom } from 'jotai';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
+import Link from 'next/link';
 import { FC } from 'react';
 
 import { transactionInProgressAtom } from '../components/Account/Account';
@@ -59,7 +60,7 @@ const Nft: NextPageWithLayout = () => {
       executeContractHandler(setExecutionInProgress, () => nftContract.buy(tier, 1));
 
     const approveSpendUsdcForNFTHandler = (tier: number) => usdAllowance && nftPrice && nftContract && usdcContract && Number(usdAllowance) < Number(nftPrice[tier]) &&
-      executeContractHandler(setExecutionInProgress, () => usdcContract.approve(nftContract.address, ethers.constants.MaxUint256));
+      executeContractHandler(setExecutionInProgress, () => usdcContract.approve(nftContract.address, MaxUint256));
 
     const displaySafeValue = (priceData: string | null | undefined, unit = ' SAFE') =>
       <h1>{
@@ -79,6 +80,7 @@ const Nft: NextPageWithLayout = () => {
             <Grid.Col span={3} key={tier}>
               <InfoCard header={<TierHeader tier={tier + 1} />}>
                 <CardContentBox footer={(<FancyButton
+                  style={{ height: '24px' }}
                   onClick={() => !enoughAllowanceForTier(tier) ? approveSpendUsdcForNFTHandler(tier) : buyNFTHandler(tier)}
                   loading={executionInProgress}
                   disabled={!injectedWalletConnected || executionInProgress || !enoughBalanceForTier(tier)}>
@@ -94,6 +96,10 @@ const Nft: NextPageWithLayout = () => {
           ))}
           <Grid.Col span={12} mt={'lg'}>
             <Title order={2}> Don’t know how our NFTs work? Read our Whitepaper</Title>
+            <Link href={'https://safeyields.io//safeyields_whitepaper.pdf'} target='_blank' rel='noopener noreferrer'
+                  passHref>
+              <FancyButton mt={'20px'} py={10}>Read Whitepaper</FancyButton>
+            </Link>
           </Grid.Col>
         </Grid>
       </PageContainer>

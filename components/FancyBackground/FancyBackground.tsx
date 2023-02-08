@@ -131,6 +131,7 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
                           innerRadius={150}>
           <Image
             src='/assets/boreal1.svg'
+            alt='glowing boreal'
             className={classes.glowingBoreal}
           />
           <div
@@ -145,6 +146,7 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
             }}>
             <Image
               src='/assets/boreal2.svg'
+              alt='glowing boreal'
               className={classes.unGlowingBoreal}
             />
           </div>

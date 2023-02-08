@@ -13,7 +13,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
   return {
     button: {
       ...theme.fn.focusStyles(),
-      height: '24px',
+      // height: '24px',
       display: 'flex',
       overflow: 'visible',
       margin: 'auto',
