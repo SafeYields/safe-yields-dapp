@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 export default function useContract<T extends Contract = Contract>(
   address: string,
   ABI: any,
+  signerOnly = true,
 ): T | null {
   const { provider, account, chainId } = useWeb3React();
   return useMemo(() => {
@@ -13,6 +14,8 @@ export default function useContract<T extends Contract = Contract>(
       return null;
     }
     try {
+      if (signerOnly && account == undefined)
+        return null;
       return new Contract(address, ABI, account ? provider.getSigner().connectUnchecked() : provider);
     } catch (error) {
       console.error('Failed To Get Contract', error);

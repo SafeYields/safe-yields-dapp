@@ -1,6 +1,6 @@
 import { Button, createStyles } from '@mantine/core';
 import { ButtonProps } from '@mantine/core/lib/Button/Button';
-import { FC } from 'react';
+import { FC, MouseEventHandler } from 'react';
 import { hooksMetamask } from 'utils/connectors';
 
 
@@ -50,7 +50,12 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
   };
 });
 
-export const FancyButton: FC<ButtonProps> = ({ children, ...restProps }) => {
+export const FancyButton: FC<ButtonProps & {
+  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
+}> = ({
+        children,
+        ...restProps
+      }) => {
   const { classes, cx } = useStyles();
   return (
     <Button className={cx(classes.button, classes.buttonActive)}
