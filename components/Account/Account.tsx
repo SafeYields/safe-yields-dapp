@@ -51,15 +51,15 @@ export const Account = () => {
   const ENSName = useENSName();
 
   const testnetNotification = () => {
-    switch (chainId) {
-      case 42161:
+    switch (process.env.NEXT_PUBLIC_CHAIN_ID) {
+      case '42161':
         return '';
-      case 1337:
+      case '1337':
         return '(Localhost)';
-      case 421613:
+      case '421613':
         return '(Testnet)';
       default:
-        return '(Unsupported network)';
+        return '(error)';
     }
   };
 
