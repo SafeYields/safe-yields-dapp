@@ -1,5 +1,4 @@
 import { Grid, Loader, Title } from '@mantine/core';
-import { showNotification } from '@mantine/notifications';
 import { FancyButton } from 'components/FancyButton';
 import { InfoCard } from 'components/InfoCard';
 import { CardContentBox } from 'components/InfoCard/CardContentBox';
@@ -13,12 +12,17 @@ import useSafeTokenAPR from 'hooks/useSafeTokenAPR';
 import useSafeTokenBalance from 'hooks/useSafeTokenBalance';
 import useSafeTokenPrice from 'hooks/useSafeTokenPrice';
 import useWalletConnected from 'hooks/useWalletConnected';
+import { useAtom } from 'jotai';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
-import { FC, useState } from 'react';
-import { Check, X } from 'tabler-icons-react';
+import { FC } from 'react';
 
+import { transactionInProgressAtom } from '../components/Account/Account';
 import { FormatPrice } from '../components/FormatPrice';
+import { executeContractHandler } from '../handlers/executeContractHandler';
+import useUsdcAllowance from '../hooks/useUsdcAllowance';
+import useUsdcBalance from '../hooks/useUsdcBalance';
+import useUsdcContract from '../hooks/useUsdcContract';
 
 const TierHeader: FC<{ tier: number }> = (props) =>
   (<Title order={3} sx={theme => {
@@ -39,42 +43,16 @@ const Nft: NextPageWithLayout = () => {
   const safeNFTBalance = useSafeNFTBalance()?.data;
   const safeTokenAPR = useSafeTokenAPR()?.data;
   const nftContract = useNFTContract();
-  const [executionInProgress, setExecutionInProgress] = useState(false);
+  const usdAllowance = useUsdcAllowance(nftContract?.address)?.data;
+  const usdcBalance = useUsdcBalance()?.data;
+  const usdcContract = useUsdcContract();
+  const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
 
   const buyNFTHandler = (tier: number) => {
-    setExecutionInProgress(true);
-    showNotification({
-      message: 'Executing transaction...',
-    });
-    console.log(`tier ${tier}`);
-    console.log(`nftContract ${nftContract}`);
-    nftContract?.buy(tier, 1)
-      .then((tx) => {
-        showNotification({
-          title: 'Success',
-          color: 'lime',
-          icon: <Check size={18} />,
-          message: 'Smart contract transaction sent. Please wait for confirmation.',
-        });
-        tx.wait().then(() => {
-          showNotification({
-            title: 'Success',
-            message: 'Smart contract transaction confirmed.',
-          });
-          setExecutionInProgress(false);
-        });
-      })
-      .catch((err) => {
-        console.error('err', err);
-        showNotification({
-          title: 'Error',
-          color: 'yellow',
-          icon: <X size={18} />,
-          message: err ? err.reason : 'Smart Contract Execution Error.',
-          radius: 'lg',
-        });
-        setExecutionInProgress(false);
-      });
+    nftContract && executeContractHandler(setExecutionInProgress, () => nftContract.buy(tier, 1));
+    // if (usdAllowance && nftPrice && nftContract && Number(usdAllowance) < Number(nftPrice[tier])) {
+    //
+    // }
   };
 
 
@@ -85,6 +63,8 @@ const Nft: NextPageWithLayout = () => {
           <Loader size='lg' color='#F5F5F5' /> : '⸻'}
     </h1>;
 
+  const enoughBalanceForTier = (tier: number) => true;
+  // const enoughBalanceForTier = (tier: number) => nftPrice && usdcBalance && Number(nftPrice[tier]) <= Number(usdcBalance);
 
   return (
     <PageContainer title='Buy NFT'>
@@ -96,7 +76,7 @@ const Nft: NextPageWithLayout = () => {
           <Grid.Col span={3} key={tier}>
             <InfoCard header={<TierHeader tier={tier + 1} />}>
               <CardContentBox footer={(<FancyButton onClick={() => buyNFTHandler(tier)}
-                                                    disabled={!injectedWalletConnected || executionInProgress}> Buy</FancyButton>)}>
+                                                    disabled={!injectedWalletConnected || executionInProgress || !enoughBalanceForTier(tier)}> Buy</FancyButton>)}>
                 <FormatPrice price={!(nftPrice) || nftPrice[tier]} />
               </CardContentBox>
             </InfoCard>
