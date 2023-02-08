@@ -1,25 +1,25 @@
 import { fromWeiToString } from '@utils/web3utils';
+import { useWeb3React } from '@web3-react/core';
 import useSWR from 'swr';
 
 import useKeepSWRDataLiveAsBlocksArrive from './useKeepSWRDataLiveAsBlocksArrive';
 import useUsdcContract from './useUsdcContract';
 
 const useUsdcBalance = (suspense = false) => {
+  const { account } = useWeb3React();
   const usdcContract = useUsdcContract();
   const shouldFetch = !!usdcContract;
   const result = useSWR(
-    shouldFetch ? ['UsdcBalance'] : null,
+    shouldFetch && account ? ['UsdcBalance'] : null,
     async () => {
-      const address = await usdcContract?.signer?.getAddress();
-      const balance = address ? await usdcContract?.balanceOf(address) : undefined;
-      return address && balance !== undefined ? fromWeiToString(balance) : null;
+      const balance = account ? await usdcContract?.balanceOf(account) : undefined;
+      return balance !== undefined ? fromWeiToString(balance) : null;
     },
     {
       suspense,
     },
   );
   useKeepSWRDataLiveAsBlocksArrive(result.mutate);
-
   return result;
 };
 

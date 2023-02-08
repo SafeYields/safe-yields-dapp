@@ -32,6 +32,6 @@ export function formatEtherscanLink(
 
 export const fromWeiToString = (
   value: BigNumberish,
-  decimals = 18,
+  decimals = 6,
   decimalsToDisplay = DECIMALS_TO_DISPLAY,
 ) => parseFloat(formatUnits(value, decimals)).toFixed(decimalsToDisplay);

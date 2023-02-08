@@ -29,7 +29,7 @@ export const CardContentBox: FC<CardContentBoxProps> = ({ children, footer }) =>
     });
     const { classes, cx } = useStyles();
     return (
-      <Stack spacing={0} mt={15} align={'center'}>
+      <Stack spacing={10} mt={15} align={'center'}>
         {children}
         {typeof(footer)!== 'undefined' && <Text className={classes.cardFooter}>{footer}</Text>}
       </Stack>

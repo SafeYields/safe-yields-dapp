@@ -26,7 +26,7 @@ const Home: NextPageWithLayout = () => {
   const safeNFTBalance = useSafeNFTBalance()?.data;
   const safeTokenAPR = useSafeTokenAPR()?.data;
 
-  const displayUSDCPrice = (priceData: string | null | undefined) =>
+  const displayValueInUSDC = (priceData: string | null | undefined) =>
     injectedWalletConnected && priceData && safeTokenPrice ? (parseInt(priceData) * parseInt(safeTokenPrice)).toFixed(DECIMALS_TO_DISPLAY).concat(' $USDC') : undefined;
 
   const displaySafeValue = (priceData: string | null | undefined, unit = ' SAFE') =>
@@ -40,14 +40,14 @@ const Home: NextPageWithLayout = () => {
       <Grid grow gutter={'sm'} align={'center'}>
         <Grid.Col span={6}>
           <InfoCard header={'SAFE Holdings'}>
-            <CardContentBox footer={displayUSDCPrice(safeTokenBalance)}>
+            <CardContentBox footer={displayValueInUSDC(safeTokenBalance)}>
               {displaySafeValue(safeTokenBalance)}
             </CardContentBox>
           </InfoCard>
         </Grid.Col>
         <Grid.Col span={6}>
           <InfoCard header={'NFT Rewards'}>
-            <CardContentBox footer={displayUSDCPrice(NFTRewards)}>
+            <CardContentBox footer={displayValueInUSDC(NFTRewards)}>
               {displaySafeValue(NFTRewards)}
             </CardContentBox>
           </InfoCard>

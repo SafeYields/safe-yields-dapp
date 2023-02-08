@@ -1,5 +1,6 @@
 import { SafeToken } from '@contractTypes/contracts';
 import { fromWeiToString } from '@utils/web3utils';
+import { useWeb3React } from '@web3-react/core';
 import useSWR from 'swr';
 
 import SafeTokenAbi from '../artifacts/contracts/SafeToken.sol/SafeToken.json';
@@ -9,13 +10,13 @@ import useKeepSWRDataLiveAsBlocksArrive from './useKeepSWRDataLiveAsBlocksArrive
 
 const useSafeTokenBalance = (suspense = false) => {
   const safeTokenContract = useContract<SafeToken>(chainConfig.addresses.safe, SafeTokenAbi.abi);
-  const shouldFetch = !!safeTokenContract;
+  const { account } = useWeb3React();
+  const shouldFetch = !!safeTokenContract && !!account && !!safeTokenContract;
   const result = useSWR(
-    shouldFetch ? ['TokenBalance'] : null,
+    shouldFetch ? ['SafeTokenBalance'] : null,
     async () => {
-      const address = await safeTokenContract?.signer?.getAddress();
-      const balance = address ? await safeTokenContract?.balanceOf(address) : undefined;
-      return address && balance !== undefined ? fromWeiToString(balance) : null;
+      const balance = account ? await safeTokenContract?.balanceOf(account) : undefined;
+      return balance !== undefined ? fromWeiToString(balance) : null;
     },
     {
       suspense,

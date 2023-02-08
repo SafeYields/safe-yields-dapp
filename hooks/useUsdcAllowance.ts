@@ -10,7 +10,7 @@ const useUsdcAllowance = (spender?: string, suspense = false) => {
   const usdcContract = useUsdcContract();
   const shouldFetch = !!usdcContract;
   const result = useSWR(
-    shouldFetch ? ['UsdcBalance'] : null,
+    shouldFetch && account ? ['UsdcAllowance'] : null,
     async () => {
       const address = await usdcContract?.signer?.getAddress();
       const allowance = address && account && spender ? await usdcContract?.allowance(account, spender) : null;

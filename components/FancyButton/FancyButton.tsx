@@ -28,12 +28,16 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       border: 'none',
       backgroundSize: '300% 100%',
       backgroundImage: theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0], theme.colors.mustardGreen[0], theme.colors.orange[0]),
-
       borderRadius: '50px',
       mozTransition: 'all 0.4s ease-in-out',
       oTransition: 'all 0.4s ease-in-out',
       webkitTransition: 'all 0.4s ease-in-out',
       transition: 'all 0.4s ease-in-out',
+
+      ':disabled': {
+        opacity: 0.5,
+        cursor: 'not-allowed',
+      },
 
       '&:hover': {
         boxShadow: '0 1px 2px 0 rgba(229, 66, 10, 0.85)',
