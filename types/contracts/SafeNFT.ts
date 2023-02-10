@@ -42,7 +42,7 @@ export interface SafeNFTInterface extends utils.Interface {
     "balanceOfBatch(address[],uint256[])": FunctionFragment;
     "burn(address,uint256,uint256)": FunctionFragment;
     "burnBatch(address,uint256[],uint256[])": FunctionFragment;
-    "buy(uint8,uint256)": FunctionFragment;
+    "buy(uint8,uint256,address)": FunctionFragment;
     "claimReward(uint8,uint256)": FunctionFragment;
     "claimRewardsTotal()": FunctionFragment;
     "currentDistributionId()": FunctionFragment;
@@ -68,7 +68,7 @@ export interface SafeNFTInterface extends utils.Interface {
     "getUnclaimedRewards()": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
-    "initialize(string,uint256[4],uint256[4],address,uint256[2],uint256[2])": FunctionFragment;
+    "initialize(string,uint256[4],uint256[4],address,uint256[2],uint256,uint256[2])": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "maxSupply(uint256)": FunctionFragment;
     "mint(address,uint256,uint256,bytes)": FunctionFragment;
@@ -79,6 +79,7 @@ export interface SafeNFTInterface extends utils.Interface {
     "price(uint256)": FunctionFragment;
     "priceDistributionOnMint(uint256)": FunctionFragment;
     "profitDistribution(uint256)": FunctionFragment;
+    "referralShareForNFTPurchase()": FunctionFragment;
     "renounceRole(bytes32,address)": FunctionFragment;
     "revokeRole(bytes32,address)": FunctionFragment;
     "safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)": FunctionFragment;
@@ -144,6 +145,7 @@ export interface SafeNFTInterface extends utils.Interface {
       | "price"
       | "priceDistributionOnMint"
       | "profitDistribution"
+      | "referralShareForNFTPurchase"
       | "renounceRole"
       | "revokeRole"
       | "safeBatchTransferFrom"
@@ -211,7 +213,11 @@ export interface SafeNFTInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "buy",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "claimReward",
@@ -335,6 +341,7 @@ export interface SafeNFTInterface extends utils.Interface {
       ],
       PromiseOrValue<string>,
       [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
+      PromiseOrValue<BigNumberish>,
       [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
     ]
   ): string;
@@ -378,6 +385,10 @@ export interface SafeNFTInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "profitDistribution",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "referralShareForNFTPurchase",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "renounceRole",
@@ -568,6 +579,10 @@ export interface SafeNFTInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "profitDistribution",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "referralShareForNFTPurchase",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -803,6 +818,7 @@ export interface SafeNFT extends BaseContract {
     buy(
       _tier: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
+      _referral: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -930,6 +946,7 @@ export interface SafeNFT extends BaseContract {
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
       ],
+      _referralShareForNFTPurchase: PromiseOrValue<BigNumberish>,
       _profitDistribution: [
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
@@ -984,6 +1001,10 @@ export interface SafeNFT extends BaseContract {
 
     profitDistribution(
       arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    referralShareForNFTPurchase(
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -1106,6 +1127,7 @@ export interface SafeNFT extends BaseContract {
   buy(
     _tier: PromiseOrValue<BigNumberish>,
     _amount: PromiseOrValue<BigNumberish>,
+    _referral: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -1233,6 +1255,7 @@ export interface SafeNFT extends BaseContract {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ],
+    _referralShareForNFTPurchase: PromiseOrValue<BigNumberish>,
     _profitDistribution: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
@@ -1289,6 +1312,8 @@ export interface SafeNFT extends BaseContract {
     arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  referralShareForNFTPurchase(overrides?: CallOverrides): Promise<BigNumber>;
 
   renounceRole(
     role: PromiseOrValue<BytesLike>,
@@ -1409,6 +1434,7 @@ export interface SafeNFT extends BaseContract {
     buy(
       _tier: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
+      _referral: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1534,6 +1560,7 @@ export interface SafeNFT extends BaseContract {
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
       ],
+      _referralShareForNFTPurchase: PromiseOrValue<BigNumberish>,
       _profitDistribution: [
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
@@ -1588,6 +1615,8 @@ export interface SafeNFT extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    referralShareForNFTPurchase(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceRole(
       role: PromiseOrValue<BytesLike>,
@@ -1795,6 +1824,7 @@ export interface SafeNFT extends BaseContract {
     buy(
       _tier: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
+      _referral: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1922,6 +1952,7 @@ export interface SafeNFT extends BaseContract {
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
       ],
+      _referralShareForNFTPurchase: PromiseOrValue<BigNumberish>,
       _profitDistribution: [
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
@@ -1978,6 +2009,8 @@ export interface SafeNFT extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    referralShareForNFTPurchase(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceRole(
       role: PromiseOrValue<BytesLike>,
@@ -2101,6 +2134,7 @@ export interface SafeNFT extends BaseContract {
     buy(
       _tier: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
+      _referral: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -2238,6 +2272,7 @@ export interface SafeNFT extends BaseContract {
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
       ],
+      _referralShareForNFTPurchase: PromiseOrValue<BigNumberish>,
       _profitDistribution: [
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
@@ -2292,6 +2327,10 @@ export interface SafeNFT extends BaseContract {
 
     profitDistribution(
       arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    referralShareForNFTPurchase(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

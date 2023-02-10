@@ -1,1 +1,1 @@
-export { FormatPrice } from './FormatPrice';
+export { FormattedAmount } from './FormattedAmount';

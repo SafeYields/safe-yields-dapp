@@ -4,7 +4,7 @@ const PATH = {
   DASHBOARD: '/',
   YIELD: '/yield',
   EMMA: '/emma-the-bot',
-  SAFE: '/trade-safe',
+  SAFE: '/safe',
   NFT: '/nft',
   INVESTMENT: '/investment-pool',
   EXPENSE: '/expense-log',

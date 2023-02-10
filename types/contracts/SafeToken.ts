@@ -47,7 +47,7 @@ export interface SafeTokenInterface extends utils.Interface {
     "estimateBuyExactAmountOfSafe(uint256)": FunctionFragment;
     "getUsdReserves()": FunctionFragment;
     "getWallets()": FunctionFragment;
-    "initialize(address,address,address[2],uint256[2])": FunctionFragment;
+    "initialize(address,address,address[2],uint256[2],uint256,uint256)": FunctionFragment;
     "mint(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "paused()": FunctionFragment;
@@ -167,7 +167,9 @@ export interface SafeTokenInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<string>,
       [PromiseOrValue<string>, PromiseOrValue<string>],
-      [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+      [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
     ]
   ): string;
   encodeFunctionData(
@@ -436,6 +438,8 @@ export interface SafeToken extends BaseContract {
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
       ],
+      _buyTaxPercent: PromiseOrValue<BigNumberish>,
+      _sellTaxPercent: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -573,6 +577,8 @@ export interface SafeToken extends BaseContract {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ],
+    _buyTaxPercent: PromiseOrValue<BigNumberish>,
+    _sellTaxPercent: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -707,6 +713,8 @@ export interface SafeToken extends BaseContract {
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
       ],
+      _buyTaxPercent: PromiseOrValue<BigNumberish>,
+      _sellTaxPercent: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -872,6 +880,8 @@ export interface SafeToken extends BaseContract {
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
       ],
+      _buyTaxPercent: PromiseOrValue<BigNumberish>,
+      _sellTaxPercent: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1010,6 +1020,8 @@ export interface SafeToken extends BaseContract {
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
       ],
+      _buyTaxPercent: PromiseOrValue<BigNumberish>,
+      _sellTaxPercent: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

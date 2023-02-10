@@ -189,6 +189,11 @@ const _abi = [
         name: "_amount",
         type: "uint256",
       },
+      {
+        internalType: "address",
+        name: "_referral",
+        type: "address",
+      },
     ],
     name: "buy",
     outputs: [],

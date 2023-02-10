@@ -1,1 +1,0 @@
-export { FormatBalance } from './FormatBalance';

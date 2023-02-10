@@ -33,7 +33,7 @@ export interface ISafeNFTInterface extends utils.Interface {
   functions: {
     "balanceOf(address,uint256)": FunctionFragment;
     "balanceOfBatch(address[],uint256[])": FunctionFragment;
-    "buy(uint8,uint256)": FunctionFragment;
+    "buy(uint8,uint256,address)": FunctionFragment;
     "claimReward(uint8,uint256)": FunctionFragment;
     "claimRewardsTotal()": FunctionFragment;
     "currentDistributionId()": FunctionFragment;
@@ -93,7 +93,11 @@ export interface ISafeNFTInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "buy",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "claimReward",
@@ -379,6 +383,7 @@ export interface ISafeNFT extends BaseContract {
     buy(
       _tier: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
+      _referral: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -486,6 +491,7 @@ export interface ISafeNFT extends BaseContract {
   buy(
     _tier: PromiseOrValue<BigNumberish>,
     _amount: PromiseOrValue<BigNumberish>,
+    _referral: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -593,6 +599,7 @@ export interface ISafeNFT extends BaseContract {
     buy(
       _tier: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
+      _referral: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -748,6 +755,7 @@ export interface ISafeNFT extends BaseContract {
     buy(
       _tier: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
+      _referral: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -856,6 +864,7 @@ export interface ISafeNFT extends BaseContract {
     buy(
       _tier: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
+      _referral: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
