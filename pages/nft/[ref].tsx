@@ -11,7 +11,6 @@ import { executeContractHandler } from 'handlers/executeContractHandler';
 import useNFTContract from 'hooks/useNFTContract';
 import useNFTRewards from 'hooks/useNFTRewards';
 import useSafeNFTBalance from 'hooks/useSafeNFTBalance';
-import useSafeNFTBuyPrice from 'hooks/useSafeNFTBuyPrice';
 import useSafeNFTFairPrice from 'hooks/useSafeNFTFairPrice';
 import useSafeTokenAPR from 'hooks/useSafeTokenAPR';
 import useSafeTokenBalance from 'hooks/useSafeTokenBalance';
@@ -26,6 +25,9 @@ import type { NextPageWithLayout } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
+
+import useFetchFromApi from '../../hooks/useFetchFromApi';
+
 
 const TierHeader: FC<{ tier: number }> = (props) =>
   (<Title order={3} sx={theme => {
@@ -43,7 +45,8 @@ const Nft: NextPageWithLayout = () => {
     const safeTokenBalance = useSafeTokenBalance()?.data;
     const NFTRewards = useNFTRewards()?.data;
     const safeNFTFairPrice = useSafeNFTFairPrice()?.data;
-    const nftPrice = useSafeNFTBuyPrice()?.data;
+    const nftPrice = useFetchFromApi('nft/price')?.data;
+    // const nftPrice = useSafeNFTBuyPrice()?.data;
     const safeNFTBalance = useSafeNFTBalance()?.data;
     const safeTokenAPR = useSafeTokenAPR()?.data;
     const nftContract = useNFTContract();
@@ -68,7 +71,7 @@ const Nft: NextPageWithLayout = () => {
     const approveSpendUsdcForNFTHandler = (tier: number) => usdAllowance && nftPrice && nftContract && usdcContract && Number(usdAllowance) < Number(nftPrice[tier]) &&
       executeContractHandler(setExecutionInProgress, () => usdcContract.approve(nftContract.address, MaxUint256));
 
-    const displaySafeValue = (priceData: string | null | undefined, unit = ' SAFE') =>
+    const displayIfConnected = (priceData: string | null | undefined, unit = ' SAFE') =>
       <h1>{
         injectedWalletConnected ?
           priceData ? priceData.concat(unit) :
@@ -90,7 +93,7 @@ const Nft: NextPageWithLayout = () => {
                   onClick={() => !enoughAllowanceForTier(tier) ? approveSpendUsdcForNFTHandler(tier) : buyNFTHandler(tier)}
                   loading={executionInProgress}
                   disabled={!injectedWalletConnected || executionInProgress || !enoughBalanceForTier(tier)}>
-                  {!contractsLoaded ? <Loader size='xs' color='yellow' /> :
+                  {!contractsLoaded ? 'Buy' :
                     !enoughBalanceForTier(tier) ? 'No balance' : !enoughAllowanceForTier(tier) ? 'Approve' : 'Buy'
                   }
                 </FancyButton>)}>

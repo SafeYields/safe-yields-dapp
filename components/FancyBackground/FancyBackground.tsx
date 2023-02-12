@@ -3,7 +3,7 @@ import { createStyles, Image } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { FC, ReactNode } from 'react';
 // @ts-ignore
-import GalaxyBackground from 'react-animated-stars';
+// import GalaxyBackground from 'react-animated-stars';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
 
@@ -127,8 +127,9 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
         enter: 700,
         exit: 500,
       }}>
-        <GalaxyBackground starCount={100} rotationSpeed={0.05} bgColor={'transparent'} minSize={0.3} maxSize={2}
-                          innerRadius={150}>
+        {/* <GalaxyBackground starCount={100} rotationSpeed={0.05} bgColor={'transparent'} minSize={0.3} maxSize={2}*/}
+        {/*                  innerRadius={150}>*/}
+        <>
           <Image
             src='/assets/boreal1.svg'
             alt='glowing boreal'
@@ -151,7 +152,8 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
             />
           </div>
           {children}
-        </GalaxyBackground>
+        </>
+        {/* </GalaxyBackground>*/}
       </CSSTransition>
     </SwitchTransition>
   );
