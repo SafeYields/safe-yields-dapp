@@ -5,27 +5,27 @@ import { PageContainer } from 'components/PageContainer';
 import useNFTOfTreasury from 'hooks/useNFTOfTreasury';
 import useNFTRewards from 'hooks/useNFTRewards';
 import useSafeNFTBalance from 'hooks/useSafeNFTBalance';
-import useSafeNFTFairPrice from 'hooks/useSafeNFTFairPrice';
-import useSafeTokenAPR from 'hooks/useSafeTokenAPR';
 import useSafeTokenBalance from 'hooks/useSafeTokenBalance';
-import useSafeTokenPrice from 'hooks/useSafeTokenPrice';
 import useWalletConnected from 'hooks/useWalletConnected';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
 
 import { DECIMALS_TO_DISPLAY } from '../config';
+import useFetchFromApi from '../hooks/useFetchFromApi';
 
 
 const Home: NextPageWithLayout = () => {
-  const { data: fairPrice } = useSafeNFTFairPrice();
   const injectedWalletConnected = useWalletConnected();
-  const safeTokenPrice = useSafeTokenPrice()?.data;
+  const safeTokenPrice = useFetchFromApi('safe/price')?.data;
+  // const safeTokenPrice = useSafeTokenPrice()?.data;
   const safeTokenBalance = useSafeTokenBalance()?.data;
   const NFTRewards = useNFTRewards()?.data;
-  const safeNFTFairPrice = useSafeNFTFairPrice()?.data;
+  const safeNFTFairPrice = useFetchFromApi('nft/fairprice')?.data;
+  // const safeNFTFairPrice = useSafeNFTFairPrice()?.data;
   const safeNFTBalance = useSafeNFTBalance()?.data;
-  const safeTokenAPR = useSafeTokenAPR()?.data;
-
+  // const safeTokenAPR = useSafeTokenAPR()?.data;
+  const safeTokenAPR = useFetchFromApi('safe/apr')?.data;
+  const nftAPR = useFetchFromApi('nft/apr')?.data;
   const displayValueInUSDC = (priceData: string | null | undefined) =>
     injectedWalletConnected && priceData && safeTokenPrice ? (parseInt(priceData) * parseInt(safeTokenPrice)).toFixed(DECIMALS_TO_DISPLAY).concat(' $USDC') : undefined;
 
@@ -61,11 +61,11 @@ const Home: NextPageWithLayout = () => {
               direction='row'
               wrap='wrap'
             >
-              {[0,1,2,3].map(( tier) =>
-                (<CardContentBox key={`NFTBalanceTier${tier+1}`}
+              {[0, 1, 2, 3].map((tier) =>
+                (<CardContentBox key={`NFTBalanceTier${tier + 1}`}
                                  footer={injectedWalletConnected ? safeNFTBalance && safeNFTBalance[tier] ? `Total: ${parseInt(safeNFTBalance[tier])}` :
                                    <Loader size='xs' color='#F5F5F5' /> : '⸻'}>
-                  <h1>Tier {tier+1}</h1>
+                  <h1>Tier {tier + 1}</h1>
                 </CardContentBox>))}
             </Flex>
           </InfoCard>
@@ -78,10 +78,10 @@ const Home: NextPageWithLayout = () => {
           <InfoCard header={'SAFE Price'}>
             <CardContentBox>
               <h1 style={{ color: '#F5F5F5' }}>{
-                safeTokenPrice ? safeTokenPrice.concat(' $USDC') :
+                safeTokenPrice ? parseFloat(safeTokenPrice).toFixed(2).concat(' $USDC') :
                   <Loader size='lg' color='#F5F5F5' />}
               </h1>
-              <br/>
+              <br />
             </CardContentBox>
           </InfoCard>
         </Grid.Col>
@@ -89,7 +89,7 @@ const Home: NextPageWithLayout = () => {
           <InfoCard header={'SAFE APR'}>
             <CardContentBox footer={'Last 30 days'}>
               <h1 style={{ color: '#F5F5F5' }}>{
-                safeTokenAPR ? safeTokenAPR.concat(' %') :
+                safeTokenAPR ? safeTokenAPR.toFixed(1).concat(' %') :
                   <Loader size='lg' color='#F5F5F5' />}
               </h1>
             </CardContentBox>
@@ -99,8 +99,8 @@ const Home: NextPageWithLayout = () => {
           <InfoCard header={'NFT APR'}>
             <CardContentBox footer={'Last 30 days'}>
               <h1 style={{ color: '#F5F5F5' }}>{
-                safeTokenAPR ? safeTokenAPR.concat('%') :
-                  <Loader size='lg'  color='#F5F5F5' />}
+                nftAPR ? nftAPR.toFixed(1).concat('%') :
+                  <Loader size='lg' color='#F5F5F5' />}
               </h1>
             </CardContentBox>
           </InfoCard>
@@ -114,11 +114,11 @@ const Home: NextPageWithLayout = () => {
               direction='row'
               wrap='wrap'
             >
-              {[0,1,2,3].map(( tier) =>
-                (<CardContentBox key={`safeNFTFairPrice${tier+1}`}
+              {[0, 1, 2, 3].map((tier) =>
+                (<CardContentBox key={`safeNFTFairPrice${tier + 1}`}
                                  footer={injectedWalletConnected ? safeNFTFairPrice && safeNFTFairPrice[tier] ? `${safeNFTFairPrice[tier]} $USDC` :
                                    <Loader size='xs' color='#F5F5F5' /> : '⸻'}>
-                  <h1 color={'#F5F5F5'}>Tier {tier+1}</h1>
+                  <h1 color={'#F5F5F5'}>Tier {tier + 1}</h1>
                 </CardContentBox>))}
             </Flex>
           </InfoCard>
