@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "homepage": "https://github.com/Safe-Yields/safe-yields-dapp",
+  "homepage": "https://github.com/SafeYields/safe-yields-dapp",
   "engines": {
     "node": ">=14.0.0",
     "yarn": ">=1.22.0",
