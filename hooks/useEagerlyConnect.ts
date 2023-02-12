@@ -18,12 +18,9 @@ async function connect(connector: Connector) {
 
 export default function useEagerlyConnect() {
   const selectedConnection = getConnection(ConnectionType.INJECTED);
-  const networkConnection = getConnection(ConnectionType.NETWORK);
   useEffect(() => {
-    connect(networkConnection.connector);
     if (selectedConnection) {
       connect(selectedConnection.connector);
     } // The dependency list is empty so this is only run once on mount
-    connect(networkConnection.connector);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 }
