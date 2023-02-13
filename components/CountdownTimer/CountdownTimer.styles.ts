@@ -13,7 +13,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       margin: '0 1.4vw',
       fontWeight: 700,
       fontSize: '36px',
-      color: '#F28705',
+      color: theme.colors.orange[1]
     },
     label: {
       marginTop: '10px',

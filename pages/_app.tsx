@@ -35,7 +35,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 highlightGreen: ['#D1DE5D'],
                 mustardGreen: ['#CEDB3F'],
                 limeGreen: ['#D9E022', '#CBDA49'],
-                orange: ['#E89B17'],
+                orange: ['#E89B17', '#F28705'],
                 white: ['#F2ECE4'],
                 greenGray: ['#36676A'],
                 almostWhite: ['#F5F5F5'],
