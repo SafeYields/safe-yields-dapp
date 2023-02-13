@@ -2,6 +2,7 @@ import { isAddress } from '@ethersproject/address';
 import { AddressZero, MaxUint256 } from '@ethersproject/constants';
 import { Grid, Loader, Text, Title } from '@mantine/core';
 import { transactionInProgressAtom } from 'components/Account/Account';
+import { CountdownTimer } from 'components/CountdownTimer';
 import { FancyButton } from 'components/FancyButton';
 import { FormattedAmount } from 'components/FormatPrice';
 import { InfoCard } from 'components/InfoCard';
@@ -83,7 +84,12 @@ const Nft: NextPageWithLayout = () => {
       <PageContainer title='Buy NFT'>
         <Grid grow gutter={'md'} align={'center'} justify={'space-between'} mt={'lg'} style={{ textAlign: 'center' }}>
           <Grid.Col span={12}>
-            <Title order={1}>Choose the best TIER for you</Title>
+            {/* <Title order={1}>Choose the best TIER for you</Title>*/}
+            <InfoCard header={'40% Discount ends in'} maxWidth={400}>
+              <CardContentBox>
+                <CountdownTimer />
+              </CardContentBox>
+            </InfoCard>
           </Grid.Col>
           {[0, 1, 2, 3].map((tier) => (
             <Grid.Col span={3} key={tier}>

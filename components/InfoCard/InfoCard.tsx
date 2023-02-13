@@ -3,15 +3,17 @@ import { FC, ReactNode } from 'react';
 
 type InfoCardProps = {
   children: ReactNode;
-  header: ReactNode
+  header: ReactNode;
+  maxWidth?: string;
 }
 
-export const InfoCard: FC<InfoCardProps> = ({ children,header }) => {
+export const InfoCard: FC<InfoCardProps> = ({ children, header, maxWidth }) => {
 
   const useStyles = createStyles<string>((theme, params, getRef) => {
       return {
         card: {
           ...theme.fn.focusStyles(),
+          maxWidth,
           margin: 'auto',
           textAlign: 'center',
           columnGap: theme.spacing.sm,
@@ -59,7 +61,7 @@ export const InfoCard: FC<InfoCardProps> = ({ children,header }) => {
         },
         cardInner: {
           ...theme.fn.focusStyles(),
-          // minWidth: '250px',
+          minWidth: '170px',
           minHeight: '138px',
           display: 'flex',
           alignItems: 'center',
