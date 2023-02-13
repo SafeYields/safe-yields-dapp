@@ -139,7 +139,7 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
             style={{
               left: 50,
               top: 50,
-              width: 800,
+              width: '70vw',
               opacity: 0.7,
               marginLeft: 'auto',
               marginRight: 'auto',
