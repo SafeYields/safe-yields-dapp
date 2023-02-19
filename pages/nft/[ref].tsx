@@ -85,7 +85,7 @@ const Nft: NextPageWithLayout = () => {
         <Grid grow gutter={'md'} align={'center'} justify={'space-between'} mt={'lg'} style={{ textAlign: 'center' }}>
           <Grid.Col span={12}>
             {/* <Title order={1}>Choose the best TIER for you</Title>*/}
-            <InfoCard header={'40% Discount ends in'} maxWidth={400}>
+            <InfoCard header='40% Discount ends in' maxWidth='400px'>
               <CardContentBox>
                 <CountdownTimer />
               </CardContentBox>
