@@ -6,7 +6,7 @@ import useStyles from './CountdownTimer.styles';
 export const CountdownTimer: FC = () => {
 
   const { classes, cx } = useStyles();
-  const endDate = new Date('March 3, 2023 12:00:00').getTime();
+  const endDate = new Date('March 3, 2023 17:00:00').getTime();
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
