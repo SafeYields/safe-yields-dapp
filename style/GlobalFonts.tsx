@@ -1,3 +1,5 @@
+
+
 import { Global } from '@mantine/core';
 
 const GlobalFonts = () => {

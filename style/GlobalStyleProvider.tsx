@@ -1,12 +1,12 @@
+import '@fontsource/space-grotesk';
+
 import { Global } from '@mantine/core';
 import type { FC, ReactNode } from 'react';
-
-import GlobalFonts from './GlobalFonts';
 
 export const GlobalStyleProvider: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <>
-      <GlobalFonts />
+      {/* <GlobalFonts />*/}
       <Global
         styles={
           {

@@ -40,7 +40,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 greenGray: ['#36676A'],
                 almostWhite: ['#F5F5F5'],
               },
-              fontFamily: 'Gotham, sans-serif',
+              fontFamily: '"Space Grotesk", sans-serif',
               lineHeight: '19px',
               fontSizes: {
                 xs: 14,
@@ -53,7 +53,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
               loader: 'dots',
               spacing: { xs: 12, sm: 20, md: 25, lg: 30, xl: 64 },
               headings: {
-                fontFamily: 'Gotham, sans-serif',
+                fontFamily: '"Space Grotesk", sans-serif',
                 fontWeight: 450,
                 sizes: {
                   h1: { fontSize: 36, lineHeight: '43px' },

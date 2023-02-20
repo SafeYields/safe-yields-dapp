@@ -27,6 +27,7 @@ const Home: NextPageWithLayout = () => {
   // const safeTokenAPR = useSafeTokenAPR()?.data;
   const safeTokenAPR = useFetchFromApi('safe/apr')?.data;
   const nftAPR = useFetchFromApi('nft/apr')?.data;
+  const nftOfTreasury = useNFTOfTreasury()?.data;
   const displayValueInUSDC = (priceData: string | null | undefined) =>
     injectedWalletConnected && priceData && safeTokenPrice ? (parseInt(priceData) * parseInt(safeTokenPrice)).toFixed(DECIMALS_TO_DISPLAY).concat(' $USDC') : undefined;
 
@@ -77,7 +78,7 @@ const Home: NextPageWithLayout = () => {
             </InfoCard>
           </Grid.Col>
           <Grid.Col span={12}>
-            <Text align={'center'}>Total Treasury Ownership: {useNFTOfTreasury()?.data?.concat(' %') ??
+            <Text align={'center'}>Total Treasury Ownership: {nftOfTreasury?.concat(' %') ??
               <Loader size='xs' color='#F5F5F5' />}</Text>
           </Grid.Col>
           <Grid.Col span={4}>
