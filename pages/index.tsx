@@ -38,7 +38,7 @@ const Home: NextPageWithLayout = () => {
           <Loader size='lg' color='#F5F5F5' /> : '⸻'}
     </h1>;
   const router = useRouter();
-  if (!process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE) {
+  if (process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE) {
     router.push('/nft');
     return <></>;
   } else
