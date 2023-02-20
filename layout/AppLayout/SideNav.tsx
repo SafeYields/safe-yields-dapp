@@ -213,64 +213,82 @@ const ITEMS = [
 export const SideNav: FC<{ className?: string }> = ({ className }) => {
   const [collapsed, handlers] = useDisclosure(false);
   const { classes, cx } = useStyles({ collapsed });
-  return (
-    <Navbar p='md' className={cx(classes.navbar, className)}>
-      <Navbar.Section grow>
-        <Group className={classes.safeYieldsLogo} position='apart'>
-          <Link href={getPath('DASHBOARD')}>
-            <Image
-              src='/assets/safe-yields-logo.svg'
-              alt='Safe Yields Logo'
-              className={classes.glowingLogo}
-            />
-          </Link>
-        </Group>
-        {ITEMS.map(({ label, href, Icon, comingSoon }) => (
-            <Tooltip
-              key={label}
-              label={label}
-              disabled={!collapsed}
-              position='right'
-              withArrow
-              sx={{ width: '100%' }}
-            >
-              <ActiveLink href={href} passHref>
-                {(isActive) => {
-                  return (
-                    <a
-                      className={cx(classes.link, {
-                        [classes.linkActive]: isActive,
-                      })}
-                    >
-                      <Icon className={classes.linkIcon} />
-                        <Stack spacing={3 } className={classes.linkLabel}>
-                      <span className={classes.linkLabel}>{label}</span>
-                      {comingSoon && (<Text size={'xs'}>(Coming Soon)</Text>)}
-                      </Stack>
-                    </a>
-                  );
-                }}
-              </ActiveLink>
-            </Tooltip>
-          ),
-        )
-        }
-      </Navbar.Section>
-
-      <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-        <Navbar.Section className={classes.footer}>
-          <UnstyledButton className={classes.collapse} onClick={handlers.toggle}>
-            {collapsed ? (
-              <ArrowRight className={classes.collapseIcon} />
-            ) : (
-              <>
-                <ArrowLeft className={classes.collapseIcon} />
-              </>
-            )}
-          </UnstyledButton>
+  if (process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE) {
+    return (
+      <Navbar p='md' className={cx(classes.navbar, className)} style={{ borderWidth: '0px', position: 'absolute' }}>
+        <Navbar.Section grow>
+          <Group className={cx(classes.safeYieldsLogo)} position='apart'>
+            <Link href={getPath('NFT')}>
+              <Image
+                src='/assets/safe-yields-logo.svg'
+                alt='Safe Yields Logo'
+                className={classes.glowingLogo}
+              />
+            </Link>
+          </Group>
         </Navbar.Section>
-      </MediaQuery>
-    </Navbar>
-  )
-    ;
+      </Navbar>
+    )
+      ;
+  } else
+    return (
+      <Navbar p='md' className={cx(classes.navbar, className)}>
+        <Navbar.Section grow>
+          <Group className={classes.safeYieldsLogo} position='apart'>
+            <Link href={getPath('DASHBOARD')}>
+              <Image
+                src='/assets/safe-yields-logo.svg'
+                alt='Safe Yields Logo'
+                className={classes.glowingLogo}
+              />
+            </Link>
+          </Group>
+          {ITEMS.map(({ label, href, Icon, comingSoon }) => (
+              <Tooltip
+                key={label}
+                label={label}
+                disabled={!collapsed}
+                position='right'
+                withArrow
+                sx={{ width: '100%' }}
+              >
+                <ActiveLink href={href} passHref>
+                  {(isActive) => {
+                    return (
+                      <a
+                        className={cx(classes.link, {
+                          [classes.linkActive]: isActive,
+                        })}
+                      >
+                        <Icon className={classes.linkIcon} />
+                        <Stack spacing={3} className={classes.linkLabel}>
+                          <span className={classes.linkLabel}>{label}</span>
+                          {comingSoon && (<Text size={'xs'}>(Coming Soon)</Text>)}
+                        </Stack>
+                      </a>
+                    );
+                  }}
+                </ActiveLink>
+              </Tooltip>
+            ),
+          )
+          }
+        </Navbar.Section>
+
+        <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
+          <Navbar.Section className={classes.footer}>
+            <UnstyledButton className={classes.collapse} onClick={handlers.toggle}>
+              {collapsed ? (
+                <ArrowRight className={classes.collapseIcon} />
+              ) : (
+                <>
+                  <ArrowLeft className={classes.collapseIcon} />
+                </>
+              )}
+            </UnstyledButton>
+          </Navbar.Section>
+        </MediaQuery>
+      </Navbar>
+    )
+      ;
 };

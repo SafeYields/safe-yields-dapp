@@ -100,9 +100,12 @@ export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
     >
       <Container className={classes.header}>
         <Group spacing={50} className={classes.links}>
-          {left}
-          {items}
-           <Account />
+          {!process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE &&
+            <>
+              {left}
+              {items}
+            </>}
+          <Account />
         </Group>
         <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />
       </Container>

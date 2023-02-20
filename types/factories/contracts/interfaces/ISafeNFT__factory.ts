@@ -40,6 +40,19 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "bool",
+        name: "_status",
+        type: "bool",
+      },
+    ],
+    name: "TogglePresale",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "address",
         name: "operator",
@@ -265,6 +278,19 @@ const _abi = [
         internalType: "uint256[]",
         name: "",
         type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getCurrentPresaleWeek",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -539,6 +565,32 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256[][]",
+        name: "_presalePrice",
+        type: "uint256[][]",
+      },
+    ],
+    name: "setDiscountedPriceTable",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "launchDate",
+        type: "uint256",
+      },
+    ],
+    name: "setPresaleStartDate",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes4",
         name: "interfaceId",
         type: "bytes4",
@@ -553,6 +605,13 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "togglePresale",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
 ];
