@@ -1,6 +1,5 @@
 import {
-  ActionIcon,
-  Burger, Container, createStyles,
+  ActionIcon, Container, createStyles,
   Group,
   Header,
   Indicator,
@@ -105,9 +104,9 @@ export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
               {left}
               {items}
             </>}
-          <Account />
         </Group>
-        <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />
+          <Account />
+        {/* <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />*/}
       </Container>
     </Header>
   );
