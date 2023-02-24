@@ -119,7 +119,7 @@ const Nft: NextPageWithLayout = () => {
 
           <Grid.Col span={12} mt={'lg'}>
             <Title order={2}> Don’t know how our NFTs work? Read our Whitepaper</Title>
-            <Link href={'https://safeyields.io//safeyields_whitepaper.pdf'} target='_blank' rel='noopener noreferrer'
+            <Link href={'https://safeyields.io/safeyields_whitepaper.pdf'} target='_blank' rel='noopener noreferrer'
                   passHref>
               <FancyButton mt={'20px'} py={10}>Read Whitepaper</FancyButton>
             </Link>
