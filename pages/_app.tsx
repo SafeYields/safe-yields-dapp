@@ -43,7 +43,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
               fontFamily: '"Space Grotesk", sans-serif',
               lineHeight: '19px',
               fontSizes: {
-                xs: 14,
+                xs: 10,
                 sm: 16,
                 md: 16,
                 lg: 16,
