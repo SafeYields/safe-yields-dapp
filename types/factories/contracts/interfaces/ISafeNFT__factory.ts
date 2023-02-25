@@ -297,6 +297,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getDiscountedPriceTable",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "enum ISafeNFT.Tiers",

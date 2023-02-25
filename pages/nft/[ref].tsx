@@ -13,7 +13,6 @@ import useFetchFromApi from 'hooks/useFetchFromApi';
 import useNFTContract from 'hooks/useNFTContract';
 import useNFTRewards from 'hooks/useNFTRewards';
 import useSafeNFTBalance from 'hooks/useSafeNFTBalance';
-import useSafeNFTFairPrice from 'hooks/useSafeNFTFairPrice';
 import useSafeNFTTotalSupply from 'hooks/useSafeNFTTotalSupply';
 import useSafeTokenAPR from 'hooks/useSafeTokenAPR';
 import useSafeTokenBalance from 'hooks/useSafeTokenBalance';
@@ -40,14 +39,12 @@ const TierHeader: FC<{ tier: number }> = (props) =>
 
 const Nft: NextPageWithLayout = () => {
     const router = useRouter();
-    const { data: fairPrice } = useSafeNFTFairPrice();
     const injectedWalletConnected = useWalletConnected();
     const safeTokenPrice = useSafeTokenPrice()?.data;
     const safeTokenBalance = useSafeTokenBalance()?.data;
     const NFTRewards = useNFTRewards()?.data;
-    const safeNFTFairPrice = useSafeNFTFairPrice()?.data;
-    const nftPrice = useFetchFromApi('nft/price')?.data;
-    // const nftPrice = useSafeNFTBuyPrice()?.data;
+    const nftRegularPostPresalePrice = useFetchFromApi('nft/price')?.data;
+    const nftDiscountedPrice = useFetchFromApi('nft/presale-price')?.data;
     const safeNFTBalance = useSafeNFTBalance()?.data;
     const safeNFTTotalSupply = useSafeNFTTotalSupply()?.data;
     const safeTokenAPR = useSafeTokenAPR()?.data;
@@ -57,20 +54,20 @@ const Nft: NextPageWithLayout = () => {
     const usdcContract = useUsdcContract();
     const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
 
-    const contractsLoaded = !!nftPrice && !!usdcBalance && !!usdAllowance;
+    const contractsLoaded = !!nftRegularPostPresalePrice && !!usdcBalance && !!usdAllowance;
 
     const { ref: whoReferred } = router.query;
     console.log('whoReferred', whoReferred);
     const referralAddress = whoReferred && isAddress(whoReferred as string) ? whoReferred as string : undefined;
     console.log('referralAddress', referralAddress);
 
-    const enoughBalanceForTier = (tier: number) => contractsLoaded && Number(nftPrice[tier]) <= Number(usdcBalance);
-    const enoughAllowanceForTier = (tier: number) => contractsLoaded && (Number(usdAllowance) >= Number(nftPrice[tier]));
+    const enoughBalanceForTier = (tier: number) => contractsLoaded && Number(nftRegularPostPresalePrice[tier]) <= Number(usdcBalance);
+    const enoughAllowanceForTier = (tier: number) => contractsLoaded && (Number(usdAllowance) >= Number(nftRegularPostPresalePrice[tier]));
 
-    const buyNFTHandler = (tier: number) => usdAllowance && nftPrice && nftContract && usdcContract && (Number(usdAllowance) >= Number(nftPrice[tier])) &&
+    const buyNFTHandler = (tier: number) => usdAllowance && nftRegularPostPresalePrice && nftContract && usdcContract && (Number(usdAllowance) >= Number(nftRegularPostPresalePrice[tier])) &&
       executeContractHandler(setExecutionInProgress, () => nftContract.buy(tier, 1, referralAddress || AddressZero));
 
-    const approveSpendUsdcForNFTHandler = (tier: number) => usdAllowance && nftPrice && nftContract && usdcContract && Number(usdAllowance) < Number(nftPrice[tier]) &&
+    const approveSpendUsdcForNFTHandler = (tier: number) => usdAllowance && nftRegularPostPresalePrice && nftContract && usdcContract && Number(usdAllowance) < Number(nftRegularPostPresalePrice[tier]) &&
       executeContractHandler(setExecutionInProgress, () => usdcContract.approve(nftContract.address, MaxUint256));
 
     const displayIfConnected = (priceData: string | null | undefined, unit = ' SAFE') =>
@@ -112,10 +109,9 @@ const Nft: NextPageWithLayout = () => {
                   <FormattedAmount caption='Balance: ' price={!(safeNFTBalance) || safeNFTBalance[tier]} unit=''
                                    decimals={0} />
 
-                  <FormattedAmount caption='Balance: ' price={!(safeNFTBalance) || safeNFTBalance[tier]} unit=''
-                                   decimals={0} />
 
-                  <FormattedAmount price={!(nftPrice) || nftPrice[tier]} crossed={true} />
+                  <FormattedAmount price={!(nftRegularPostPresalePrice) || nftRegularPostPresalePrice[tier]} crossed={true} />
+                  <FormattedAmount price={!(nftDiscountedPrice) || nftDiscountedPrice[tier]} />
                 </CardContentBox>
               </InfoCard>
             </Grid.Col>

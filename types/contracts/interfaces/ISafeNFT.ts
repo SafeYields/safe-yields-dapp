@@ -40,6 +40,7 @@ export interface ISafeNFTInterface extends utils.Interface {
     "distributeProfit(uint256)": FunctionFragment;
     "getBalanceTable(address)": FunctionFragment;
     "getCurrentPresaleWeek()": FunctionFragment;
+    "getDiscountedPriceTable()": FunctionFragment;
     "getFairPrice(uint8)": FunctionFragment;
     "getFairPriceTable()": FunctionFragment;
     "getMyBalanceTable()": FunctionFragment;
@@ -71,6 +72,7 @@ export interface ISafeNFTInterface extends utils.Interface {
       | "distributeProfit"
       | "getBalanceTable"
       | "getCurrentPresaleWeek"
+      | "getDiscountedPriceTable"
       | "getFairPrice"
       | "getFairPriceTable"
       | "getMyBalanceTable"
@@ -129,6 +131,10 @@ export interface ISafeNFTInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getCurrentPresaleWeek",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getDiscountedPriceTable",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -248,6 +254,10 @@ export interface ISafeNFTInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getCurrentPresaleWeek",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getDiscountedPriceTable",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -463,6 +473,8 @@ export interface ISafeNFT extends BaseContract {
 
     getCurrentPresaleWeek(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    getDiscountedPriceTable(overrides?: CallOverrides): Promise<[BigNumber[]]>;
+
     getFairPrice(
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -587,6 +599,8 @@ export interface ISafeNFT extends BaseContract {
 
   getCurrentPresaleWeek(overrides?: CallOverrides): Promise<BigNumber>;
 
+  getDiscountedPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
+
   getFairPrice(
     _tier: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -708,6 +722,8 @@ export interface ISafeNFT extends BaseContract {
     ): Promise<BigNumber[]>;
 
     getCurrentPresaleWeek(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getDiscountedPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
 
     getFairPrice(
       _tier: PromiseOrValue<BigNumberish>,
@@ -884,6 +900,8 @@ export interface ISafeNFT extends BaseContract {
 
     getCurrentPresaleWeek(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getDiscountedPriceTable(overrides?: CallOverrides): Promise<BigNumber>;
+
     getFairPrice(
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1010,6 +1028,10 @@ export interface ISafeNFT extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getCurrentPresaleWeek(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getDiscountedPriceTable(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
