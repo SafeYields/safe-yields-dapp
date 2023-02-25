@@ -15,6 +15,7 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header, maxWidth }) => {
           ...theme.fn.focusStyles(),
           maxWidth,
           margin: 'auto',
+          marginBottom: '13px',
           textAlign: 'center',
           columnGap: theme.spacing.sm,
           textDecoration: 'none',

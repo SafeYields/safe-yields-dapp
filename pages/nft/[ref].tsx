@@ -103,17 +103,17 @@ const Nft: NextPageWithLayout = () => {
                   {safeNFTBalance && (safeNFTBalance[tier]) && typeof (safeNFTBalance[tier]) == 'string' &&
                   safeNFTTotalSupply && (safeNFTTotalSupply[tier]) && typeof (safeNFTTotalSupply[tier]) == 'string'
                     ?
-                  <Text color='#FFFFFF' size='xs'>${(parseInt(safeNFTTotalSupply[tier])==0 ? parseInt(safeNFTTotalSupply[tier]) : parseInt(safeNFTBalance[tier])/parseInt(safeNFTTotalSupply[tier])*100).toFixed(5)}% Ownership</Text> :
-                  <Loader size='xs' color='#F5F5F5' />}
-
-                  <FormattedAmount caption='Balance: ' price={!(safeNFTBalance) || safeNFTBalance[tier]} unit=''
-                                   decimals={0} />
-
-
-                  <FormattedAmount price={!(nftRegularPostPresalePrice) || nftRegularPostPresalePrice[tier]} crossed={true} />
+                    <Text color='#FFFFFF'
+                          size='xs'>${(parseInt(safeNFTTotalSupply[tier]) == 0 ? parseInt(safeNFTTotalSupply[tier]) : parseInt(safeNFTBalance[tier]) / parseInt(safeNFTTotalSupply[tier]) * 100).toFixed(5)}%
+                      Ownership</Text> :
+                    <Loader size='xs' color='#F5F5F5' />}
+                  <FormattedAmount price={!(nftRegularPostPresalePrice) || nftRegularPostPresalePrice[tier]}
+                                   crossed={true} />
                   <FormattedAmount price={!(nftDiscountedPrice) || nftDiscountedPrice[tier]} />
                 </CardContentBox>
               </InfoCard>
+              <FormattedAmount caption='Your NFTs: ' price={!(safeNFTBalance) || safeNFTBalance[tier]} unit=''
+                               decimals={0} />
             </Grid.Col>
           ))}
           <Grid.Col span={12} mt={'sm'}>
