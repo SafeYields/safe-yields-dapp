@@ -115,7 +115,7 @@ const Nft: NextPageWithLayout = () => {
                   <FormattedAmount caption='Balance: ' price={!(safeNFTBalance) || safeNFTBalance[tier]} unit=''
                                    decimals={0} />
 
-                  <FormattedAmount price={!(nftPrice) || nftPrice[tier]} />
+                  <FormattedAmount price={!(nftPrice) || nftPrice[tier]} crossed={true} />
                 </CardContentBox>
               </InfoCard>
             </Grid.Col>
