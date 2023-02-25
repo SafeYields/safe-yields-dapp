@@ -1,4 +1,3 @@
-import { keyframes } from '@emotion/react';
 import { ActionIcon, AppShell, Box, CloseButton, Drawer, MediaQuery } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { FancyBackground } from 'components/FancyBackground';
@@ -22,17 +21,6 @@ import { SideNav } from './SideNav';
 //   return SideNav;
 // });
 
-
-const slide = keyframes`
-  100% {
-    left: 0;
-    opacity: 1;
-  }
-  0% {
-    left: 0;
-    opacity: 0;
-  }
-`;
 
 export const AppLayout: CustomLayout = (page) => {
   const [opened, handlers] = useDisclosure(false);

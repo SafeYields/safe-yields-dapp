@@ -9,10 +9,12 @@ import { InfoCard } from 'components/InfoCard';
 import { CardContentBox } from 'components/InfoCard/CardContentBox';
 import { PageContainer } from 'components/PageContainer';
 import { executeContractHandler } from 'handlers/executeContractHandler';
+import useFetchFromApi from 'hooks/useFetchFromApi';
 import useNFTContract from 'hooks/useNFTContract';
 import useNFTRewards from 'hooks/useNFTRewards';
 import useSafeNFTBalance from 'hooks/useSafeNFTBalance';
 import useSafeNFTFairPrice from 'hooks/useSafeNFTFairPrice';
+import useSafeNFTTotalSupply from 'hooks/useSafeNFTTotalSupply';
 import useSafeTokenAPR from 'hooks/useSafeTokenAPR';
 import useSafeTokenBalance from 'hooks/useSafeTokenBalance';
 import useSafeTokenPrice from 'hooks/useSafeTokenPrice';
@@ -26,8 +28,6 @@ import type { NextPageWithLayout } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
-
-import useFetchFromApi from '../../hooks/useFetchFromApi';
 
 
 const TierHeader: FC<{ tier: number }> = (props) =>
@@ -49,6 +49,7 @@ const Nft: NextPageWithLayout = () => {
     const nftPrice = useFetchFromApi('nft/price')?.data;
     // const nftPrice = useSafeNFTBuyPrice()?.data;
     const safeNFTBalance = useSafeNFTBalance()?.data;
+    const safeNFTTotalSupply = useSafeNFTTotalSupply()?.data;
     const safeTokenAPR = useSafeTokenAPR()?.data;
     const nftContract = useNFTContract();
     const usdAllowance = useUsdcAllowance(nftContract?.address)?.data;
@@ -102,8 +103,18 @@ const Nft: NextPageWithLayout = () => {
                     !enoughBalanceForTier(tier) ? 'No balance' : !enoughAllowanceForTier(tier) ? 'Approve' : 'Buy'
                   }
                 </FancyButton>)}>
+                  {safeNFTBalance && (safeNFTBalance[tier]) && typeof (safeNFTBalance[tier]) == 'string' &&
+                  safeNFTTotalSupply && (safeNFTTotalSupply[tier]) && typeof (safeNFTTotalSupply[tier]) == 'string'
+                    ?
+                  <Text color='#FFFFFF' size='xs'>${(parseInt(safeNFTTotalSupply[tier])==0 ? parseInt(safeNFTTotalSupply[tier]) : parseInt(safeNFTBalance[tier])/parseInt(safeNFTTotalSupply[tier])*100).toFixed(4)}% Ownership</Text> :
+                  <Loader size='xs' color='#F5F5F5' />}
+
                   <FormattedAmount caption='Balance: ' price={!(safeNFTBalance) || safeNFTBalance[tier]} unit=''
                                    decimals={0} />
+
+                  <FormattedAmount caption='Balance: ' price={!(safeNFTBalance) || safeNFTBalance[tier]} unit=''
+                                   decimals={0} />
+
                   <FormattedAmount price={!(nftPrice) || nftPrice[tier]} />
                 </CardContentBox>
               </InfoCard>
