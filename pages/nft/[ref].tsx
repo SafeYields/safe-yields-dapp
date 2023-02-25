@@ -117,7 +117,7 @@ const Nft: NextPageWithLayout = () => {
             </Grid.Col>
           ))}
           <Grid.Col span={12} mt={'sm'}>
-            <FormattedAmount caption='Balance: ' price={!(usdcBalance) || usdcBalance} />
+            <FormattedAmount caption='Your wallet balance: ' price={!(usdcBalance) || usdcBalance} />
           </Grid.Col>
           {referralAddress &&
             (<Grid.Col span={12} mt={'xs'}>
