@@ -1,11 +1,11 @@
 import {
-  ActionIcon,
-  Burger, Container, createStyles,
+  ActionIcon, Container, createStyles,
   Group,
   Header,
   Indicator,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { Account } from 'components/Account';
 import Link from 'next/link';
 import { FC, ReactNode, useState } from 'react';
 import {
@@ -15,8 +15,6 @@ import {
   UserCircle,
 } from 'tabler-icons-react';
 import { getPath } from 'utils';
-
-import { Account } from '../../components/Account';
 
 
 const useStyles = createStyles((theme) => ({
@@ -28,7 +26,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   links: {
-    [theme.fn.smallerThan('xs')]: {
+    [theme.fn.smallerThan('md')]: {
       display: 'none',
     },
   },
@@ -91,8 +89,9 @@ export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
   ));
 
   return (
-    <Header height={{ base: 50, md: 70 }} p='md' mb={120}
+    <Header height={{ base: 50, md: 70 }} p='md' mb={120} mt={15}
             sx={(theme) => ({
+              position: 'absolute',
               padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
               borderBottom: `1px solid ${'transparent'}`,
               backgroundColor: 'transparent',
@@ -100,11 +99,14 @@ export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
     >
       <Container className={classes.header}>
         <Group spacing={50} className={classes.links}>
-          {left}
-          {items}
-           <Account />
+          {!process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE &&
+            <>
+              {left}
+              {items}
+            </>}
         </Group>
-        <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />
+          <Account />
+        {/* <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />*/}
       </Container>
     </Header>
   );

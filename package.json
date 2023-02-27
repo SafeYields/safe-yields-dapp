@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "homepage": "https://github.com/Safe-Yields/safe-yields-dapp",
+  "homepage": "https://github.com/SafeYields/safe-yields-dapp",
   "engines": {
     "node": ">=14.0.0",
     "yarn": ">=1.22.0",
@@ -26,6 +26,7 @@
     "@ethersproject/contracts": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
     "@ethersproject/units": "^5.7.0",
+    "@fontsource/space-grotesk": "^4.5.13",
     "@mantine/core": "^5.10.0",
     "@mantine/hooks": "^5.10.0",
     "@mantine/next": "^5.10.0",
@@ -46,6 +47,7 @@
     "@web3-react/url": "8.0.25-beta.0",
     "@web3-react/walletconnect": "8.0.35-beta.0",
     "ethers": "^5.7.2",
+    "jotai": "^2.0.0",
     "next": "^13.1.1",
     "react": "^18.2.0",
     "react-animated-stars": "^0.1.2",
@@ -53,11 +55,13 @@
     "react-error-boundary": "^3.1.4",
     "react-transition-group": "^4.4.5",
     "swr": "^2.0.0",
-    "tabler-icons-react": "^1.56.0"
+    "tabler-icons-react": "^1.56.0",
+    "zustand": "^4.3.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.3.0",
+    "@swc-jotai/react-refresh": "^0.0.4",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",

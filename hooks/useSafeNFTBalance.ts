@@ -1,27 +1,23 @@
-import { SafeNFT } from '@contractTypes/contracts';
-import { parseBalance } from '@utils/web3utils';
+import { fromWeiToString } from '@utils/web3utils';
+import { useWeb3React } from '@web3-react/core';
 import useSWR from 'swr';
 
-import SafeNFTAbi from '../artifacts/contracts/SafeNFT.sol/SafeNFT.json';
-import { chainConfig } from '../config';
-import useContract from './useContract';
 import useKeepSWRDataLiveAsBlocksArrive from './useKeepSWRDataLiveAsBlocksArrive';
+import useNFTContract from './useNFTContract';
 
 const useSafeNFTBalance = (suspense = false) => {
-  const safeNFTContract = useContract<SafeNFT>(chainConfig.addresses.nft, SafeNFTAbi.abi);
-  const shouldFetch = !!safeNFTContract;
+  const { account } = useWeb3React();
+  const safeNFTContract = useNFTContract();
+  const shouldFetch = !!safeNFTContract && !!account;
   const result = useSWR(
     shouldFetch ? ['SafeNFTBalance'] : null,
-    async () => {
-      const address = await safeNFTContract?.signer?.getAddress();
-      return address ? (await safeNFTContract?.getBalanceTable(address))?.map(value => parseBalance(value)) : undefined;
-    },
-    {
-      suspense,
-    },
-  );
+      async () => account ? (await safeNFTContract?.getBalanceTable(account))?.map(value => fromWeiToString(value,0,0)) : null,
+      {
+        suspense,
+      },
+    )
+  ;
   useKeepSWRDataLiveAsBlocksArrive(result.mutate);
-
   return result;
 };
 
