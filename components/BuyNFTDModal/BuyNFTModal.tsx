@@ -75,7 +75,6 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
              onClose={() => handleModalClose()}
              closeOnClickOutside={true}
              centered={true}
-             title='Buy NFT'
              overlayColor={theme.colors.dark[9]}
              overlayOpacity={0.55}
              overlayBlur={3}
