@@ -4,8 +4,7 @@ import {
   getConnectionName,
 } from '@utils/connectors';
 import { getName } from '@utils/getName';
-import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
-import { initializeConnector } from '@web3-react/core';
+import { initializeConnector,useWeb3React, Web3ReactProvider } from '@web3-react/core';
 import { MetaMask } from '@web3-react/metamask'
 import useEagerlyConnect from 'hooks/useEagerlyConnect';
 import { ReactNode, useEffect, useMemo } from 'react';
