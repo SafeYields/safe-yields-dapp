@@ -39,6 +39,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 white: ['#F2ECE4'],
                 greenGray: ['#36676A'],
                 almostWhite: ['#F5F5F5'],
+                veryDarkGreen: ['#0B1B03']
               },
               fontFamily: '"Space Grotesk", sans-serif',
               lineHeight: '19px',
@@ -133,6 +134,40 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                       xl: 1320,
                     },
                   },
+                },
+                Modal: {
+                  styles: (theme) => ({
+                    modal: {
+                      background: 'url("/assets/nft-modal-background.png"), linear-gradient(180deg, rgba(242, 236, 228, 0.5) 0%, rgba(242, 236, 228, 0.6) 45.31%, rgba(242, 236, 228, 0.3) 100%) top/cover no-repeat',
+                      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                      backdropFilter: 'blur(3px)',
+                      borderRadius: '15px 15px 15px 15px',
+                      height: `${169+176}px`,
+                      width: '578px',
+                      border: 0,
+                      padding: 'sm'
+                    },
+                    close: {
+                      background: 'linear-gradient(90deg, #CEDB3F, #E89B17,#CEDB3F, #E89B17)',
+                      borderRadius: '46px',
+                      size: 'sm',
+                      color: 'white',
+                      border: 0,
+                      backgroundSize: '300% 100%',
+                      mozTransition: 'all 0.4s ease-in-out',
+                      oTransition: 'all 0.4s ease-in-out',
+                      webkitTransition: 'all 0.4s ease-in-out',
+                      transition: 'all 0.4s ease-in-out',
+                      '&:hover': {
+                        boxShadow: '0 1px 2px 0 rgba(229, 66, 10, 0.85)',
+                        backgroundPosition: '100% 0',
+                        mozTransition: 'all 0.4s ease-in-out',
+                        oTransition: 'all 0.4s ease-in-out',
+                        webkitTransition: 'all 0.4s ease-in-out',
+                        transition: 'all 0.4s ease-in-out',
+                      },
+                    },
+                  }),
                 },
               },
             }}

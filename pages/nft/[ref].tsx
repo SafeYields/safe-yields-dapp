@@ -1,5 +1,4 @@
 import { isAddress } from '@ethersproject/address';
-import { AddressZero, MaxUint256 } from '@ethersproject/constants';
 import { Grid, Loader, Text, Title } from '@mantine/core';
 import { transactionInProgressAtom } from 'components/Account/Account';
 import { CountdownTimer } from 'components/CountdownTimer';
@@ -8,7 +7,6 @@ import { FormattedAmount } from 'components/FormatPrice';
 import { InfoCard } from 'components/InfoCard';
 import { CardContentBox } from 'components/InfoCard/CardContentBox';
 import { PageContainer } from 'components/PageContainer';
-import { executeContractHandler } from 'handlers/executeContractHandler';
 import useFetchFromApi from 'hooks/useFetchFromApi';
 import useNFTContract from 'hooks/useNFTContract';
 import useNFTRewards from 'hooks/useNFTRewards';
@@ -26,7 +24,9 @@ import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import { FC, useState } from 'react';
+
+import { BuyNFTModal } from '../../components/BuyNFTDModal/BuyNFTModal';
 
 
 const TierHeader: FC<{ tier: number }> = (props) =>
@@ -64,12 +64,18 @@ const Nft: NextPageWithLayout = () => {
     const enoughBalanceForTier = (tier: number) => contractsLoaded && Number(nftRegularPostPresalePrice[tier]) <= Number(usdcBalance);
     const enoughAllowanceForTier = (tier: number) => contractsLoaded && (Number(usdAllowance) >= Number(nftRegularPostPresalePrice[tier]));
 
-    const buyNFTHandler = (tier: number) => usdAllowance && nftRegularPostPresalePrice && nftContract && usdcContract && (Number(usdAllowance) >= Number(nftRegularPostPresalePrice[tier])) &&
-      executeContractHandler(setExecutionInProgress, () => nftContract.buy(tier, 1, referralAddress || AddressZero));
 
-    const approveSpendUsdcForNFTHandler = (tier: number) => usdAllowance && nftRegularPostPresalePrice && nftContract && usdcContract && Number(usdAllowance) < Number(nftRegularPostPresalePrice[tier]) &&
-      executeContractHandler(setExecutionInProgress, () => usdcContract.approve(nftContract.address, MaxUint256));
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedTier, setSelectedTier] = useState(0);
+    const handleModalOpen = (tier: number) => {
+      setIsModalOpen(true);
+      setSelectedTier(tier);
+      return true;
+    };
+    const handleModalClose = () => {
+      setIsModalOpen(false);
+      return true;
+    };
     const displayIfConnected = (priceData: string | null | undefined, unit = ' SAFE') =>
       <h1>{
         injectedWalletConnected ?
@@ -80,7 +86,8 @@ const Nft: NextPageWithLayout = () => {
 
     return (
       <PageContainer title='Buy NFT'>
-        <Grid grow gutter={'md'} align={'center'} justify={'space-between'} mt={'lg'} style={{ textAlign: 'center' }}>
+        {isModalOpen && <BuyNFTModal opened={isModalOpen} handleModalClose={handleModalClose} referralAddress={referralAddress} tier={selectedTier}/>}
+        <Grid grow gutter={'md'} align={'center'} justify={'space-between'} mt={'lg'} style={{ textAlign: 'center', filter: isModalOpen ? 'blur(5px)' : 'none'  }}>
           <Grid.Col span={12}>
             <InfoCard header='40% Discount ends in' maxWidth='400px'>
               <CardContentBox>
@@ -93,7 +100,7 @@ const Nft: NextPageWithLayout = () => {
               <InfoCard header={<TierHeader tier={tier + 1} />}>
                 <CardContentBox footer={(<FancyButton
                   style={{ height: '24px' }}
-                  onClick={() => !enoughAllowanceForTier(tier) ? approveSpendUsdcForNFTHandler(tier) : buyNFTHandler(tier)}
+                  onClick={() => handleModalOpen(tier)}
                   loading={executionInProgress}
                   disabled={!injectedWalletConnected || executionInProgress || !enoughBalanceForTier(tier)}>
                   {!contractsLoaded ? 'Buy' :
@@ -104,7 +111,7 @@ const Nft: NextPageWithLayout = () => {
                   safeNFTTotalSupply && (safeNFTTotalSupply[tier]) && typeof (safeNFTTotalSupply[tier]) == 'string'
                     ?
                     <Text color='#FFFFFF'
-                          size='xs'>${(parseInt(safeNFTTotalSupply[tier]) == 0 ? parseInt(safeNFTTotalSupply[tier]) : parseInt(safeNFTBalance[tier]) / parseInt(safeNFTTotalSupply[tier]) * 100).toFixed(5)}%
+                          size='xs'>{(parseInt(safeNFTTotalSupply[tier]) == 0 ? parseInt(safeNFTTotalSupply[tier]) : parseInt(safeNFTBalance[tier]) / parseInt(safeNFTTotalSupply[tier]) * 100).toFixed(5)}%
                       Ownership</Text> :
                     <Loader size='xs' color='#F5F5F5' />}
                   <FormattedAmount price={!(nftRegularPostPresalePrice) || nftRegularPostPresalePrice[tier]}

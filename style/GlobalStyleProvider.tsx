@@ -6,7 +6,6 @@ import type { FC, ReactNode } from 'react';
 export const GlobalStyleProvider: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <>
-      {/* <GlobalFonts />*/}
       <Global
         styles={
           {
