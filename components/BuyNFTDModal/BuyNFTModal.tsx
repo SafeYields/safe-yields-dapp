@@ -6,16 +6,11 @@ import { FC, useState } from 'react';
 import { executeContractHandler } from '../../handlers/executeContractHandler';
 import useFetchFromApi from '../../hooks/useFetchFromApi';
 import useNFTContract from '../../hooks/useNFTContract';
-import useNFTRewards from '../../hooks/useNFTRewards';
 import useSafeNFTBalance from '../../hooks/useSafeNFTBalance';
 import useSafeNFTTotalSupply from '../../hooks/useSafeNFTTotalSupply';
-import useSafeTokenAPR from '../../hooks/useSafeTokenAPR';
-import useSafeTokenBalance from '../../hooks/useSafeTokenBalance';
-import useSafeTokenPrice from '../../hooks/useSafeTokenPrice';
 import useUsdcAllowance from '../../hooks/useUsdcAllowance';
 import useUsdcBalance from '../../hooks/useUsdcBalance';
 import useUsdcContract from '../../hooks/useUsdcContract';
-import useWalletConnected from '../../hooks/useWalletConnected';
 import { transactionInProgressAtom } from '../Account/Account';
 import { FancyButton } from '../FancyButton';
 
@@ -45,15 +40,10 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
    }) => {
     const { classes, cx } = useStyles();
     const theme = useMantineTheme();
-    const injectedWalletConnected = useWalletConnected();
-    const safeTokenPrice = useSafeTokenPrice()?.data;
-    const safeTokenBalance = useSafeTokenBalance()?.data;
-    const NFTRewards = useNFTRewards()?.data;
     const nftRegularPostPresalePrice = useFetchFromApi('nft/price')?.data;
     const nftDiscountedPrice = useFetchFromApi('nft/presale-price')?.data;
     const safeNFTBalance = useSafeNFTBalance()?.data;
     const safeNFTTotalSupply = useSafeNFTTotalSupply()?.data;
-    const safeTokenAPR = useSafeTokenAPR()?.data;
     const nftContract = useNFTContract();
     const usdAllowance = useUsdcAllowance(nftContract?.address)?.data;
     const usdcBalance = useUsdcBalance()?.data;
