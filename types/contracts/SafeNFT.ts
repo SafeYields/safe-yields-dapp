@@ -47,6 +47,7 @@ export interface SafeNFTInterface extends utils.Interface {
     "claimReward(uint8,uint256)": FunctionFragment;
     "claimRewardsTotal()": FunctionFragment;
     "currentDistributionId()": FunctionFragment;
+    "currentlySoldInPresale(uint256)": FunctionFragment;
     "distributeProfit(uint256)": FunctionFragment;
     "distributionByTier(uint256,uint256)": FunctionFragment;
     "distributionOfProfit(uint256)": FunctionFragment;
@@ -61,6 +62,7 @@ export interface SafeNFTInterface extends utils.Interface {
     "getMyPendingRewardsTotal()": FunctionFragment;
     "getMyShareOfTreasury()": FunctionFragment;
     "getPendingRewards(address,uint8,uint256)": FunctionFragment;
+    "getPresaleNFTAvailable()": FunctionFragment;
     "getPrice(uint8)": FunctionFragment;
     "getPriceTable()": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
@@ -80,6 +82,7 @@ export interface SafeNFTInterface extends utils.Interface {
     "pause()": FunctionFragment;
     "paused()": FunctionFragment;
     "presale()": FunctionFragment;
+    "presaleMaxSupply(uint256)": FunctionFragment;
     "presalePrice(uint256,uint256)": FunctionFragment;
     "presaleStartDate()": FunctionFragment;
     "price(uint256)": FunctionFragment;
@@ -94,7 +97,9 @@ export interface SafeNFTInterface extends utils.Interface {
     "safeVault()": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
     "setDiscountedPriceTable(uint256[][])": FunctionFragment;
+    "setPresaleMaxSupply(uint256[4])": FunctionFragment;
     "setPresaleStartDate(uint256)": FunctionFragment;
+    "soldPerPresaleWeek(address,uint256,uint256)": FunctionFragment;
     "stabilizerWallet()": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "togglePresale()": FunctionFragment;
@@ -123,6 +128,7 @@ export interface SafeNFTInterface extends utils.Interface {
       | "claimReward"
       | "claimRewardsTotal"
       | "currentDistributionId"
+      | "currentlySoldInPresale"
       | "distributeProfit"
       | "distributionByTier"
       | "distributionOfProfit"
@@ -137,6 +143,7 @@ export interface SafeNFTInterface extends utils.Interface {
       | "getMyPendingRewardsTotal"
       | "getMyShareOfTreasury"
       | "getPendingRewards"
+      | "getPresaleNFTAvailable"
       | "getPrice"
       | "getPriceTable"
       | "getRoleAdmin"
@@ -156,6 +163,7 @@ export interface SafeNFTInterface extends utils.Interface {
       | "pause"
       | "paused"
       | "presale"
+      | "presaleMaxSupply"
       | "presalePrice"
       | "presaleStartDate"
       | "price"
@@ -170,7 +178,9 @@ export interface SafeNFTInterface extends utils.Interface {
       | "safeVault"
       | "setApprovalForAll"
       | "setDiscountedPriceTable"
+      | "setPresaleMaxSupply"
       | "setPresaleStartDate"
+      | "soldPerPresaleWeek"
       | "stabilizerWallet"
       | "supportsInterface"
       | "togglePresale"
@@ -253,6 +263,10 @@ export interface SafeNFTInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "currentlySoldInPresale",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "distributeProfit",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -311,6 +325,10 @@ export interface SafeNFTInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPresaleNFTAvailable",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getPrice",
@@ -406,6 +424,10 @@ export interface SafeNFTInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(functionFragment: "presale", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "presaleMaxSupply",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "presalePrice",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
@@ -468,8 +490,27 @@ export interface SafeNFTInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>[][]]
   ): string;
   encodeFunctionData(
+    functionFragment: "setPresaleMaxSupply",
+    values: [
+      [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ]
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setPresaleStartDate",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "soldPerPresaleWeek",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "stabilizerWallet",
@@ -542,6 +583,10 @@ export interface SafeNFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "currentlySoldInPresale",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "distributeProfit",
     data: BytesLike
   ): Result;
@@ -594,6 +639,10 @@ export interface SafeNFTInterface extends utils.Interface {
     functionFragment: "getPendingRewards",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getPresaleNFTAvailable",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getPrice", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getPriceTable",
@@ -637,6 +686,10 @@ export interface SafeNFTInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "presale", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "presaleMaxSupply",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "presalePrice",
     data: BytesLike
@@ -682,7 +735,15 @@ export interface SafeNFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setPresaleMaxSupply",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setPresaleStartDate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "soldPerPresaleWeek",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -937,6 +998,11 @@ export interface SafeNFT extends BaseContract {
 
     currentDistributionId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    currentlySoldInPresale(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -992,6 +1058,8 @@ export interface SafeNFT extends BaseContract {
       _distributionId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    getPresaleNFTAvailable(overrides?: CallOverrides): Promise<[BigNumber[]]>;
 
     getPrice(
       _tier: PromiseOrValue<BigNumberish>,
@@ -1099,6 +1167,11 @@ export interface SafeNFT extends BaseContract {
 
     presale(overrides?: CallOverrides): Promise<[boolean]>;
 
+    presaleMaxSupply(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     presalePrice(
       arg0: PromiseOrValue<BigNumberish>,
       arg1: PromiseOrValue<BigNumberish>,
@@ -1171,10 +1244,27 @@ export interface SafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setPresaleMaxSupply(
+      _presaleMaxSupply: [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     setPresaleStartDate(
       _launchDate: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    soldPerPresaleWeek(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     stabilizerWallet(overrides?: CallOverrides): Promise<[string]>;
 
@@ -1279,6 +1369,11 @@ export interface SafeNFT extends BaseContract {
 
   currentDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
 
+  currentlySoldInPresale(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   distributeProfit(
     _amountUSD: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1334,6 +1429,8 @@ export interface SafeNFT extends BaseContract {
     _distributionId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  getPresaleNFTAvailable(overrides?: CallOverrides): Promise<BigNumber[]>;
 
   getPrice(
     _tier: PromiseOrValue<BigNumberish>,
@@ -1441,6 +1538,11 @@ export interface SafeNFT extends BaseContract {
 
   presale(overrides?: CallOverrides): Promise<boolean>;
 
+  presaleMaxSupply(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   presalePrice(
     arg0: PromiseOrValue<BigNumberish>,
     arg1: PromiseOrValue<BigNumberish>,
@@ -1511,10 +1613,27 @@ export interface SafeNFT extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setPresaleMaxSupply(
+    _presaleMaxSupply: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   setPresaleStartDate(
     _launchDate: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  soldPerPresaleWeek(
+    arg0: PromiseOrValue<string>,
+    arg1: PromiseOrValue<BigNumberish>,
+    arg2: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   stabilizerWallet(overrides?: CallOverrides): Promise<string>;
 
@@ -1617,6 +1736,11 @@ export interface SafeNFT extends BaseContract {
 
     currentDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
 
+    currentlySoldInPresale(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1672,6 +1796,8 @@ export interface SafeNFT extends BaseContract {
       _distributionId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getPresaleNFTAvailable(overrides?: CallOverrides): Promise<BigNumber[]>;
 
     getPrice(
       _tier: PromiseOrValue<BigNumberish>,
@@ -1777,6 +1903,11 @@ export interface SafeNFT extends BaseContract {
 
     presale(overrides?: CallOverrides): Promise<boolean>;
 
+    presaleMaxSupply(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     presalePrice(
       arg0: PromiseOrValue<BigNumberish>,
       arg1: PromiseOrValue<BigNumberish>,
@@ -1847,10 +1978,27 @@ export interface SafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setPresaleMaxSupply(
+      _presaleMaxSupply: [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setPresaleStartDate(
       _launchDate: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    soldPerPresaleWeek(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     stabilizerWallet(overrides?: CallOverrides): Promise<string>;
 
@@ -2043,6 +2191,11 @@ export interface SafeNFT extends BaseContract {
 
     currentDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
 
+    currentlySoldInPresale(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -2098,6 +2251,8 @@ export interface SafeNFT extends BaseContract {
       _distributionId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getPresaleNFTAvailable(overrides?: CallOverrides): Promise<BigNumber>;
 
     getPrice(
       _tier: PromiseOrValue<BigNumberish>,
@@ -2205,6 +2360,11 @@ export interface SafeNFT extends BaseContract {
 
     presale(overrides?: CallOverrides): Promise<BigNumber>;
 
+    presaleMaxSupply(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     presalePrice(
       arg0: PromiseOrValue<BigNumberish>,
       arg1: PromiseOrValue<BigNumberish>,
@@ -2275,9 +2435,26 @@ export interface SafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setPresaleMaxSupply(
+      _presaleMaxSupply: [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     setPresaleStartDate(
       _launchDate: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    soldPerPresaleWeek(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     stabilizerWallet(overrides?: CallOverrides): Promise<BigNumber>;
@@ -2388,6 +2565,11 @@ export interface SafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    currentlySoldInPresale(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -2449,6 +2631,10 @@ export interface SafeNFT extends BaseContract {
       _user: PromiseOrValue<string>,
       _tier: PromiseOrValue<BigNumberish>,
       _distributionId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getPresaleNFTAvailable(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2562,6 +2748,11 @@ export interface SafeNFT extends BaseContract {
 
     presale(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    presaleMaxSupply(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     presalePrice(
       arg0: PromiseOrValue<BigNumberish>,
       arg1: PromiseOrValue<BigNumberish>,
@@ -2634,9 +2825,26 @@ export interface SafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    setPresaleMaxSupply(
+      _presaleMaxSupply: [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     setPresaleStartDate(
       _launchDate: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    soldPerPresaleWeek(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     stabilizerWallet(overrides?: CallOverrides): Promise<PopulatedTransaction>;

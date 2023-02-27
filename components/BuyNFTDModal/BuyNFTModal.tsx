@@ -7,7 +7,7 @@ import { executeContractHandler } from '../../handlers/executeContractHandler';
 import useFetchFromApi from '../../hooks/useFetchFromApi';
 import useNFTContract from '../../hooks/useNFTContract';
 import useSafeNFTBalance from '../../hooks/useSafeNFTBalance';
-import useSafeNFTTotalSupply from '../../hooks/useSafeNFTTotalSupply';
+import useSafeNFTOwnership from '../../hooks/useSafeNFTOnwership';
 import useUsdcAllowance from '../../hooks/useUsdcAllowance';
 import useUsdcBalance from '../../hooks/useUsdcBalance';
 import useUsdcContract from '../../hooks/useUsdcContract';
@@ -43,26 +43,27 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
     const nftRegularPostPresalePrice = useFetchFromApi('nft/price')?.data;
     const nftDiscountedPrice = useFetchFromApi('nft/presale-price')?.data;
     const safeNFTBalance = useSafeNFTBalance()?.data;
-    const safeNFTTotalSupply = useSafeNFTTotalSupply()?.data;
     const nftContract = useNFTContract();
     const usdAllowance = useUsdcAllowance(nftContract?.address)?.data;
     const usdcBalance = useUsdcBalance()?.data;
     const usdcContract = useUsdcContract();
+    const safeNFTOwnership = useSafeNFTOwnership();
     const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
     const [quantity, setQuantity] = useState(1);
-
-    const handleIncrease = () => setQuantity(quantity + 1);
+    const presaleNFAvailable =  useFetchFromApi('nft/available')?.data;
+    const maxQuantity = presaleNFAvailable && !isNaN(presaleNFAvailable) ? Math.min(10, parseInt(presaleNFAvailable[tier])) : 10;
+    const handleIncrease = () => setQuantity(quantity < maxQuantity ? quantity + 1 : maxQuantity);
     const handleDecrease = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
 
     const totalPrice = (parseFloat(nftDiscountedPrice[tier]) * quantity).toFixed(2);
-    const balanceIfPurchased = safeNFTBalance ? (parseInt(safeNFTBalance[tier]) + quantity) : 0;
-    const totalSupplyOfTierIfPurchased = safeNFTTotalSupply ? parseInt(safeNFTTotalSupply[tier]) + quantity : 0;
-    const ownershipIfPurchased = (balanceIfPurchased / totalSupplyOfTierIfPurchased * 100).toFixed(5);
+    // const balanceIfPurchased = safeNFTBalance ? (parseInt(safeNFTBalance[tier]) + quantity) : 0;
+    // const totalSupplyOfTierIfPurchased = safeNFTTotalSupply ? parseInt(safeNFTTotalSupply[tier]) + quantity : 0;
+    // const ownershipIfPurchased = (balanceIfPurchased / totalSupplyOfTierIfPurchased * 100).toFixed(5);
+    const ownershipIfPurchased = (safeNFTOwnership[tier] * quantity).toFixed(5);
 
     const contractsLoaded = !!nftRegularPostPresalePrice && !!usdcBalance && !!usdAllowance;
-
-    const enoughBalanceForTier = (tier: number) => contractsLoaded && Number(nftRegularPostPresalePrice[tier]) <= Number(usdcBalance);
-    const enoughAllowanceForTier = (tier: number) => contractsLoaded && (Number(usdAllowance) >= Number(nftRegularPostPresalePrice[tier]));
+    const enoughBalanceForTier = (tier: number) => contractsLoaded && Number(nftDiscountedPrice[tier]) * quantity <= Number(usdcBalance);
+    const enoughAllowanceForTier = (tier: number) => contractsLoaded && (Number(usdAllowance) >= Number(nftDiscountedPrice[tier]) * quantity);
 
     const buyNFTHandler = (tier: number) => usdAllowance && nftRegularPostPresalePrice && nftContract && usdcContract && (Number(usdAllowance) >= Number(nftRegularPostPresalePrice[tier])) &&
       executeContractHandler(setExecutionInProgress, () => nftContract.buy(tier, quantity, referralAddress || AddressZero));
@@ -83,7 +84,8 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
           <Grid.Col span={2}>
             <Box className={cx(classes.nftIconContainer)}>
               <Image src={'/assets/nft-icon.png'} alt='NFT icon' fit='contain' />
-              <Text size='sm' color={theme.colors.veryDarkGreen[0]} style={{ fontWeight: 700 }}>Tier{` ${tier+1}`}</Text>
+              <Text size='sm' color={theme.colors.veryDarkGreen[0]}
+                    style={{ fontWeight: 700 }}>Tier{` ${tier + 1}`}</Text>
             </Box>
           </Grid.Col>
           <Grid.Col span={10}>
