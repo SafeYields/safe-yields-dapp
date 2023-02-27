@@ -9,15 +9,10 @@ import { CardContentBox } from 'components/InfoCard/CardContentBox';
 import { PageContainer } from 'components/PageContainer';
 import useFetchFromApi from 'hooks/useFetchFromApi';
 import useNFTContract from 'hooks/useNFTContract';
-import useNFTRewards from 'hooks/useNFTRewards';
 import useSafeNFTBalance from 'hooks/useSafeNFTBalance';
 import useSafeNFTTotalSupply from 'hooks/useSafeNFTTotalSupply';
-import useSafeTokenAPR from 'hooks/useSafeTokenAPR';
-import useSafeTokenBalance from 'hooks/useSafeTokenBalance';
-import useSafeTokenPrice from 'hooks/useSafeTokenPrice';
 import useUsdcAllowance from 'hooks/useUsdcAllowance';
 import useUsdcBalance from 'hooks/useUsdcBalance';
-import useUsdcContract from 'hooks/useUsdcContract';
 import useWalletConnected from 'hooks/useWalletConnected';
 import { useAtom } from 'jotai';
 import { AppLayout } from 'layout';
@@ -40,18 +35,13 @@ const TierHeader: FC<{ tier: number }> = (props) =>
 const Nft: NextPageWithLayout = () => {
     const router = useRouter();
     const injectedWalletConnected = useWalletConnected();
-    const safeTokenPrice = useSafeTokenPrice()?.data;
-    const safeTokenBalance = useSafeTokenBalance()?.data;
-    const NFTRewards = useNFTRewards()?.data;
     const nftRegularPostPresalePrice = useFetchFromApi('nft/price')?.data;
     const nftDiscountedPrice = useFetchFromApi('nft/presale-price')?.data;
     const safeNFTBalance = useSafeNFTBalance()?.data;
     const safeNFTTotalSupply = useSafeNFTTotalSupply()?.data;
-    const safeTokenAPR = useSafeTokenAPR()?.data;
     const nftContract = useNFTContract();
     const usdAllowance = useUsdcAllowance(nftContract?.address)?.data;
     const usdcBalance = useUsdcBalance()?.data;
-    const usdcContract = useUsdcContract();
     const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
 
     const contractsLoaded = !!nftRegularPostPresalePrice && !!usdcBalance && !!usdAllowance;
@@ -76,18 +66,13 @@ const Nft: NextPageWithLayout = () => {
       setIsModalOpen(false);
       return true;
     };
-    const displayIfConnected = (priceData: string | null | undefined, unit = ' SAFE') =>
-      <h1>{
-        injectedWalletConnected ?
-          priceData ? priceData.concat(unit) :
-            <Loader size='lg' color='#F5F5F5' /> : '⸻'}
-      </h1>;
-
-
     return (
       <PageContainer title='Buy NFT'>
-        {isModalOpen && <BuyNFTModal opened={isModalOpen} handleModalClose={handleModalClose} referralAddress={referralAddress} tier={selectedTier}/>}
-        <Grid grow gutter={'md'} align={'center'} justify={'space-between'} mt={'lg'} style={{ textAlign: 'center', filter: isModalOpen ? 'blur(5px)' : 'none'  }}>
+        {isModalOpen &&
+          <BuyNFTModal opened={isModalOpen} handleModalClose={handleModalClose} referralAddress={referralAddress}
+                       tier={selectedTier} />}
+        <Grid grow gutter={'md'} align={'center'} justify={'space-between'} mt={'lg'}
+              style={{ textAlign: 'center', filter: isModalOpen ? 'blur(5px)' : 'none' }}>
           <Grid.Col span={12}>
             <InfoCard header='40% Discount ends in' maxWidth='400px'>
               <CardContentBox>
