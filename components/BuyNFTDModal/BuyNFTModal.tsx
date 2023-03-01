@@ -60,10 +60,10 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
     const enoughBalanceForTier = (tier: number) => contractsLoaded && Number(nftDiscountedPrice[tier]) * quantity <= Number(usdcBalance);
     const enoughAllowanceForTier = (tier: number) => contractsLoaded && (Number(usdAllowance) >= Number(nftDiscountedPrice[tier]) * quantity);
 
-    const buyNFTHandler = (tier: number) => usdAllowance && nftRegularPostPresalePrice && nftContract && usdcContract && (Number(usdAllowance) >= Number(nftRegularPostPresalePrice[tier])) &&
+    const buyNFTHandler = (tier: number) => usdAllowance && nftDiscountedPrice && nftContract && usdcContract && (Number(usdAllowance) >= Number(nftDiscountedPrice[tier])) &&
       handleModalClose() && executeContractHandler(setExecutionInProgress, () =>  nftContract.buy(tier, quantity, referralAddress || AddressZero));
 
-    const approveSpendUsdcForNFTHandler = (tier: number) => usdAllowance && nftRegularPostPresalePrice && nftContract && usdcContract && Number(usdAllowance) < Number(nftRegularPostPresalePrice[tier]) &&
+    const approveSpendUsdcForNFTHandler = (tier: number) => usdAllowance && nftDiscountedPrice && nftContract && usdcContract && Number(usdAllowance) < Number(nftDiscountedPrice[tier]) &&
       executeContractHandler(setExecutionInProgress, () => usdcContract.approve(nftContract.address, MaxUint256));
 
     return (
