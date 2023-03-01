@@ -70,7 +70,7 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
     const enoughAllowanceForTier = (tier: number) => contractsLoaded && (Number(usdAllowance) >= Number(nftDiscountedPrice[tier]) * quantity);
 
     const buyNFTHandler = (tier: number) => usdAllowance && nftRegularPostPresalePrice && nftContract && usdcContract && (Number(usdAllowance) >= Number(nftRegularPostPresalePrice[tier])) &&
-      executeContractHandler(setExecutionInProgress, () => nftContract.buy(tier, quantity, referralAddress || AddressZero));
+      handleModalClose() && executeContractHandler(setExecutionInProgress, () =>  nftContract.buy(tier, quantity, referralAddress || AddressZero));
 
     const approveSpendUsdcForNFTHandler = (tier: number) => usdAllowance && nftRegularPostPresalePrice && nftContract && usdcContract && Number(usdAllowance) < Number(nftRegularPostPresalePrice[tier]) &&
       executeContractHandler(setExecutionInProgress, () => usdcContract.approve(nftContract.address, MaxUint256));
@@ -134,7 +134,7 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
         <FancyButton style={{ height: '24px', position: 'fixed', bottom: '15px', right: '30px' }}
                      loading={executionInProgress}
                      disabled={executionInProgress || !enoughBalanceForTier(tier) || !presaleNFTAvailableForTier(tier)}
-                     onClick={() => !enoughAllowanceForTier(tier) ? approveSpendUsdcForNFTHandler(tier) : handleModalClose() && buyNFTHandler(tier)}>
+                     onClick={() => !enoughAllowanceForTier(tier) ? approveSpendUsdcForNFTHandler(tier) : buyNFTHandler(tier)}>
           {!contractsLoaded ? 'Buy' :
             !enoughBalanceForTier(tier) ? 'No balance' : !enoughAllowanceForTier(tier) ? 'Approve' : 'Buy'
           }</FancyButton>
