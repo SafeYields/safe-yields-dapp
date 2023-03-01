@@ -10,7 +10,7 @@ type ChainConfig = {
   addresses: {
     treasury: string;
     management: string;
-    busd: string;
+    usdc: string;
     safe: string;
     vault: string;
     nft: string;
@@ -22,47 +22,47 @@ type ChainsConfig = Record<number, ChainConfig>;
 
 const envChainId = process.env.NEXT_PUBLIC_CHAIN_ID;
 if (envChainId === undefined) {
-  throw new Error('CHAIN_ID is not defined');
+  throw new Error('NEXT_PUBLIC_CHAIN_ID is not defined');
 }
 export const supportedChainId = parseInt(envChainId, 10);
 
 const config: ChainsConfig = {
-  56: {
-    chainName: 'Binance Smart Chain',
-    chainId: 56,
-    chainShortName: 'BSC',
-    rpcUrls: ['https://bsc-dataseed.binance.org/', 'https://frosty-compatible-spring.bsc.discover.quiknode.pro/'],
+  42161: {
+    chainName: 'Arbitrum Mainnet',
+    chainId: 42161,
+    chainShortName: 'Arbitrum',
+    rpcUrls: ['https://arb1.arbitrum.io/' || process.env.NEXT_PUBLIC_MAINNET_URL],
     nativeCurrency: {
-      name: 'BNB',
-      symbol: 'BNB',
+      name: 'Ethereum',
+      symbol: 'ETH',
       decimals: 18,
     },
-    blockExplorerUrls: ['https://bscscan.com/'],
+    blockExplorerUrls: ['https://arbiscan.com/'],
     addresses: {
       treasury: '',
       management: '',
-      busd: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+      usdc: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
       safe: '',
       vault: '',
       nft: '',
     },
   },
-  97:
+  421613:
     {
-      chainName: 'Binance Smart Chain Testnet',
-      chainId: 97,
-      chainShortName: 'BSC',
-      rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/', 'https://nd-857-662-920.p2pify.com/045f60a37f84045653ad2e32c6c2d637'],
+      chainName: 'Arbitrum Goerli Testnet',
+      chainId: 421613,
+      chainShortName: 'Goerli',
+      rpcUrls: ['https://goerli-rollup.arbitrum.io/' || process.env.NEXT_PUBLIC_TESTNET_URL],
       nativeCurrency: {
-        name: 'TBNB',
-        symbol: 'TBNB',
+        name: 'Ethereum',
+        symbol: 'ETH',
         decimals: 18,
       },
-      blockExplorerUrls: ['https://testnet.bscscan.com/'],
+      blockExplorerUrls: ['https://testnet.arbiscan.com/'],
       addresses: {
         treasury: '0xBF89e2e63e471cC29Da80bcD661342A9935982A8',
         management: '0xf2c1FE530d9c1686950F33d1B47d8B9474D92965',
-        busd: '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
+        usdc: '0x179522635726710dd7d2035a81d856de4aa7836c',
         safe: '0xF3c420B081422C51533150664Fc8F2fb77E39296',
         vault: '0x3Eca9FeB89C04F5B75bDAf72961f97B4D66fE68e',
         nft: '0x5735205Db896c63B97F9090b0A852682F4a5635B',
@@ -73,17 +73,17 @@ const config: ChainsConfig = {
       chainName: 'Localhost',
       chainId: 1337,
       chainShortName: 'HH',
-      rpcUrls: ['http://localhost:8545'],
+      rpcUrls: ['http://127.0.0.1:8545/'],
       nativeCurrency: {
-        name: 'BNB',
-        symbol: 'BNB',
+        name: 'Ethereum',
+        symbol: 'ETH',
         decimals: 18,
       },
       blockExplorerUrls: [],
       addresses: {
         treasury: '0xBF89e2e63e471cC29Da80bcD661342A9935982A8',
         management: '0xf2c1FE530d9c1686950F33d1B47d8B9474D92965',
-        busd: '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
+        usdc: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
         safe: '0xF3c420B081422C51533150664Fc8F2fb77E39296',
         vault: '0x3Eca9FeB89C04F5B75bDAf72961f97B4D66fE68e',
         nft: '0x5735205Db896c63B97F9090b0A852682F4a5635B',

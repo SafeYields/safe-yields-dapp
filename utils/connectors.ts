@@ -1,8 +1,6 @@
 import { initializeConnector, Web3ReactHooks } from '@web3-react/core';
 import { MetaMask } from '@web3-react/metamask';
-import { Network } from '@web3-react/network';
 import { Connector } from '@web3-react/types';
-import { chainConfig, urlMap } from 'config/chainConfig';
 
 export enum ConnectionType {
   INJECTED = 'INJECTED',
@@ -35,25 +33,11 @@ export const [metaMask, hooksMetamask] = initializeConnector<MetaMask>((actions)
   onError: onMetamaskError,
 }));
 
-export const [network, hooksNetwork] = initializeConnector<Network>((actions) => new Network({
-  actions,
-  urlMap,
-  defaultChainId: chainConfig.chainId,
-}));
-
 export const injectedConnection: Connection = {
   connector: metaMask,
   hooks: hooksMetamask,
   type: ConnectionType.INJECTED,
 };
-
-export const networkConnection: Connection = {
-  connector: network,
-  hooks: hooksNetwork,
-  type: ConnectionType.NETWORK,
-};
-
-
 export function getIsInjected(): boolean {
   return Boolean(window.ethereum);
 }
@@ -64,7 +48,6 @@ export function getIsMetaMask(): boolean {
 
 export const CONNECTIONS = [
   injectedConnection,
-  networkConnection,
 ];
 
 export const connectors: [Connector, Web3ReactHooks][] = CONNECTIONS.map(({ hooks, connector }) => [connector, hooks]);
@@ -81,8 +64,6 @@ export function getConnection(c: Connector | ConnectionType) {
     switch (c) {
       case ConnectionType.INJECTED:
         return injectedConnection;
-      case ConnectionType.NETWORK:
-        return networkConnection;
     }
   }
 }

@@ -33,12 +33,14 @@ export interface ISafeNFTInterface extends utils.Interface {
   functions: {
     "balanceOf(address,uint256)": FunctionFragment;
     "balanceOfBatch(address[],uint256[])": FunctionFragment;
-    "buy(uint8,uint256)": FunctionFragment;
+    "buy(uint8,uint256,address)": FunctionFragment;
     "claimReward(uint8,uint256)": FunctionFragment;
     "claimRewardsTotal()": FunctionFragment;
     "currentDistributionId()": FunctionFragment;
     "distributeProfit(uint256)": FunctionFragment;
     "getBalanceTable(address)": FunctionFragment;
+    "getCurrentPresaleWeek()": FunctionFragment;
+    "getDiscountedPriceTable()": FunctionFragment;
     "getFairPrice(uint8)": FunctionFragment;
     "getFairPriceTable()": FunctionFragment;
     "getMyBalanceTable()": FunctionFragment;
@@ -46,13 +48,17 @@ export interface ISafeNFTInterface extends utils.Interface {
     "getMyShareOfTreasury()": FunctionFragment;
     "getPendingRewards(address,uint8,uint256)": FunctionFragment;
     "getPrice(uint8)": FunctionFragment;
+    "getPriceTable()": FunctionFragment;
     "getTreasuryCost()": FunctionFragment;
     "getUnclaimedRewards()": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "safeTransferFrom(address,address,uint256,uint256,bytes)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
+    "setDiscountedPriceTable(uint256[][])": FunctionFragment;
+    "setPresaleStartDate(uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
+    "togglePresale()": FunctionFragment;
   };
 
   getFunction(
@@ -65,6 +71,8 @@ export interface ISafeNFTInterface extends utils.Interface {
       | "currentDistributionId"
       | "distributeProfit"
       | "getBalanceTable"
+      | "getCurrentPresaleWeek"
+      | "getDiscountedPriceTable"
       | "getFairPrice"
       | "getFairPriceTable"
       | "getMyBalanceTable"
@@ -72,13 +80,17 @@ export interface ISafeNFTInterface extends utils.Interface {
       | "getMyShareOfTreasury"
       | "getPendingRewards"
       | "getPrice"
+      | "getPriceTable"
       | "getTreasuryCost"
       | "getUnclaimedRewards"
       | "isApprovedForAll"
       | "safeBatchTransferFrom"
       | "safeTransferFrom"
       | "setApprovalForAll"
+      | "setDiscountedPriceTable"
+      | "setPresaleStartDate"
       | "supportsInterface"
+      | "togglePresale"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -91,7 +103,11 @@ export interface ISafeNFTInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "buy",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "claimReward",
@@ -112,6 +128,14 @@ export interface ISafeNFTInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getBalanceTable",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getCurrentPresaleWeek",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getDiscountedPriceTable",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getFairPrice",
@@ -144,6 +168,10 @@ export interface ISafeNFTInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getPrice",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPriceTable",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getTreasuryCost",
@@ -182,8 +210,20 @@ export interface ISafeNFTInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
+    functionFragment: "setDiscountedPriceTable",
+    values: [PromiseOrValue<BigNumberish>[][]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setPresaleStartDate",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "togglePresale",
+    values?: undefined
   ): string;
 
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -213,6 +253,14 @@ export interface ISafeNFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getCurrentPresaleWeek",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getDiscountedPriceTable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getFairPrice",
     data: BytesLike
   ): Result;
@@ -238,6 +286,10 @@ export interface ISafeNFTInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getPrice", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "getPriceTable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getTreasuryCost",
     data: BytesLike
   ): Result;
@@ -262,18 +314,32 @@ export interface ISafeNFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setDiscountedPriceTable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setPresaleStartDate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "supportsInterface",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "togglePresale",
     data: BytesLike
   ): Result;
 
   events: {
     "ApprovalForAll(address,address,bool)": EventFragment;
+    "TogglePresale(bool)": EventFragment;
     "TransferBatch(address,address,address,uint256[],uint256[])": EventFragment;
     "TransferSingle(address,address,address,uint256,uint256)": EventFragment;
     "URI(string,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "ApprovalForAll"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TogglePresale"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TransferBatch"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TransferSingle"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "URI"): EventFragment;
@@ -290,6 +356,16 @@ export type ApprovalForAllEvent = TypedEvent<
 >;
 
 export type ApprovalForAllEventFilter = TypedEventFilter<ApprovalForAllEvent>;
+
+export interface TogglePresaleEventObject {
+  _status: boolean;
+}
+export type TogglePresaleEvent = TypedEvent<
+  [boolean],
+  TogglePresaleEventObject
+>;
+
+export type TogglePresaleEventFilter = TypedEventFilter<TogglePresaleEvent>;
 
 export interface TransferBatchEventObject {
   operator: string;
@@ -369,6 +445,7 @@ export interface ISafeNFT extends BaseContract {
     buy(
       _tier: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
+      _referral: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -394,6 +471,10 @@ export interface ISafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber[]]>;
 
+    getCurrentPresaleWeek(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getDiscountedPriceTable(overrides?: CallOverrides): Promise<[BigNumber[]]>;
+
     getFairPrice(
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -418,6 +499,8 @@ export interface ISafeNFT extends BaseContract {
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    getPriceTable(overrides?: CallOverrides): Promise<[BigNumber[]]>;
 
     getTreasuryCost(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -453,10 +536,24 @@ export interface ISafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setDiscountedPriceTable(
+      _presalePrice: PromiseOrValue<BigNumberish>[][],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setPresaleStartDate(
+      launchDate: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    togglePresale(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   balanceOf(
@@ -474,6 +571,7 @@ export interface ISafeNFT extends BaseContract {
   buy(
     _tier: PromiseOrValue<BigNumberish>,
     _amount: PromiseOrValue<BigNumberish>,
+    _referral: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -499,6 +597,10 @@ export interface ISafeNFT extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber[]>;
 
+  getCurrentPresaleWeek(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getDiscountedPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
+
   getFairPrice(
     _tier: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -523,6 +625,8 @@ export interface ISafeNFT extends BaseContract {
     _tier: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  getPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
 
   getTreasuryCost(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -558,10 +662,24 @@ export interface ISafeNFT extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setDiscountedPriceTable(
+    _presalePrice: PromiseOrValue<BigNumberish>[][],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setPresaleStartDate(
+    launchDate: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   supportsInterface(
     interfaceId: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  togglePresale(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   callStatic: {
     balanceOf(
@@ -579,6 +697,7 @@ export interface ISafeNFT extends BaseContract {
     buy(
       _tier: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
+      _referral: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -601,6 +720,10 @@ export interface ISafeNFT extends BaseContract {
       _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber[]>;
+
+    getCurrentPresaleWeek(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getDiscountedPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
 
     getFairPrice(
       _tier: PromiseOrValue<BigNumberish>,
@@ -626,6 +749,8 @@ export interface ISafeNFT extends BaseContract {
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getPriceTable(overrides?: CallOverrides): Promise<BigNumber[]>;
 
     getTreasuryCost(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -661,10 +786,22 @@ export interface ISafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setDiscountedPriceTable(
+      _presalePrice: PromiseOrValue<BigNumberish>[][],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setPresaleStartDate(
+      launchDate: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    togglePresale(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -678,6 +815,9 @@ export interface ISafeNFT extends BaseContract {
       operator?: PromiseOrValue<string> | null,
       approved?: null
     ): ApprovalForAllEventFilter;
+
+    "TogglePresale(bool)"(_status?: null): TogglePresaleEventFilter;
+    TogglePresale(_status?: null): TogglePresaleEventFilter;
 
     "TransferBatch(address,address,address,uint256[],uint256[])"(
       operator?: PromiseOrValue<string> | null,
@@ -732,6 +872,7 @@ export interface ISafeNFT extends BaseContract {
     buy(
       _tier: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
+      _referral: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -757,6 +898,10 @@ export interface ISafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getCurrentPresaleWeek(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getDiscountedPriceTable(overrides?: CallOverrides): Promise<BigNumber>;
+
     getFairPrice(
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -781,6 +926,8 @@ export interface ISafeNFT extends BaseContract {
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getPriceTable(overrides?: CallOverrides): Promise<BigNumber>;
 
     getTreasuryCost(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -816,9 +963,23 @@ export interface ISafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setDiscountedPriceTable(
+      _presalePrice: PromiseOrValue<BigNumberish>[][],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setPresaleStartDate(
+      launchDate: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    togglePresale(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
@@ -838,6 +999,7 @@ export interface ISafeNFT extends BaseContract {
     buy(
       _tier: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
+      _referral: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -862,6 +1024,14 @@ export interface ISafeNFT extends BaseContract {
 
     getBalanceTable(
       _user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getCurrentPresaleWeek(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getDiscountedPriceTable(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -893,6 +1063,8 @@ export interface ISafeNFT extends BaseContract {
       _tier: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    getPriceTable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getTreasuryCost(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -930,9 +1102,23 @@ export interface ISafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    setDiscountedPriceTable(
+      _presalePrice: PromiseOrValue<BigNumberish>[][],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setPresaleStartDate(
+      launchDate: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    togglePresale(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

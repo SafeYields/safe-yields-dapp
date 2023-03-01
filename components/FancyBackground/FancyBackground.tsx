@@ -127,17 +127,19 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
         enter: 700,
         exit: 500,
       }}>
-        <GalaxyBackground starCount={100} rotationSpeed={0.05} bgColor={'transparent'} minSize={0.3} maxSize={2}
+           <GalaxyBackground starCount={100} rotationSpeed={0.05} bgColor={'transparent'} minSize={0.3} maxSize={2}
                           innerRadius={150}>
+        <>
           <Image
             src='/assets/boreal1.svg'
+            alt='glowing boreal'
             className={classes.glowingBoreal}
           />
           <div
             style={{
               left: 50,
               top: 50,
-              width: 800,
+              width: '70vw',
               opacity: 0.7,
               marginLeft: 'auto',
               marginRight: 'auto',
@@ -145,11 +147,13 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
             }}>
             <Image
               src='/assets/boreal2.svg'
+              alt='glowing boreal'
               className={classes.unGlowingBoreal}
             />
           </div>
           {children}
-        </GalaxyBackground>
+        </>
+           </GalaxyBackground>
       </CSSTransition>
     </SwitchTransition>
   );

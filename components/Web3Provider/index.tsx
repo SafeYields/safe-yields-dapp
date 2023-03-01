@@ -8,8 +8,6 @@ import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
 import useEagerlyConnect from 'hooks/useEagerlyConnect';
 import { ReactNode, useEffect, useMemo } from 'react';
 
-
-
 export default function Web3Provider({ children }: { children: ReactNode }) {
   useEagerlyConnect();
 

@@ -8,7 +8,7 @@ export default function useNetworkBlockNumber() {
     provider ? ['BlockNumber'] : null,
     () => provider?.getBlock('latest'),
     {
-      refreshInterval: 10 * 1000,
+      refreshInterval: 3 * 1000,
     },
   );
 }

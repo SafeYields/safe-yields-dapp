@@ -1,13 +1,12 @@
-import { keyframes } from '@emotion/react';
 import { ActionIcon, AppShell, Box, CloseButton, Drawer, MediaQuery } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { FancyBackground } from 'components/FancyBackground';
 import type { CustomLayout } from 'next';
 import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
 // @ts-ignore
 import { Menu2 } from 'tabler-icons-react';
 
-import { FancyBackground } from '../../components/FancyBackground';
 import { LayoutErrorBoundary } from '../LayoutErrorBoundary';
 import { HeaderNav } from './HeaderNav';
 import { SideNav } from './SideNav';
@@ -23,17 +22,6 @@ import { SideNav } from './SideNav';
 // });
 
 
-const slide = keyframes`
-  100% {
-    left: 0;
-    opacity: 1;
-  }
-  0% {
-    left: 0;
-    opacity: 0;
-  }
-`;
-
 export const AppLayout: CustomLayout = (page) => {
   const [opened, handlers] = useDisclosure(false);
   return (
@@ -45,7 +33,11 @@ export const AppLayout: CustomLayout = (page) => {
             minHeight: '100vh',
             maxWidth: '100vw',
             overflowX: 'hidden',
-            background: 'url(/assets/background.jpg) fixed',
+            // background: 'url(/assets/background.jpg) fixed',
+            backgroundImage: 'url(/assets/background.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
           },
           main: {
             padding: 0,

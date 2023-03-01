@@ -18,6 +18,7 @@
     "paths": {
       "@config": ["config/*"],
       "@components": ["components/*"],
+      "@hooks": ["hooks/*"],
       "@contractTypes/*": ["types/*"],
       "@utils/*": ["utils/*"]
     }

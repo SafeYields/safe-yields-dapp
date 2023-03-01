@@ -1,5 +1,5 @@
 import { SafeToken } from '@contractTypes/contracts';
-import { parseBalance } from '@utils/web3utils';
+import { fromWeiToString } from '@utils/web3utils';
 import useSWR from 'swr';
 
 import SafeTokenAbi from '../artifacts/contracts/SafeToken.sol/SafeToken.json';
@@ -13,7 +13,7 @@ const useSafeTokenPrice = (suspense = false) => {
   const result = useSWR(
     shouldFetch ? ['TokenBalance'] : null,
     async () => {
-      return safeTokenContract ? parseBalance(await safeTokenContract.price()) : null;
+      return safeTokenContract ? fromWeiToString(await safeTokenContract.price(), 6) : null;
     },
     {
       suspense,
