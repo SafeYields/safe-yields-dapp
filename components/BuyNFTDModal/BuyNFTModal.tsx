@@ -20,15 +20,6 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       color: theme.colors.veryDarkGreen[0],
       textAlign: 'center',
     },
-    // nftIconContainer: {
-    //   width: '94.03px',
-    //   height: '113.62px',
-    //   // background: 'linear-gradient(180deg, #D9D9D9 9.78%, rgba(217, 217, 217, 0) 89.67%)',
-    //   borderRadius: '10px',
-    //   justifyContent: 'center',
-    //   textAlign: 'center',
-    //   align: 'center'
-    // },
   };
 });
 

@@ -82,7 +82,7 @@ const Nft: NextPageWithLayout = () => {
           </Grid.Col>
           {[0, 1, 2, 3].map((tier) => (
             <Grid.Col span={3} key={tier}>
-              <InfoCard header={<TierHeader tier={tier + 1}/>} background ={`url(assets/nft-icon-${tier + 1}.png) center/cover no-repeat`}>
+              <InfoCard header={<TierHeader tier={tier + 1}/>} background={safeNFTBalance && parseInt(safeNFTBalance[tier]) ? `url(assets/nft-icon-${tier + 1}.png) center/cover no-repeat` : undefined}>
                 <CardContentBox footer={(<FancyButton
                   style={{ height: '24px' }}
                   onClick={() => handleModalOpen(tier)}
