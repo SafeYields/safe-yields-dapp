@@ -42,7 +42,7 @@ const Nft: NextPageWithLayout = () => {
     const nftContract = useNFTContract();
     const usdAllowance = useUsdcAllowance(nftContract?.address)?.data;
     const usdcBalance = useUsdcBalance()?.data;
-    const presaleNFAvailable =  useFetchFromApi('nft/available')?.data;
+    const presaleNFTAvailable =  useFetchFromApi('nft/available')?.data;
     const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
 
     const contractsLoaded = !!nftRegularPostPresalePrice && !!usdcBalance && !!usdAllowance;
@@ -52,8 +52,8 @@ const Nft: NextPageWithLayout = () => {
     const referralAddress = whoReferred && isAddress(whoReferred as string) ? whoReferred as string : undefined;
     console.log('referralAddress', referralAddress);
 
-    const enoughBalanceForTier = (tier: number) => contractsLoaded && Number(nftRegularPostPresalePrice[tier]) <= Number(usdcBalance);
-    const presaleNFAvailableForTier = (tier: number) => contractsLoaded && presaleNFAvailable && parseInt(presaleNFAvailable[tier]) > 0
+    const enoughBalanceForTier = (tier: number) => contractsLoaded && Number(nftDiscountedPrice[tier]) <= Number(usdcBalance);
+    const presaleNFTAvailableForTier = (tier: number) => contractsLoaded && presaleNFTAvailable && parseInt(presaleNFTAvailable[tier]) > 0
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedTier, setSelectedTier] = useState(0);
@@ -82,14 +82,14 @@ const Nft: NextPageWithLayout = () => {
           </Grid.Col>
           {[0, 1, 2, 3].map((tier) => (
             <Grid.Col span={3} key={tier}>
-              <InfoCard header={<TierHeader tier={tier + 1} />}>
+              <InfoCard header={<TierHeader tier={tier + 1}/>} background ={`url(assets/nft-icon-${tier + 1}.png) center/cover no-repeat`}>
                 <CardContentBox footer={(<FancyButton
                   style={{ height: '24px' }}
                   onClick={() => handleModalOpen(tier)}
                   loading={executionInProgress}
-                  disabled={!injectedWalletConnected || executionInProgress || !enoughBalanceForTier(tier) || !presaleNFAvailableForTier(tier)}>
+                  disabled={!injectedWalletConnected || executionInProgress || !enoughBalanceForTier(tier) || !presaleNFTAvailableForTier(tier)}>
                   {!contractsLoaded ? 'Buy' :
-                    !enoughBalanceForTier(tier) ? 'No balance' : presaleNFAvailableForTier(tier) ? 'Buy' : 'Sold Out'
+                    !enoughBalanceForTier(tier) ? 'No balance' : presaleNFTAvailableForTier(tier) ? 'Buy' : 'Sold Out'
                   }
                 </FancyButton>)}>
                   {safeNFTBalance && (safeNFTBalance[tier]) && typeof (safeNFTBalance[tier]) == 'string'
@@ -104,7 +104,7 @@ const Nft: NextPageWithLayout = () => {
                   <FormattedAmount price={!(nftRegularPostPresalePrice) || nftRegularPostPresalePrice[tier]}
                                    crossed={true} />
                   <FormattedAmount price={!(nftDiscountedPrice) || nftDiscountedPrice[tier]} />
-                  {presaleNFAvailable && <Text>available: {presaleNFAvailable[tier]}</Text>}
+                  {presaleNFTAvailable && <Text>available: {parseInt(presaleNFTAvailable[tier])}</Text>}
                 </CardContentBox>
               </InfoCard>
               <FormattedAmount caption='Your NFTs: ' price={!(safeNFTBalance) || safeNFTBalance[tier]} unit=''

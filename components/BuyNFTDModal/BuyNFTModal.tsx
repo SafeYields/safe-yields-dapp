@@ -1,5 +1,5 @@
 import { AddressZero, MaxUint256 } from '@ethersproject/constants';
-import { Box, createStyles, Grid, Group, Image, Modal, Text, useMantineTheme } from '@mantine/core';
+import { createStyles, Grid, Group, Image, Modal, Text, useMantineTheme } from '@mantine/core';
 import { useAtom } from 'jotai/index';
 import { FC, useState } from 'react';
 
@@ -20,14 +20,15 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       color: theme.colors.veryDarkGreen[0],
       textAlign: 'center',
     },
-    nftIconContainer: {
-      width: '94.03px',
-      height: '113.62px',
-      background: 'linear-gradient(180deg, #D9D9D9 9.78%, rgba(217, 217, 217, 0) 89.67%)',
-      borderRadius: '10px',
-      justifyContent: 'center',
-      textAlign: 'center',
-    },
+    // nftIconContainer: {
+    //   width: '94.03px',
+    //   height: '113.62px',
+    //   // background: 'linear-gradient(180deg, #D9D9D9 9.78%, rgba(217, 217, 217, 0) 89.67%)',
+    //   borderRadius: '10px',
+    //   justifyContent: 'center',
+    //   textAlign: 'center',
+    //   align: 'center'
+    // },
   };
 });
 
@@ -50,10 +51,13 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
     const safeNFTOwnership = useSafeNFTOwnership();
     const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
     const [quantity, setQuantity] = useState(1);
-    const presaleNFAvailable =  useFetchFromApi('nft/available')?.data;
-    const maxQuantity = presaleNFAvailable && !isNaN(presaleNFAvailable) ? Math.min(10, parseInt(presaleNFAvailable[tier])) : 10;
+    const presaleNFTAvailable = useFetchFromApi('nft/available')?.data;
+    const maxQuantity = presaleNFTAvailable && !isNaN(presaleNFTAvailable) ? Math.min(10, parseInt(presaleNFTAvailable[tier])) : 10;
     const handleIncrease = () => setQuantity(quantity < maxQuantity ? quantity + 1 : maxQuantity);
     const handleDecrease = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
+
+    const presaleNFTAvailableForTier = (tier: number) => contractsLoaded && presaleNFTAvailable && parseInt(presaleNFTAvailable[tier]) > 0;
+
 
     const totalPrice = (parseFloat(nftDiscountedPrice[tier]) * quantity).toFixed(2);
     // const balanceIfPurchased = safeNFTBalance ? (parseInt(safeNFTBalance[tier]) + quantity) : 0;
@@ -81,15 +85,13 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
              overlayBlur={3}
       >
         <Grid mt='130px' align='center' justify='center' gutter='xs'>
-          <Grid.Col span={2}>
-            <Box className={cx(classes.nftIconContainer)}>
-              <Image src={'/assets/nft-icon.png'} alt='NFT icon' fit='contain' />
-              <Text size='sm' color={theme.colors.veryDarkGreen[0]}
-                    style={{ fontWeight: 700 }}>Tier{` ${tier + 1}`}</Text>
-            </Box>
+          <Grid.Col span={2} style={{ textAlign: 'center' }}>
+            <Image src={`/assets/nft-icon-${tier + 1}.png`} alt='NFT icon' fit='contain' radius={10} mt='xs' />
+            <Text size='sm' mt='2px' color='white'
+                  style={{ fontWeight: 700 }}>Tier{` ${tier + 1}`}</Text>
           </Grid.Col>
           <Grid.Col span={10}>
-            <Grid align='center' justify='center' gutter='sm' className={cx(classes.modalTable)}>
+            <Grid align='center' justify='center' gutter='xs' className={cx(classes.modalTable)}>
               <Grid.Col span={3}>
                 <Text size='xs'>Price</Text>
               </Grid.Col>
@@ -130,7 +132,9 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
           </Grid.Col>
         </Grid>
         <FancyButton style={{ height: '24px', position: 'fixed', bottom: '15px', right: '30px' }}
-                     onClick={() => handleModalClose() && !enoughAllowanceForTier(tier) ? approveSpendUsdcForNFTHandler(tier) : buyNFTHandler(tier)}>
+                     loading={executionInProgress}
+                     disabled={executionInProgress || !enoughBalanceForTier(tier) || !presaleNFTAvailableForTier(tier)}
+                     onClick={() => !enoughAllowanceForTier(tier) ? approveSpendUsdcForNFTHandler(tier) : handleModalClose() && buyNFTHandler(tier)}>
           {!contractsLoaded ? 'Buy' :
             !enoughBalanceForTier(tier) ? 'No balance' : !enoughAllowanceForTier(tier) ? 'Approve' : 'Buy'
           }</FancyButton>

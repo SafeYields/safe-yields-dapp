@@ -16,6 +16,7 @@ export const GlobalStyleProvider: FC<{ children: ReactNode }> = ({ children }) =
             },
             'body': {
               margin: 'auto',
+              userSelect: 'none',
             },
             '*': {
               wordBreak: 'break-all',

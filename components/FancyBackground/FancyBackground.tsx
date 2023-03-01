@@ -127,7 +127,7 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
         enter: 700,
         exit: 500,
       }}>
-          <GalaxyBackground starCount={100} rotationSpeed={0.05} bgColor={'transparent'} minSize={0.3} maxSize={2}
+           <GalaxyBackground starCount={100} rotationSpeed={0.05} bgColor={'transparent'} minSize={0.3} maxSize={2}
                           innerRadius={150}>
         <>
           <Image
@@ -153,7 +153,7 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
           </div>
           {children}
         </>
-          </GalaxyBackground>
+           </GalaxyBackground>
       </CSSTransition>
     </SwitchTransition>
   );
