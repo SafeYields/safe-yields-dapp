@@ -39,7 +39,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 white: ['#F2ECE4'],
                 greenGray: ['#36676A'],
                 almostWhite: ['#F5F5F5'],
-                veryDarkGreen: ['#0B1B03']
+                veryDarkGreen: ['#0B1B03'],
               },
               fontFamily: '"Space Grotesk", sans-serif',
               lineHeight: '19px',
@@ -138,14 +138,15 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 Modal: {
                   styles: (theme) => ({
                     modal: {
-                      background: 'url("/assets/nft-modal-background.png"), linear-gradient(180deg, rgba(242, 236, 228, 0.5) 0%, rgba(242, 236, 228, 0.6) 45.31%, rgba(242, 236, 228, 0.3) 100%) top/cover no-repeat',
+                      background: 'linear-gradient(180deg, rgba(242, 236, 228, 0) 0%, rgba(242, 236, 228, 0) 49%, rgba(242, 236, 228, 0.1) 50%, rgba(242, 236, 228, 0.4)75%, rgba(242, 236, 228, 0.1) 100%), url("/assets/nft-modal-background.png") top/cover no-repeat',
+                      // background: 'url("/assets/nft-modal-background.png"), linear-gradient(0deg, rgba(242, 236, 228, 0.5) 0%, rgba(242, 236, 228, 0.6)25%, rgba(242, 236, 228, 0.3) 50%) top/cover no-repeat',
                       boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
                       backdropFilter: 'blur(3px)',
                       borderRadius: '15px 15px 15px 15px',
-                      height: `${169+176}px`,
+                      height: `${169 + 176}px`,
                       width: '578px',
                       border: 0,
-                      padding: 'sm'
+                      padding: 'sm',
                     },
                     close: {
                       background: 'linear-gradient(90deg, #CEDB3F, #E89B17,#CEDB3F, #E89B17)',

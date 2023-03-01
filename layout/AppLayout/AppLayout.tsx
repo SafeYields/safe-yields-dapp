@@ -33,7 +33,11 @@ export const AppLayout: CustomLayout = (page) => {
             minHeight: '100vh',
             maxWidth: '100vw',
             overflowX: 'hidden',
-            background: 'url(/assets/background.jpg) fixed',
+            // background: 'url(/assets/background.jpg) fixed',
+            backgroundImage: 'url(/assets/background.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
           },
           main: {
             padding: 0,
