@@ -56,7 +56,7 @@ export interface ISafeNFTInterface extends utils.Interface {
     "safeTransferFrom(address,address,uint256,uint256,bytes)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
     "setDiscountedPriceTable(uint256[][])": FunctionFragment;
-    "setPresaleStartDate(uint256)": FunctionFragment;
+    "setPresaleStartDate(uint256,uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "togglePresale()": FunctionFragment;
   };
@@ -215,7 +215,7 @@ export interface ISafeNFTInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "setPresaleStartDate",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
@@ -543,6 +543,7 @@ export interface ISafeNFT extends BaseContract {
 
     setPresaleStartDate(
       launchDate: PromiseOrValue<BigNumberish>,
+      _weekDuration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -669,6 +670,7 @@ export interface ISafeNFT extends BaseContract {
 
   setPresaleStartDate(
     launchDate: PromiseOrValue<BigNumberish>,
+    _weekDuration: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -793,6 +795,7 @@ export interface ISafeNFT extends BaseContract {
 
     setPresaleStartDate(
       launchDate: PromiseOrValue<BigNumberish>,
+      _weekDuration: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -970,6 +973,7 @@ export interface ISafeNFT extends BaseContract {
 
     setPresaleStartDate(
       launchDate: PromiseOrValue<BigNumberish>,
+      _weekDuration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1109,6 +1113,7 @@ export interface ISafeNFT extends BaseContract {
 
     setPresaleStartDate(
       launchDate: PromiseOrValue<BigNumberish>,
+      _weekDuration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
