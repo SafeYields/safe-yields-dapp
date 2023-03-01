@@ -20,15 +20,6 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       color: theme.colors.veryDarkGreen[0],
       textAlign: 'center',
     },
-    // nftIconContainer: {
-    //   width: '94.03px',
-    //   height: '113.62px',
-    //   // background: 'linear-gradient(180deg, #D9D9D9 9.78%, rgba(217, 217, 217, 0) 89.67%)',
-    //   borderRadius: '10px',
-    //   justifyContent: 'center',
-    //   textAlign: 'center',
-    //   align: 'center'
-    // },
   };
 });
 
@@ -69,10 +60,10 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
     const enoughBalanceForTier = (tier: number) => contractsLoaded && Number(nftDiscountedPrice[tier]) * quantity <= Number(usdcBalance);
     const enoughAllowanceForTier = (tier: number) => contractsLoaded && (Number(usdAllowance) >= Number(nftDiscountedPrice[tier]) * quantity);
 
-    const buyNFTHandler = (tier: number) => usdAllowance && nftRegularPostPresalePrice && nftContract && usdcContract && (Number(usdAllowance) >= Number(nftRegularPostPresalePrice[tier])) &&
+    const buyNFTHandler = (tier: number) => usdAllowance && nftDiscountedPrice && nftContract && usdcContract && (Number(usdAllowance) >= Number(nftDiscountedPrice[tier])) &&
       handleModalClose() && executeContractHandler(setExecutionInProgress, () =>  nftContract.buy(tier, quantity, referralAddress || AddressZero));
 
-    const approveSpendUsdcForNFTHandler = (tier: number) => usdAllowance && nftRegularPostPresalePrice && nftContract && usdcContract && Number(usdAllowance) < Number(nftRegularPostPresalePrice[tier]) &&
+    const approveSpendUsdcForNFTHandler = (tier: number) => usdAllowance && nftDiscountedPrice && nftContract && usdcContract && Number(usdAllowance) < Number(nftDiscountedPrice[tier]) &&
       executeContractHandler(setExecutionInProgress, () => usdcContract.approve(nftContract.address, MaxUint256));
 
     return (
