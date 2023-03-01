@@ -595,6 +595,11 @@ const _abi = [
         name: "launchDate",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "_weekDuration",
+        type: "uint256",
+      },
     ],
     name: "setPresaleStartDate",
     outputs: [],

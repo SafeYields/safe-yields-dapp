@@ -3,10 +3,9 @@ import { FC, useState } from 'react';
 
 import useStyles from './CountdownTimer.styles';
 
-export const CountdownTimer: FC = () => {
+export const CountdownTimer: FC<{ endDate: number }> = ({ endDate }) => {
 
   const { classes, cx } = useStyles();
-  const endDate = new Date('March 3, 2023 17:00:00').getTime();
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
