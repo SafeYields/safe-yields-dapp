@@ -60,12 +60,12 @@ const config: ChainsConfig = {
       },
       blockExplorerUrls: ['https://testnet.arbiscan.com/'],
       addresses: {
-        treasury: '0xBF89e2e63e471cC29Da80bcD661342A9935982A8',
-        management: '0xf2c1FE530d9c1686950F33d1B47d8B9474D92965',
+        treasury: '0xa278581A8238aD22064d7892787F90d46F7E5498',
+        management: '0x24C07a4daFf81c2c77533916aE1e42A0D6276Ce0',
         usdc: '0x179522635726710dd7d2035a81d856de4aa7836c',
-        safe: '0xF3c420B081422C51533150664Fc8F2fb77E39296',
-        vault: '0x3Eca9FeB89C04F5B75bDAf72961f97B4D66fE68e',
-        nft: '0x5735205Db896c63B97F9090b0A852682F4a5635B',
+        safe: '0x1Bd37f1C2a11Bb03D430f0cc6F7157Cec54C3B39',
+        vault: '0xfd3cD9e78D4f4565415236c7AD00d834f1e444d2',
+        nft: '0x1Bd37f1C2a11Bb03D430f0cc6F7157Cec54C3B39',
       },
     },
   1337:

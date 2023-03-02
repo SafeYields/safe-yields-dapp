@@ -46,8 +46,9 @@ const Nft: NextPageWithLayout = () => {
     const usdcBalance = useUsdcBalance()?.data;
     const presaleNFTAvailable = useFetchFromApi('nft/available')?.data;
     const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
-
     const contractsLoaded = !!nftRegularPostPresalePrice && !!usdcBalance && !!usdAllowance;
+
+    const presaleInProgress = !!presaleLaunchDate && week && week > 0 && week <= 4;
 
     const { ref: whoReferred } = router.query;
     console.log('whoReferred', whoReferred);
@@ -68,22 +69,23 @@ const Nft: NextPageWithLayout = () => {
       setIsModalOpen(false);
       return true;
     };
-    const weekNumber = week && week?.hex ? parseInt(week.hex) : 0;
+
     return (
       <PageContainer title='Buy NFT'>
         {isModalOpen &&
           <BuyNFTModal opened={isModalOpen} handleModalClose={handleModalClose} referralAddress={referralAddress}
                        tier={selectedTier} />}
-        {weekNumber && presaleLaunchDate?.hex ?
+        {week && presaleLaunchDate ?
           <Grid grow gutter={'md'} align={'center'} justify={'space-between'} mt={'lg'}
                 style={{ textAlign: 'center', filter: isModalOpen ? 'blur(5px)' : 'none' }}>
-            <Grid.Col span={12}>
-              <InfoCard header={`${5 - weekNumber}0% Discount ends in`} maxWidth='400px'>
-                <CardContentBox>
-                  <CountdownTimer endDate={1000*(parseInt(presaleLaunchDate.hex, 16) + weekNumber * 14400)} />
-                </CardContentBox>
-              </InfoCard>
-            </Grid.Col>
+            {presaleInProgress &&
+              <Grid.Col span={12}>
+                <InfoCard header={`${5 - week}0% Discount ends in`} maxWidth='400px'>
+                  <CardContentBox>
+                    <CountdownTimer endDate={1000 * presaleLaunchDate + week * 14400 * 1000} />
+                  </CardContentBox>
+                </InfoCard>
+              </Grid.Col>}
             {[0, 1, 2, 3].map((tier) => (
               <Grid.Col span={3} key={tier}>
                 <InfoCard header={<TierHeader tier={tier + 1} />}
@@ -107,9 +109,11 @@ const Nft: NextPageWithLayout = () => {
                       :
                       <Loader size='xs' color='#F5F5F5' />}
                     <FormattedAmount price={!(nftRegularPostPresalePrice) || nftRegularPostPresalePrice[tier]}
-                                     crossed={true} />
-                    <FormattedAmount price={!(nftDiscountedPrice) || nftDiscountedPrice[tier]} />
-                    {presaleNFTAvailable && <Text>available: {parseInt(presaleNFTAvailable[tier])}</Text>}
+                                     crossed={presaleInProgress} />
+                    {presaleInProgress &&
+                      <FormattedAmount price={!(nftDiscountedPrice) || nftDiscountedPrice[tier]} />}
+                    {presaleInProgress && presaleNFTAvailable && <Text>available: {parseInt(presaleNFTAvailable[tier])}</Text>
+                    }
                   </CardContentBox>
                 </InfoCard>
                 <FormattedAmount caption='Your NFTs: ' price={!(safeNFTBalance) || safeNFTBalance[tier]} unit=''
