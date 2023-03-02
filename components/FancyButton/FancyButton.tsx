@@ -33,7 +33,6 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       oTransition: 'all 0.4s ease-in-out',
       webkitTransition: 'all 0.4s ease-in-out',
       transition: 'all 0.4s ease-in-out',
-
       ':disabled': {
         opacity: 0.5,
         cursor: 'not-allowed',
