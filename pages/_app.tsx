@@ -45,8 +45,8 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
               lineHeight: '19px',
               fontSizes: {
                 xs: 10,
-                sm: 16,
-                md: 16,
+                sm: 12,
+                md: 14,
                 lg: 16,
                 xl: 20,
               },
@@ -58,7 +58,8 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 fontWeight: 450,
                 sizes: {
                   h1: { fontSize: 36, lineHeight: '43px' },
-                  h3: { fontSize: 24, lineHeight: '29px', fontWeight: 700 },
+                  h3: { fontSize: 24, lineHeight: '24px', fontWeight: 700 },
+                  h4: { fontSize: 20, lineHeight: '20px', fontWeight: 700 },
                 },
               },
               defaultGradient: {
@@ -105,7 +106,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                         background: 'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
                         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
                         backdropFilter: 'blur(3px)',
-                        wordWrap: 'break-word',
+                        wordWrap: 'normal',
                         '&::before': { backgroundColor: 'white' },
                       },
                       title: { color: 'white' },
@@ -170,6 +171,14 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                     },
                   }),
                 },
+                ToolTip: {
+                  styles: (theme) => ({
+                    tooltip: {
+                      fontSize: 'md',
+                      wordWrap: 'normal',
+                    }
+                  })
+                }
               },
             }}
           >

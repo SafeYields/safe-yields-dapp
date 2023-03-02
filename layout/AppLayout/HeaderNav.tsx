@@ -89,22 +89,20 @@ export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
   ));
 
   return (
-    <Header height={{ base: 50, md: 70 }} p='md' mb={120} mt={15}
+    <Header height={{ base: 50, md: 70 }} p='sm' mb={120} mt={45}
             sx={(theme) => ({
               position: 'absolute',
-              padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
+              padding: `${theme.spacing.xs}px 0px`,
               borderBottom: `1px solid ${'transparent'}`,
               backgroundColor: 'transparent',
             })}
     >
       <Container className={classes.header}>
+        {!process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE &&
         <Group spacing={50} className={classes.links}>
-          {!process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE &&
-            <>
               {left}
               {items}
-            </>}
-        </Group>
+        </Group>}
           <Account />
         {/* <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />*/}
       </Container>

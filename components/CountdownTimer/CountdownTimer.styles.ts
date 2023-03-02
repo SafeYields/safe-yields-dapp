@@ -3,7 +3,7 @@ import { createStyles } from '@mantine/core';
 const useStyles = createStyles<string>((theme, params, getRef) => {
   return {
     container: {
-      marginTop: '23px',
+      marginTop: '20px',
       // display: 'flex',
       // flexDirection: 'column',
       // margin: '0 1.4vw',
@@ -17,7 +17,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
     },
     label: {
       marginTop: '10px',
-      fontSize: ' 14px',
+      fontSize: 'md',
       color: 'white',
     },
   };

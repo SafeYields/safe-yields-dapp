@@ -94,7 +94,8 @@ const Nft: NextPageWithLayout = () => {
                     style={{ height: '24px' }}
                     onClick={() => handleModalOpen(tier)}
                     loading={executionInProgress}
-                    disabled={!injectedWalletConnected || executionInProgress || !enoughBalanceForTier(tier) || !presaleNFTAvailableForTier(tier)}>
+                    disabled={!injectedWalletConnected || executionInProgress || !enoughBalanceForTier(tier) || !presaleNFTAvailableForTier(tier)}
+                  >
                     {!contractsLoaded ? 'Buy' :
                       !enoughBalanceForTier(tier) ? 'No balance' : presaleNFTAvailableForTier(tier) ? 'Buy' : 'Sold Out'
                     }
@@ -109,7 +110,10 @@ const Nft: NextPageWithLayout = () => {
                       :
                       <Loader size='xs' color='#F5F5F5' />}
                     <FormattedAmount price={!(nftRegularPostPresalePrice) || nftRegularPostPresalePrice[tier]}
-                                     crossed={presaleInProgress} />
+                                     crossed={presaleInProgress}
+                                     mt={'xs' }
+                                     size={'sm'}
+                    />
                     {presaleInProgress &&
                       <FormattedAmount price={!(nftDiscountedPrice) || nftDiscountedPrice[tier]} />}
                     {presaleInProgress && presaleNFTAvailable && <Text>available: {parseInt(presaleNFTAvailable[tier])}</Text>
@@ -120,16 +124,13 @@ const Nft: NextPageWithLayout = () => {
                                  decimals={0} />
               </Grid.Col>
             ))}
-            <Grid.Col span={12} mt={'sm'}>
-              <FormattedAmount caption='Your wallet balance: ' price={!(usdcBalance) || usdcBalance} />
-            </Grid.Col>
             {referralAddress &&
               (<Grid.Col span={12} mt={'xs'}>
                 <Text>Referral: <strong>{referralAddress}</strong></Text>
               </Grid.Col>)}
 
             <Grid.Col span={12} mt={'lg'}>
-              <Title order={2}> Don’t know how our NFTs work? Read our Whitepaper</Title>
+              <Title order={4}> Don’t know how our NFTs work? Read our Whitepaper</Title>
               <Link href={'https://safeyields.io/safeyields_whitepaper.pdf'} target='_blank' rel='noopener noreferrer'
                     passHref>
                 <FancyButton mt={'20px'} py={10}>Read Whitepaper</FancyButton>
