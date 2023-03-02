@@ -116,7 +116,7 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
                     multiline
                     width={235}
                     p={20}
-                    label='Ownership shown is related to the total NFT supply, because initially not all the supply is sold, your ownership ratio will be higher both times they appear.'>
+                    label='The ownership % shown takes into consideration the max NFT supply, which is subject to change since not all NFTs will be sold at the same time.'>
                     <Text span className={cx(classes.toolTip)}>?</Text>
                   </Tooltip>
 
