@@ -49,7 +49,7 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
     const presaleInProgress = week && week > 0 && week <= 4;
     const nftPrice = presaleInProgress ? nftDiscountedPrice : nftRegularPostPresalePrice;
 
-    const maxQuantity = presaleInProgress && presaleNFTAvailable && !isNaN(presaleNFTAvailable) ? Math.min(10, parseInt(presaleNFTAvailable[tier])) : 10;
+    const maxQuantity = !presaleInProgress ? 10 : presaleNFTAvailable ? Math.min(10, parseInt(presaleNFTAvailable[tier])) : 1;
     const handleIncrease = () => setQuantity(quantity < maxQuantity ? quantity + 1 : maxQuantity);
     const handleDecrease = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
 
