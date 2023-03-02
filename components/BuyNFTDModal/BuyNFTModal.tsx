@@ -30,7 +30,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       textAlign: 'center',
       fontSize: '8px',
       cursor: 'help',
-      border: '1px solid black'
+      border: '1px solid black',
     },
   };
 });
@@ -78,10 +78,10 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
     const enoughBalanceForTier = (tier: number) => contractsLoaded && Number(nftPrice[tier]) * quantity <= Number(usdcBalance);
     const enoughAllowanceForTier = (tier: number) => contractsLoaded && (Number(usdAllowance) >= Number(nftPrice[tier]) * quantity);
 
-    const buyNFTHandler = (tier: number) => usdAllowance && nftPrice && nftContract && usdcContract && (Number(usdAllowance) >= Number(nftPrice[tier])) &&
+    const buyNFTHandler = (tier: number) => usdAllowance && nftPrice && nftContract && usdcContract && (Number(usdAllowance) >= Number(nftPrice[tier]) * quantity) &&
       handleModalClose() && executeContractHandler(setExecutionInProgress, () => nftContract.buy(tier, quantity, referralAddress || AddressZero));
 
-    const approveSpendUsdcForNFTHandler = (tier: number) => usdAllowance && nftPrice && nftContract && usdcContract && Number(usdAllowance) < Number(nftPrice[tier]) &&
+    const approveSpendUsdcForNFTHandler = (tier: number) => usdAllowance && nftPrice && nftContract && usdcContract && Number(usdAllowance) < Number(nftPrice[tier]) * quantity &&
       executeContractHandler(setExecutionInProgress, () => usdcContract.approve(nftContract.address, MaxUint256));
 
     return (
@@ -116,7 +116,7 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
                     multiline
                     width={235}
                     p={20}
-                    label='Ownership shown is related to the total NFT supply, because initially not all the supply is sold, your ownership ratio will be higher both times they appear.'>
+                    label='The ownership % shown takes into consideration the max NFT supply, which is subject to change since not all NFTs will be sold at the same time.'>
                     <Text span className={cx(classes.toolTip)}>?</Text>
                   </Tooltip>
 
