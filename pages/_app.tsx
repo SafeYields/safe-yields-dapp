@@ -1,11 +1,11 @@
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
+import { Analytics } from '@vercel/analytics/react';
 import { NextPageWithLayout } from 'next';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { GlobalStyleProvider } from 'style/GlobalStyleProvider';
-
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout;
 }
@@ -179,6 +179,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
           </MantineProvider>
         </GlobalStyleProvider>
       </Web3Provider>
+      <Analytics />
     </>
   );
 }
