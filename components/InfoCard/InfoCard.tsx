@@ -80,11 +80,10 @@ export const InfoCard: FC<InfoCardProps> = ({ children, header, maxWidth, backgr
         cardHeader: {
           ...theme.fn.focusStyles(),
           fontStyle: 'normal',
-          fontWeight: '350',
-          fontSize: '15px',
+          fontWeight: '700',
+          fontSize: 'lg',
           position: 'relative',
           color: theme.colors.almostWhite[0],
-          top: '10px',
           paddingLeft: '10px',
           paddingRight: '10px',
           paddingTop: '0px',

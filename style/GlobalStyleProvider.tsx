@@ -19,7 +19,7 @@ export const GlobalStyleProvider: FC<{ children: ReactNode }> = ({ children }) =
               userSelect: 'none',
             },
             '*': {
-              wordBreak: 'break-all',
+              wordBreak: 'normal',
               webkitBoxSizing: 'border-box', mozBoxSizing: 'border-box', boxSizing: 'border-box',
             },
             'button, *[type="button"]': { transform: 'none !important' },

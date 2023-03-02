@@ -1,4 +1,5 @@
-import { Button } from '@mantine/core';
+import { Button, Flex, Stack } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
 import useMetaMaskOnboarding from 'hooks/useMetaMaskOnboarding';
 import { atom, useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
@@ -7,6 +8,8 @@ import { hooksMetamask, metaMask } from 'utils/connectors';
 import { shortenHex } from 'utils/web3utils';
 
 import { chainConfig, supportedChainId } from '../../config/chainConfig';
+import useUsdcBalance from '../../hooks/useUsdcBalance';
+import { FormattedAmount } from '../FormatPrice';
 import useStyles from './Account.styles';
 
 
@@ -25,6 +28,8 @@ export const Account = () => {
 
   const provider = useProvider();
   const ENSNames = useENSName(provider);
+
+  const usdcBalance = useUsdcBalance()?.data;
 
   const [error, setError] = useState(undefined);
 
@@ -124,20 +129,40 @@ export const Account = () => {
   }
 
   return (
-    <div>
-      <Button className={cx(classes.button, classes.buttonActive)}
+    <Flex align='top' justify='flex-start' gap='sm'>
+      <Button className={cx(classes.outline)}
               variant='light'
-              leftIcon={<Link size={20} />}
               radius='xl'
               size='md'
-              loading={isActivating || inProgress}
               styles={{
-                root: { paddingRight: 14, height: 48 },
-                leftIcon: { marginLeft: 0 },
+                root: { paddingRight: 14, height: 48, marginLeft: 'auto' },
+              }}
+              onClick={() => {
+                const url = window.location.href;
+                navigator.clipboard.writeText(url.substring(0, url.indexOf('nft')) + 'nft/' + account);
+                showNotification({
+                  message: 'You referral link copied to clipboard. Feel free to share!',
+                });
               }}
       >
-        {ENSName || `${shortenHex(account, 7)} ${testnetNotification()}`}
+        Create referral link
       </Button>
-    </div>
+      <Stack spacing='xs' justify='center' align='center' style={{ textAlign: 'center' }}>
+        <Button className={cx(classes.button, classes.buttonActive)}
+                variant='light'
+                leftIcon={<Link size={20} />}
+                radius='xl'
+                size='md'
+                loading={isActivating || inProgress}
+                styles={{
+                  root: { paddingRight: 14, height: 48 },
+                  leftIcon: { marginLeft: 0 },
+                }}
+        >
+          {ENSName || `${shortenHex(account, 7)} ${testnetNotification()}`}
+        </Button>
+        <FormattedAmount caption='Your balance: ' price={!(usdcBalance) || usdcBalance} />
+      </Stack>
+    </Flex>
   );
 };

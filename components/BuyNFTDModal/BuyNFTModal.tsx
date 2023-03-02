@@ -1,6 +1,6 @@
 import { AddressZero, MaxUint256 } from '@ethersproject/constants';
-import { createStyles, Grid, Group, Image, Modal, Text, useMantineTheme } from '@mantine/core';
-import { useAtom } from 'jotai/index';
+import { createStyles, Grid, Group, Image, Modal, Text, Tooltip, useMantineTheme } from '@mantine/core';
+import { useAtom } from 'jotai';
 import { FC, useState } from 'react';
 
 import { executeContractHandler } from '../../handlers/executeContractHandler';
@@ -19,6 +19,18 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
     modalTable: {
       color: theme.colors.veryDarkGreen[0],
       textAlign: 'center',
+    },
+    toolTip: {
+      marginLeft: '5px',
+      display: 'inline-block',
+      width: '15px',
+      height: '15px',
+      lineHeight: '15px',
+      borderRadius: '50%',
+      textAlign: 'center',
+      fontSize: '8px',
+      cursor: 'help',
+      border: '1px solid black'
     },
   };
 });
@@ -67,7 +79,7 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
     const enoughAllowanceForTier = (tier: number) => contractsLoaded && (Number(usdAllowance) >= Number(nftPrice[tier]) * quantity);
 
     const buyNFTHandler = (tier: number) => usdAllowance && nftPrice && nftContract && usdcContract && (Number(usdAllowance) >= Number(nftPrice[tier])) &&
-      handleModalClose() && executeContractHandler(setExecutionInProgress, () =>  nftContract.buy(tier, quantity, referralAddress || AddressZero));
+      handleModalClose() && executeContractHandler(setExecutionInProgress, () => nftContract.buy(tier, quantity, referralAddress || AddressZero));
 
     const approveSpendUsdcForNFTHandler = (tier: number) => usdAllowance && nftPrice && nftContract && usdcContract && Number(usdAllowance) < Number(nftPrice[tier]) &&
       executeContractHandler(setExecutionInProgress, () => usdcContract.approve(nftContract.address, MaxUint256));
@@ -99,7 +111,16 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
                 <Text size='xs'>Total</Text>
               </Grid.Col>
               <Grid.Col span={3}>
-                <Text size='xs'>Ownership</Text>
+                <Text size='xs'>Ownership
+                  <Tooltip
+                    multiline
+                    width={235}
+                    p={20}
+                    label='Ownership shown is related to the total NFT supply, because initially not all the supply is sold, your ownership ratio will be higher both times they appear.'>
+                    <Text span className={cx(classes.toolTip)}>?</Text>
+                  </Tooltip>
+
+                </Text>
               </Grid.Col>
               <Grid.Col span={3}>
                 {nftPrice &&
