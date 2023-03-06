@@ -31,12 +31,12 @@ const defaultTokenOut: { [chainId: number]: string } = {
 const Safe = () => {
   const { chainId, provider } = useWeb3React();
   return (
-    chainId && <PageContainer title='safe'>
+    <PageContainer title='safe'>
       <Widget
         theme={darkTheme}
         tokenList={[]}
         provider={provider}
-        defaultTokenOut={defaultTokenOut[chainId]}
+        defaultTokenOut={chainId ? defaultTokenOut[chainId] : '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8'}
       />
     </PageContainer>
   );
