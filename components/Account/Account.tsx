@@ -1,8 +1,10 @@
 import { Button, Flex, Stack } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { showNotification } from '@mantine/notifications';
+import { Styles } from '@mantine/styles/lib/theme/types/DefaultProps';
 import useMetaMaskOnboarding from 'hooks/useMetaMaskOnboarding';
 import { atom, useAtomValue } from 'jotai';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Download, Link, Unlink } from 'tabler-icons-react';
 import { hooksMetamask, metaMask } from 'utils/connectors';
 import { shortenHex } from 'utils/web3utils';
@@ -12,13 +14,12 @@ import useUsdcBalance from '../../hooks/useUsdcBalance';
 import { FormattedAmount } from '../FormatPrice';
 import useStyles from './Account.styles';
 
-
 const { useChainId, useAccount, useIsActivating, useIsActive, useProvider, useENSName } = hooksMetamask;
 export const transactionInProgressAtom = atom(false);
 
 export const Account = () => {
   const { classes, cx } = useStyles();
-
+  const mobile = useMediaQuery('(max-width: 576px)');
   const inProgress = useAtomValue(transactionInProgressAtom);
   const chainId = useChainId();
   const account = useAccount();
@@ -128,25 +129,31 @@ export const Account = () => {
     );
   }
 
+  const RefferalButton: FC<{ styles?: Styles<string> }> = ({ styles }) =>
+    (<Button className={cx(classes.outline)}
+             variant='light'
+             radius='xl'
+             size='md'
+             styles={{
+               root: { paddingRight: 14, height: 48, marginLeft: 'auto' },
+               ...styles,
+             }}
+             onClick={() => {
+               const url = window.location.href;
+               navigator.clipboard.writeText(url.substring(0, url.indexOf('nft')) + 'nft/' + account);
+               showNotification({
+                 message: 'You referral link copied to clipboard. Feel free to share!',
+               });
+             }}
+    >
+      Create referral link
+    </Button>);
+
   return (
-    <Flex align='top' justify='flex-start' gap='sm'>
-      <Button className={cx(classes.outline)}
-              variant='light'
-              radius='xl'
-              size='md'
-              styles={{
-                root: { paddingRight: 14, height: 48, marginLeft: 'auto' },
-              }}
-              onClick={() => {
-                const url = window.location.href;
-                navigator.clipboard.writeText(url.substring(0, url.indexOf('nft')) + 'nft/' + account);
-                showNotification({
-                  message: 'You referral link copied to clipboard. Feel free to share!',
-                });
-              }}
-      >
-        Create referral link
-      </Button>
+    <Flex align='top' justify='center' gap='sm' mt={mobile ? '20px' : '0px'}>
+      {!mobile &&
+        <RefferalButton />
+      }
       <Stack spacing='xs' justify='center' align='center' style={{ textAlign: 'center' }}>
         <Button className={cx(classes.button, classes.buttonActive)}
                 variant='light'
@@ -162,6 +169,7 @@ export const Account = () => {
           {ENSName || `${shortenHex(account, 7)} ${testnetNotification()}`}
         </Button>
         <FormattedAmount caption='Your balance: ' price={!(usdcBalance) || usdcBalance} />
+        {mobile && <RefferalButton styles={{ root: { minWidth: '220px' } }} />}
       </Stack>
     </Flex>
   );
