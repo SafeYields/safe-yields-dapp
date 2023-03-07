@@ -1,16 +1,17 @@
 import { Widget } from '@kyberswap/widgets';
+import { Flex } from '@mantine/core';
 import { useWeb3React } from '@web3-react/core';
 
 import { PageContainer } from '../components/PageContainer';
 import { AppLayout } from '../layout';
 
-const darkTheme = {
-  text: '#FFFFFF',
-  subText: '#A9A9A9',
-  primary: '#36676A',
-  dialog: '#D9E022',
-  secondary: '#0B1B03',
-  interactive: '#0B1B03',
+const safeTheme = {
+  text: '#D9E022',
+  subText: '#FFFFFF',
+  primary: '#1A3F37',
+  dialog: 'transparent',
+  secondary: '#2D5242',
+  interactive: '#E6A21D',
   stroke: '#CBDA49',
   accent: '#D9E022',
   success: '#189470',
@@ -32,12 +33,14 @@ const Safe = () => {
   const { chainId, provider } = useWeb3React();
   return (
     <PageContainer title='safe'>
+      <Flex justify='center' align='center'>
       <Widget
-        theme={darkTheme}
+        theme={safeTheme}
         tokenList={[]}
         provider={provider}
         defaultTokenOut={chainId ? defaultTokenOut[chainId] : '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8'}
       />
+      </Flex>
     </PageContainer>
   );
 };
