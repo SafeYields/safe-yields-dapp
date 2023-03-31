@@ -35,7 +35,7 @@ export const CountdownTimer: FC<{ endDate: number }> = ({ endDate }) => {
   return (
     <SimpleGrid cols={3}>
       {
-        [{ label: 'days', value: days },
+        [{ label: 'day', value: days },
           { label: 'hours', value: hours },
           { label: 'minutes', value: minutes }].map((item, index) => (
           <div className={classes.container} key={item.label}>
