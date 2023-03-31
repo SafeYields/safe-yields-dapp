@@ -1,11 +1,6 @@
 import { Button, createStyles } from '@mantine/core';
 import { ButtonProps } from '@mantine/core/lib/Button/Button';
 import { FC, MouseEventHandler } from 'react';
-import { hooksMetamask } from 'utils/connectors';
-
-
-const { useChainId, useAccount, useIsActivating, useIsActive, useProvider, useENSName } = hooksMetamask;
-
 
 const useStyles = createStyles<string>((theme, params, getRef) => {
   const icon: string = getRef('icon');
