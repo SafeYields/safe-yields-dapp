@@ -81,7 +81,7 @@ const Nft: NextPageWithLayout = () => {
                 style={{ textAlign: 'center', filter: isModalOpen ? 'blur(5px)' : 'none' }}>
               <Grid.Col span={12}>
                 {/* <InfoCard header={`${5 - week}0% Discount ends in`} maxWidth='400px'>*/}
-                <InfoCard header={'10% discount sale starts on Nitropad in'} maxWidth='400px'>
+                <InfoCard header={'10% discount sale hosted on Nitropad in'} maxWidth='400px'>
                   <CardContentBox>
                     <CountdownTimer endDate={1680800400000} />
                     {/* <CountdownTimer endDate={1000 * presaleLaunchDate + week * 604800 * 1000} />*/}
