@@ -130,24 +130,24 @@ export const Account = () => {
   }
 
   const RefferalButton: FC<{ styles?: Styles<string> }> = ({ styles }) =>
-    (<Button className={cx(classes.outline)}
-             variant='light'
-             radius='xl'
-             size='md'
-             styles={{
-               root: { paddingRight: 14, height: 48, marginLeft: 'auto' },
-               ...styles,
-             }}
-             onClick={() => {
-               const url = window.location.href;
-               navigator.clipboard.writeText(url.substring(0, url.indexOf('nft')) + 'nft/' + account);
-               showNotification({
-                 message: 'You referral link copied to clipboard. Feel free to share!',
-               });
-             }}
+    !!process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE ? <Button className={cx(classes.outline)}
+                                                        variant='light'
+                                                        radius='xl'
+                                                        size='md'
+                                                        styles={{
+                                                          root: { paddingRight: 14, height: 48, marginLeft: 'auto' },
+                                                          ...styles,
+                                                        }}
+                                                        onClick={() => {
+                                                          const url = window.location.href;
+                                                          navigator.clipboard.writeText(url.substring(0, url.indexOf('nft')) + 'nft/' + account);
+                                                          showNotification({
+                                                            message: 'You referral link copied to clipboard. Feel free to share!',
+                                                          });
+                                                        }}
     >
       Create referral link
-    </Button>);
+    </Button> : <></>;
 
   return (
     <Flex align='top' justify='center' gap='sm' mt={mobile ? '20px' : '0px'}>

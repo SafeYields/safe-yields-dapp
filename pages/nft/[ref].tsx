@@ -36,9 +36,9 @@ const Nft: NextPageWithLayout = () => {
     const router = useRouter();
     const injectedWalletConnected = useWalletConnected();
     const nftRegularPostPresalePrice = useFetchFromApi('nft/price')?.data;
-    const nftDiscountedPrice = useFetchFromApi('nft/presale-price')?.data;
+    const nftDiscountedPrice = useFetchFromApi('nft/presale-pricenft/presale-price')?.data;
     const week = useFetchFromApi('nft/week')?.data;
-    const presaleLaunchDate = useFetchFromApi('nft/presale')?.data;
+    // const presaleLaunchDate = useFetchFromApi('nft/presale')?.data;
     const safeNFTBalance = useSafeNFTBalance()?.data;
     const safeNFTOwnership = useSafeNFTOwnership();
     const nftContract = useNFTContract();
@@ -48,7 +48,8 @@ const Nft: NextPageWithLayout = () => {
     const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
     const contractsLoaded = !!nftRegularPostPresalePrice && !!usdcBalance && !!usdAllowance;
 
-    const presaleInProgress = !!presaleLaunchDate && week && week > 0 && week <= 4;
+    const presaleInProgress = false;
+    // const presaleInProgress = !!presaleLaunchDate && week && week > 0 && week <= 4;
 
     const { ref: whoReferred } = router.query;
     console.log('whoReferred', whoReferred);
@@ -75,17 +76,18 @@ const Nft: NextPageWithLayout = () => {
         {isModalOpen &&
           <BuyNFTModal opened={isModalOpen} handleModalClose={handleModalClose} referralAddress={referralAddress}
                        tier={selectedTier} />}
-        {week && presaleLaunchDate ?
+        {/* {week && presaleLaunchDate ?*/}
           <Grid grow gutter={'md'} align={'center'} justify={'space-between'} mt={'lg'}
                 style={{ textAlign: 'center', filter: isModalOpen ? 'blur(5px)' : 'none' }}>
-            {presaleInProgress &&
               <Grid.Col span={12}>
-                <InfoCard header={`${5 - week}0% Discount ends in`} maxWidth='400px'>
+                {/* <InfoCard header={`${5 - week}0% Discount ends in`} maxWidth='400px'>*/}
+                <InfoCard header={'10% discount sale starts on Nitropad in'} maxWidth='400px'>
                   <CardContentBox>
-                    <CountdownTimer endDate={1000 * presaleLaunchDate + week * 604800 * 1000} />
+                    <CountdownTimer endDate={1678208400000+4* 604800 * 1000} />
+                    {/* <CountdownTimer endDate={1000 * presaleLaunchDate + week * 604800 * 1000} />*/}
                   </CardContentBox>
                 </InfoCard>
-              </Grid.Col>}
+              </Grid.Col>
             {[0, 1, 2, 3].map((tier) => (
               <Grid.Col span={3} key={tier}>
                 <InfoCard header={<TierHeader tier={tier + 1} />}
@@ -94,7 +96,8 @@ const Nft: NextPageWithLayout = () => {
                     style={{ height: '24px' }}
                     onClick={() => handleModalOpen(tier)}
                     loading={executionInProgress}
-                    disabled={!injectedWalletConnected || executionInProgress || !enoughBalanceForTier(tier) || !presaleNFTAvailableForTier(tier)}
+                    disabled={true}
+                    // disabled={!injectedWalletConnected || executionInProgress || !enoughBalanceForTier(tier) || !presaleNFTAvailableForTier(tier)}
                   >
                     {!contractsLoaded ? 'Buy' :
                       !enoughBalanceForTier(tier) ? 'No balance' : presaleNFTAvailableForTier(tier) ? 'Buy' : 'Sold Out'
@@ -136,7 +139,8 @@ const Nft: NextPageWithLayout = () => {
                 <FancyButton mt={'20px'} py={10}>Read Whitepaper</FancyButton>
               </Link>
             </Grid.Col>
-          </Grid> : <></>}
+          </Grid>
+        {/* : <></>}*/}
       </PageContainer>
     );
   }
