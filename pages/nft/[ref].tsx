@@ -83,7 +83,7 @@ const Nft: NextPageWithLayout = () => {
                 {/* <InfoCard header={`${5 - week}0% Discount ends in`} maxWidth='400px'>*/}
                 <InfoCard header={'10% discount sale starts on Nitropad in'} maxWidth='400px'>
                   <CardContentBox>
-                    <CountdownTimer endDate={1678208400000+4* 604800 * 1000} />
+                    <CountdownTimer endDate={1680800400000} />
                     {/* <CountdownTimer endDate={1000 * presaleLaunchDate + week * 604800 * 1000} />*/}
                   </CardContentBox>
                 </InfoCard>
