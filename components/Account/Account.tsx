@@ -4,6 +4,7 @@ import { showNotification } from '@mantine/notifications';
 import { Styles } from '@mantine/styles/lib/theme/types/DefaultProps';
 import useMetaMaskOnboarding from 'hooks/useMetaMaskOnboarding';
 import { atom, useAtomValue } from 'jotai';
+import { router } from 'next/client';
 import { FC, useEffect, useState } from 'react';
 import { Download, Link, Unlink } from 'tabler-icons-react';
 import { hooksMetamask, metaMask } from 'utils/connectors';
@@ -130,7 +131,7 @@ export const Account = () => {
   }
 
   const RefferalButton: FC<{ styles?: Styles<string> }> = ({ styles }) =>
-    !!process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE ? <Button className={cx(classes.outline)}
+    !!process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE && !router.asPath.includes('nitropad') ? <Button className={cx(classes.outline)}
                                                         variant='light'
                                                         radius='xl'
                                                         size='md'
