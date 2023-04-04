@@ -4,7 +4,7 @@ import { showNotification } from '@mantine/notifications';
 import { Styles } from '@mantine/styles/lib/theme/types/DefaultProps';
 import useMetaMaskOnboarding from 'hooks/useMetaMaskOnboarding';
 import { atom, useAtomValue } from 'jotai';
-import { router } from 'next/client';
+import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { Download, Link, Unlink } from 'tabler-icons-react';
 import { hooksMetamask, metaMask } from 'utils/connectors';
@@ -19,6 +19,7 @@ const { useChainId, useAccount, useIsActivating, useIsActive, useProvider, useEN
 export const transactionInProgressAtom = atom(false);
 
 export const Account = () => {
+  const router = useRouter();
   const { classes, cx } = useStyles();
   const mobile = useMediaQuery('(max-width: 576px)');
   const inProgress = useAtomValue(transactionInProgressAtom);
@@ -131,7 +132,7 @@ export const Account = () => {
   }
 
   const RefferalButton: FC<{ styles?: Styles<string> }> = ({ styles }) =>
-    !!process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE && !router.asPath.includes('nitropad') ? <Button className={cx(classes.outline)}
+    !!process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE && !router.asPath.includes('nitro') ? <Button className={cx(classes.outline)}
                                                         variant='light'
                                                         radius='xl'
                                                         size='md'
