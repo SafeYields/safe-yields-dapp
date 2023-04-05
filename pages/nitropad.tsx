@@ -35,9 +35,11 @@ const Nitropad: NextPageWithLayout = () => {
     const router = useRouter();
     const injectedWalletConnected = useWalletConnected();
     const nftRegularPostPresalePrice = useFetchFromApi('nft/price')?.data;
-    const nftDiscountedPrice = useFetchFromApi('nft/presale-pricenft/presale-price')?.data;
+    const nftDiscountedPrice = ['118.125', '236.25', '472.5', '945'];
     const week = useFetchFromApi('nft/week')?.data;
-    // const presaleLaunchDate = useFetchFromApi('nft/presale')?.data;
+    const currentDate = new Date();
+    const currentTimestamp = Math.floor(currentDate.getTime() / 1000);
+    const presaleLaunchDate = 1680739200;
     const safeNFTBalance = useSafeNFTBalance()?.data;
     const safeNFTOwnership = useSafeNFTOwnership();
     const nftContract = useNFTContract();
@@ -45,10 +47,9 @@ const Nitropad: NextPageWithLayout = () => {
     const usdcBalance = useUsdcBalance()?.data;
     const presaleNFTAvailable = useFetchFromApi('nft/available')?.data;
     const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
-    const contractsLoaded = !!nftRegularPostPresalePrice && !!usdcBalance && !!usdAllowance;
+    const contractsLoaded =  !!usdcBalance && !!usdAllowance;
 
-    const presaleInProgress = false;
-    // const presaleInProgress = !!presaleLaunchDate && week && week > 0 && week <= 4;
+    const presaleInProgress =  currentTimestamp > presaleLaunchDate;
     const enoughBalanceForTier = (tier: number) => contractsLoaded && Number(nftDiscountedPrice[tier]) <= Number(usdcBalance);
     const presaleNFTAvailableForTier = (tier: number) => contractsLoaded && presaleNFTAvailable && parseInt(presaleNFTAvailable[tier]) > 0;
 
@@ -76,7 +77,8 @@ const Nitropad: NextPageWithLayout = () => {
             {/* <InfoCard header={`${5 - week}0% Discount ends in`} maxWidth='400px'>*/}
             <InfoCard header={'10% discount sale starts in'} maxWidth='400px'>
               <CardContentBox>
-                <CountdownTimer endDate={1680800400000} />
+                {/* <CountdownTimer endDate={1680800400000} />*/}
+                <CountdownTimer endDate={presaleLaunchDate*1000} />
                 {/* <CountdownTimer endDate={1000 * presaleLaunchDate + week * 604800 * 1000} />*/}
               </CardContentBox>
             </InfoCard>
@@ -89,8 +91,7 @@ const Nitropad: NextPageWithLayout = () => {
                   style={{ height: '24px' }}
                   onClick={() => handleModalOpen(tier)}
                   loading={executionInProgress}
-                  disabled={true}
-                  // disabled={!injectedWalletConnected || executionInProgress || !enoughBalanceForTier(tier) || !presaleNFTAvailableForTier(tier)}
+                  disabled={!presaleInProgress || !injectedWalletConnected || executionInProgress || !enoughBalanceForTier(tier) || !presaleNFTAvailableForTier(tier)}
                 >
                   {!contractsLoaded ? 'Buy' :
                     !enoughBalanceForTier(tier) ? 'No balance' : presaleNFTAvailableForTier(tier) ? 'Buy' : 'Sold Out'
@@ -106,13 +107,12 @@ const Nitropad: NextPageWithLayout = () => {
                     :
                     <Loader size='xs' color='#F5F5F5' />}
                   <FormattedAmount price={!(nftRegularPostPresalePrice) || nftRegularPostPresalePrice[tier]}
-                                   crossed={presaleInProgress}
+                                   crossed={true}
                                    mt={'xs' }
                                    size={'sm'}
                   />
-                  {presaleInProgress &&
-                    <FormattedAmount price={!(nftDiscountedPrice) || nftDiscountedPrice[tier]} />}
-                  {presaleInProgress && presaleNFTAvailable && <Text>available: {parseInt(presaleNFTAvailable[tier])}</Text>
+                    <FormattedAmount price={!(nftDiscountedPrice) || nftDiscountedPrice[tier]} />
+                  {presaleNFTAvailable && <Text>available: {parseInt(presaleNFTAvailable[tier])}</Text>
                   }
                 </CardContentBox>
               </InfoCard>

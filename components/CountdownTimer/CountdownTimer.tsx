@@ -15,10 +15,10 @@ export const CountdownTimer: FC<{ endDate: number }> = ({ endDate }) => {
     const now = new Date().getTime();
     const t = endDate - now;
 
-    const d = Math.floor(t / (1000 * 60 * 60 * 24));
-    const h = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const m = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-    const s = Math.floor((t % (1000 * 60)) / 1000);
+    const d = t>0 ? Math.floor(t / (1000 * 60 * 60 * 24)) : 0;
+    const h = t>0 ?  Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) : 0;
+    const m =  t>0 ? Math.floor((t % (1000 * 60 * 60)) / (1000 * 60)) :0;
+    const s =  t>0 ? Math.floor((t % (1000 * 60)) / 1000) :0;
 
     setDays(d);
     setHours(h);
