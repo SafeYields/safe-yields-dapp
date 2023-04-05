@@ -44,9 +44,6 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
    }) => {
     const { classes, cx } = useStyles();
     const theme = useMantineTheme();
-    const nftRegularPostPresalePrice = useFetchFromApi('nft/price')?.data;
-    const nftDiscountedPrice = useFetchFromApi('nft/presale-price')?.data;
-    const week = useFetchFromApi('nft/week')?.data;
 
     const safeNFTBalance = useSafeNFTBalance()?.data;
     const nftContract = useNFTContract();
@@ -58,10 +55,10 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
     const [quantity, setQuantity] = useState(1);
     const presaleNFTAvailable = useFetchFromApi('nft/available')?.data;
 
-    const presaleInProgress = week && week > 0 && week <= 4;
-    const nftPrice = presaleInProgress ? nftDiscountedPrice : nftRegularPostPresalePrice;
+    // const presaleInProgress = week && week > 0 && week <= 4;
+    const nftPrice =  ['118.125', '236.25', '472.5', '945'];
 
-    const maxQuantity = !presaleInProgress ? 10 : presaleNFTAvailable ? Math.min(10, parseInt(presaleNFTAvailable[tier])) : 1;
+    const maxQuantity = presaleNFTAvailable ? Math.min(10, parseInt(presaleNFTAvailable[tier])) : 1;
     const handleIncrease = () => setQuantity(quantity < maxQuantity ? quantity + 1 : maxQuantity);
     const handleDecrease = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
 
@@ -74,7 +71,7 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
     // const ownershipIfPurchased = (balanceIfPurchased / totalSupplyOfTierIfPurchased * 100).toFixed(5);
     const ownershipIfPurchased = (safeNFTOwnership[tier] * quantity).toFixed(5);
 
-    const contractsLoaded = !!nftRegularPostPresalePrice && !!usdcBalance && !!usdAllowance;
+    const contractsLoaded =  !!usdcBalance && !!usdAllowance;
     const enoughBalanceForTier = (tier: number) => contractsLoaded && Number(nftPrice[tier]) * quantity <= Number(usdcBalance);
     const enoughAllowanceForTier = (tier: number) => contractsLoaded && (Number(usdAllowance) >= Number(nftPrice[tier]) * quantity);
 
@@ -151,7 +148,7 @@ export const BuyNFTModal: FC<{ opened: boolean, handleModalClose: () => boolean,
         </Grid>
         <FancyButton style={{ height: '24px', position: 'fixed', bottom: '15px', right: '30px' }}
                      loading={executionInProgress}
-                     disabled={executionInProgress || !enoughBalanceForTier(tier) || (presaleInProgress && !presaleNFTAvailableForTier(tier))}
+                     disabled={executionInProgress || !enoughBalanceForTier(tier) || (!presaleNFTAvailableForTier(tier))}
                      onClick={() => !enoughAllowanceForTier(tier) ? approveSpendUsdcForNFTHandler(tier) : buyNFTHandler(tier)}>
           {!contractsLoaded ? 'Buy' :
             !enoughBalanceForTier(tier) ? 'No balance' : !enoughAllowanceForTier(tier) ? 'Approve' : 'Buy'

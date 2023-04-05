@@ -54,6 +54,60 @@ export const NitropadLayout: CustomLayout = (page) => {
                 color: 'veryDarkGreen',
               },
             },
+            Container: {
+              defaultProps: {
+                sizes: {
+                  xs: 540,
+                  sm: 720,
+                  md: 960,
+                  lg: 1140,
+                  xl: 1320,
+                },
+              },
+            },
+            Modal: {
+              styles: (theme) => ({
+                modal: {
+                  background: 'linear-gradient(180deg, rgba(242, 236, 228, 0) 0%, rgba(242, 236, 228, 0) 49%, rgba(242, 236, 228, 0.1) 50%, rgba(242, 236, 228, 0.4)75%, rgba(242, 236, 228, 0.1) 100%), url("/assets/nft-modal-background.png") top/cover no-repeat',
+                  // background: 'url("/assets/nft-modal-background.png"), linear-gradient(0deg, rgba(242, 236, 228, 0.5) 0%, rgba(242, 236, 228, 0.6)25%, rgba(242, 236, 228, 0.3) 50%) top/cover no-repeat',
+                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  backdropFilter: 'blur(3px)',
+                  borderRadius: '15px 15px 15px 15px',
+                  height: `${169 + 176}px`,
+                  width: '578px',
+                  border: 0,
+                  padding: 'sm',
+                },
+                close: {
+                  background: 'linear-gradient(90deg, #CEDB3F, #E89B17,#CEDB3F, #E89B17)',
+                  borderRadius: '46px',
+                  size: 'sm',
+                  color: 'white',
+                  border: 0,
+                  backgroundSize: '300% 100%',
+                  mozTransition: 'all 0.4s ease-in-out',
+                  oTransition: 'all 0.4s ease-in-out',
+                  webkitTransition: 'all 0.4s ease-in-out',
+                  transition: 'all 0.4s ease-in-out',
+                  '&:hover': {
+                    boxShadow: '0 1px 2px 0 rgba(229, 66, 10, 0.85)',
+                    backgroundPosition: '100% 0',
+                    mozTransition: 'all 0.4s ease-in-out',
+                    oTransition: 'all 0.4s ease-in-out',
+                    webkitTransition: 'all 0.4s ease-in-out',
+                    transition: 'all 0.4s ease-in-out',
+                  },
+                },
+              }),
+            },
+            ToolTip: {
+              styles: (theme) => ({
+                tooltip: {
+                  fontSize: 'md',
+                  wordWrap: 'normal',
+                }
+              })
+            }
           }
         }}>
       <AppShell
