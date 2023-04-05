@@ -36,7 +36,8 @@ const Nft: NextPageWithLayout = () => {
     const router = useRouter();
     const injectedWalletConnected = useWalletConnected();
     const nftRegularPostPresalePrice = useFetchFromApi('nft/price')?.data;
-    const nftDiscountedPrice = useFetchFromApi('nft/presale-pricenft/presale-price')?.data;
+    const nftDiscountedPrice = nftRegularPostPresalePrice;
+    // const nftDiscountedPrice = useFetchFromApi('nft/presale-pricenft/presale-price')?.data;
     const week = useFetchFromApi('nft/week')?.data;
     // const presaleLaunchDate = useFetchFromApi('nft/presale')?.data;
     const safeNFTBalance = useSafeNFTBalance()?.data;
@@ -56,7 +57,7 @@ const Nft: NextPageWithLayout = () => {
     const referralAddress = whoReferred && isAddress(whoReferred as string) ? whoReferred as string : undefined;
     console.log('referralAddress', referralAddress);
 
-    const enoughBalanceForTier = (tier: number) => contractsLoaded && Number(nftDiscountedPrice[tier]) <= Number(usdcBalance);
+    const enoughBalanceForTier = (tier: number) => Number(nftDiscountedPrice[tier]) <= Number(usdcBalance);
     const presaleNFTAvailableForTier = (tier: number) => contractsLoaded && presaleNFTAvailable && parseInt(presaleNFTAvailable[tier]) > 0;
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -85,7 +86,7 @@ const Nft: NextPageWithLayout = () => {
                   (<Text>10% discount sale hosted on <Link href={'https://app.nitropad.io/safeyields/'}><a style={{ color: 'white' }}>Nitropad</a></Link> in</Text>)
                 } maxWidth='400px'>
                   <CardContentBox>
-                    <CountdownTimer endDate={1680800400000} />
+                    <CountdownTimer endDate={1680739200*1000} />
                     {/* <CountdownTimer endDate={1000 * presaleLaunchDate + week * 604800 * 1000} />*/}
                   </CardContentBox>
                 </InfoCard>
