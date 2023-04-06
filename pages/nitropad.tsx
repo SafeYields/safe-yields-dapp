@@ -40,6 +40,7 @@ const Nitropad: NextPageWithLayout = () => {
     const currentDate = new Date();
     const currentTimestamp = Math.floor(currentDate.getTime() / 1000);
     const presaleLaunchDate = 1680739200;
+    const presaleEndDate = 1680912000;
     const safeNFTBalance = useSafeNFTBalance()?.data;
     const safeNFTOwnership = useSafeNFTOwnership();
     const nftContract = useNFTContract();
@@ -75,10 +76,10 @@ const Nitropad: NextPageWithLayout = () => {
               style={{ textAlign: 'center', filter: isModalOpen ? 'blur(5px)' : 'none' }}>
           <Grid.Col span={12}>
             {/* <InfoCard header={`${5 - week}0% Discount ends in`} maxWidth='400px'>*/}
-            <InfoCard header={'10% discount sale starts in'} maxWidth='400px'>
+            <InfoCard header={'10% discount sale ends in'} maxWidth='400px'>
               <CardContentBox>
                 {/* <CountdownTimer endDate={1680800400000} />*/}
-                <CountdownTimer endDate={presaleLaunchDate*1000} />
+                <CountdownTimer endDate={presaleEndDate*1000} />
                 {/* <CountdownTimer endDate={1000 * presaleLaunchDate + week * 604800 * 1000} />*/}
               </CardContentBox>
             </InfoCard>
