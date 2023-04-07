@@ -1,7 +1,6 @@
 import { isAddress } from '@ethersproject/address';
 import { Grid, Loader, Text, Title } from '@mantine/core';
 import { transactionInProgressAtom } from 'components/Account/Account';
-import { CountdownTimer } from 'components/CountdownTimer';
 import { FancyButton } from 'components/FancyButton';
 import { FormattedAmount } from 'components/FormatPrice';
 import { InfoCard } from 'components/InfoCard';
@@ -83,12 +82,11 @@ const Nft: NextPageWithLayout = () => {
               <Grid.Col span={12}>
                 {/* <InfoCard header={`${5 - week}0% Discount ends in`} maxWidth='400px'>*/}
                 <InfoCard header={
-                  (<Text>10% discount sale hosted on <Link href={'https://app.nitropad.io/safeyields/'}><a style={{ color: 'white' }}>Nitropad</a></Link> in</Text>)
+                  (<Text>Discounted sale hosted on <Link href={'https://app.nitropad.io/safeyields/'}><a style={{ color: 'white' }}>Nitropad</a></Link></Text>)
                 } maxWidth='400px'>
-                  <CardContentBox>
-                    <CountdownTimer endDate={1680739200*1000} />
-                    {/* <CountdownTimer endDate={1000 * presaleLaunchDate + week * 604800 * 1000} />*/}
-                  </CardContentBox>
+                  {/* <CardContentBox>*/}
+                  {/*  <CountdownTimer endDate={1680739200*1000} />*/}
+                  {/* </CardContentBox>*/}
                 </InfoCard>
               </Grid.Col>
             {[0, 1, 2, 3].map((tier) => (
