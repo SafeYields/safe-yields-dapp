@@ -35,12 +35,15 @@ const Nitropad: NextPageWithLayout = () => {
     const router = useRouter();
     const injectedWalletConnected = useWalletConnected();
     const nftRegularPostPresalePrice = useFetchFromApi('nft/price')?.data;
-    const nftDiscountedPrice = ['118.125', '236.25', '472.5', '945'];
     const week = useFetchFromApi('nft/week')?.data;
     const currentDate = new Date();
     const currentTimestamp = Math.floor(currentDate.getTime() / 1000);
     const presaleLaunchDate = 1680739200;
-    const presaleEndDate = 1680912000;
+    const presaleSwitchTo5Date = 1680912000;
+    const switchedTo5Percent = currentTimestamp > presaleSwitchTo5Date;
+    const presaleEndDate =1682121600;
+    const timerCountDownDate = switchedTo5Percent ? presaleEndDate : presaleSwitchTo5Date;
+    const nftDiscountedPrice = switchedTo5Percent ? [ '124.6875', '249.375', '498.75', '997.5' ] : ['118.125', '236.25', '472.5', '945'];
     const safeNFTBalance = useSafeNFTBalance()?.data;
     const safeNFTOwnership = useSafeNFTOwnership();
     const nftContract = useNFTContract();
@@ -76,10 +79,10 @@ const Nitropad: NextPageWithLayout = () => {
               style={{ textAlign: 'center', filter: isModalOpen ? 'blur(5px)' : 'none' }}>
           <Grid.Col span={12}>
             {/* <InfoCard header={`${5 - week}0% Discount ends in`} maxWidth='400px'>*/}
-            <InfoCard header={'10% discount sale ends in'} maxWidth='400px'>
+            <InfoCard header={`${switchedTo5Percent ? '5' : '10'}% discount sale ends in`} maxWidth='400px'>
               <CardContentBox>
                 {/* <CountdownTimer endDate={1680800400000} />*/}
-                <CountdownTimer endDate={presaleEndDate*1000} />
+                <CountdownTimer endDate={timerCountDownDate*1000} />
                 {/* <CountdownTimer endDate={1000 * presaleLaunchDate + week * 604800 * 1000} />*/}
               </CardContentBox>
             </InfoCard>
