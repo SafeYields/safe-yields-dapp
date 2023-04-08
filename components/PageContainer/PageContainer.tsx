@@ -8,10 +8,16 @@ type PageContainerProps = {
   items?: { label: string; href: string }[];
 } & Pick<ContainerProps, 'fluid'>;
 
-export const PageContainer: FC<PageContainerProps> = ({ children, title, background, items, fluid }) => {
+export const PageContainer: FC<PageContainerProps> = ({
+  children,
+  title,
+  background,
+  items,
+  fluid,
+}) => {
   return (
-    <Container fluid={fluid}>
-        {children}
+    <Container fluid={fluid} style={{ marginTop: '40px' }}>
+      {children}
     </Container>
   );
 };

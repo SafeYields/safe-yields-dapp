@@ -81,7 +81,6 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       mozAnimation: `${glowing} 30s ease-in-out infinite alternate`,
     },
 
-
     footer: {
       paddingTop: theme.spacing.xs,
       marginTop: theme.spacing.md,
@@ -144,26 +143,13 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       borderColor: 'transparent',
       position: 'relative',
 
-
       '&:hover': {
         borderRadius: '50px',
         borderWidth: '1px',
         borderStyle: 'solid',
-        background: `url(/assets/background.jpg) padding-box fixed, ${theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0])} border-box`,
+        borderColor: theme.colors.mustardGreen[0],
+        background: 'transparent',
         // background: theme.colors.sideMenuBackgroundBlue[0],
-
-        '&:before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
-          zIndex: -1,
-          margin: '-1px',
-          borderRadius: 'inherit',
-          background: theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0]),
-        },
       },
     },
 
@@ -171,21 +157,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       borderRadius: '50px',
       borderWidth: '1px',
       borderStyle: 'solid',
-      background: `url(/assets/background.jpg) padding-box fixed, ${theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0])} border-box`,
-      // background: theme.colors.sideMenuBackgroundBlue[0],
-
-      '&:before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-        zIndex: -1,
-        margin: '-1px',
-        borderRadius: 'inherit',
-        background: theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0]),
-      },
+      borderColor: theme.colors.mustardGreen[0],
       [`& .${icon}`]: {
         color: theme.colors[theme.primaryColor][7],
       },
@@ -207,71 +179,73 @@ const ITEMS = [
   { href: getPath('EMMA'), label: 'Emma the trading Bot', Icon: Robot, comingSoon: true },
   { href: getPath('SAFE'), label: 'Trade Safe', Icon: Moneybag },
   { href: getPath('NFT'), label: 'Buy an NFT', Icon: UserCircle },
-  { href: getPath('INVESTMENT'), label: 'Investment Pool Portfolio', Icon: CornerRightUp, comingSoon: true },
+  {
+    href: getPath('INVESTMENT'),
+    label: 'Investment Pool Portfolio',
+    Icon: CornerRightUp,
+    comingSoon: true,
+  },
   { href: getPath('EXPENSE'), label: 'Expense Log', Icon: FileReport, comingSoon: true },
 ];
 
 export const SideNav: FC<{ className?: string }> = ({ className }) => {
   const [collapsed, handlers] = useDisclosure(false);
   const { classes, cx } = useStyles({ collapsed });
-    return (
-      <Navbar p='md' className={cx(classes.navbar, className)}>
-        <Navbar.Section grow>
-          <Group className={classes.safeYieldsLogo} position='apart'>
-            <Link href={getPath('HOME')}>
-              <Image
-                src='/assets/safe-yields-logo.svg'
-                alt='Safe Yields Logo'
-                className={classes.glowingLogo}
-              />
-            </Link>
-          </Group>
-          {ITEMS.map(({ label, href, Icon, comingSoon }) => (
-              <Tooltip
-                key={label}
-                label={label}
-                disabled={!collapsed}
-                position='right'
-                withArrow
-                sx={{ width: '100%' }}
-              >
-                <ActiveLink href={href} passHref>
-                  {(isActive) => {
-                    return (
-                      <a
-                        className={cx(classes.link, {
-                          [classes.linkActive]: isActive,
-                        })}
-                      >
-                        <Icon className={classes.linkIcon} />
-                        <Stack spacing={3} className={classes.linkLabel}>
-                          <span className={classes.linkLabel}>{label}</span>
-                          {comingSoon && (<Text size={'xs'}>(Coming Soon)</Text>)}
-                        </Stack>
-                      </a>
-                    );
-                  }}
-                </ActiveLink>
-              </Tooltip>
-            ),
-          )
-          }
-        </Navbar.Section>
+  return (
+    <Navbar p='md' className={cx(classes.navbar, className)}>
+      <Navbar.Section grow>
+        <Group className={classes.safeYieldsLogo} position='apart'>
+          <Link href={getPath('HOME')}>
+            <Image
+              src='/assets/safe-yields-logo.svg'
+              alt='Safe Yields Logo'
+              className={classes.glowingLogo}
+            />
+          </Link>
+        </Group>
+        {ITEMS.map(({ label, href, Icon, comingSoon }) => (
+          <Tooltip
+            key={label}
+            label={label}
+            disabled={!collapsed}
+            position='right'
+            withArrow
+            sx={{ width: '100%' }}
+          >
+            <ActiveLink href={href} passHref>
+              {(isActive) => {
+                return (
+                  <a
+                    className={cx(classes.link, {
+                      [classes.linkActive]: isActive,
+                    })}
+                  >
+                    <Icon className={classes.linkIcon} />
+                    <Stack spacing={3} className={classes.linkLabel}>
+                      <span className={classes.linkLabel}>{label}</span>
+                      {comingSoon && <Text size={'xs'}>(Coming Soon)</Text>}
+                    </Stack>
+                  </a>
+                );
+              }}
+            </ActiveLink>
+          </Tooltip>
+        ))}
+      </Navbar.Section>
 
-        <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-          <Navbar.Section className={classes.footer}>
-            <UnstyledButton className={classes.collapse} onClick={handlers.toggle}>
-              {collapsed ? (
-                <ArrowRight className={classes.collapseIcon} />
-              ) : (
-                <>
-                  <ArrowLeft className={classes.collapseIcon} />
-                </>
-              )}
-            </UnstyledButton>
-          </Navbar.Section>
-        </MediaQuery>
-      </Navbar>
-    )
-      ;
+      <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
+        <Navbar.Section className={classes.footer}>
+          <UnstyledButton className={classes.collapse} onClick={handlers.toggle}>
+            {collapsed ? (
+              <ArrowRight className={classes.collapseIcon} />
+            ) : (
+              <>
+                <ArrowLeft className={classes.collapseIcon} />
+              </>
+            )}
+          </UnstyledButton>
+        </Navbar.Section>
+      </MediaQuery>
+    </Navbar>
+  );
 };
