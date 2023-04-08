@@ -11,8 +11,11 @@ import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
 import { useRouter } from 'next/router';
 
+import { FormattedAmount } from '../components/FormatPrice';
+import { TierHeader } from '../components/TierHeader';
 import { DECIMALS_TO_DISPLAY } from '../config';
 import useFetchFromApi from '../hooks/useFetchFromApi';
+import useSafeNFTOwnership from '../hooks/useSafeNFTOnwership';
 import useSafePlusTokenBalance from '../hooks/useSafePlusTokenBalance';
 
 const Home: NextPageWithLayout = () => {
@@ -29,6 +32,7 @@ const Home: NextPageWithLayout = () => {
   const safeTokenAPR = useFetchFromApi('safe/apr')?.data;
   const nftAPR = useFetchFromApi('nft/apr')?.data;
   const nftOfTreasury = useNFTOfTreasury()?.data;
+  const safeNFTOwnership = useSafeNFTOwnership();
   const displayValueInUSDC = (priceData: string | null | undefined) =>
     injectedWalletConnected && priceData && safeTokenPrice
       ? (parseInt(priceData) * parseInt(safeTokenPrice))
@@ -74,30 +78,38 @@ const Home: NextPageWithLayout = () => {
             </CardContentBox>
           </InfoCard>
         </Grid.Col>
-        <Grid.Col span={12}>
-          <InfoCard header={'Your NFTs'}>
-            <Flex gap='xl' justify='space-between' align='center' direction='row' wrap='wrap'>
-              {[0, 1, 2, 3].map((tier) => (
-                <CardContentBox
-                  key={`NFTBalanceTier${tier + 1}`}
-                  footer={
-                    injectedWalletConnected ? (
-                      safeNFTBalance && safeNFTBalance[tier] ? (
-                        `Total: ${parseInt(safeNFTBalance[tier])}`
-                      ) : (
-                        <Loader size='xs' color='#F5F5F5' />
-                      )
-                    ) : (
-                      '⸻'
-                    )
-                  }
-                >
-                  <h1>Tier {tier + 1}</h1>
-                </CardContentBox>
-              ))}
-            </Flex>
-          </InfoCard>
-        </Grid.Col>
+        {[0, 1, 2, 3].map((tier) => (
+          <Grid.Col span={3} key={tier}>
+            <InfoCard
+              header={<TierHeader tier={tier + 1} />}
+              minHeight='250px'
+              background={`url(/assets/nft-icon-${tier + 1}.png) center/cover no-repeat`}
+              gray={!(safeNFTBalance && parseInt(safeNFTBalance[tier]))}
+            >
+              <CardContentBox
+                footer={
+                  <FormattedAmount
+                    caption='Your NFTs: '
+                    price={!safeNFTBalance || safeNFTBalance[tier]}
+                    unit=''
+                    decimals={0}
+                  />
+                }
+              >
+                {safeNFTBalance &&
+                safeNFTBalance[tier] &&
+                typeof safeNFTBalance[tier] == 'string' ? (
+                  <Text color='#FFFFFF' size='xs'>
+                    {safeNFTOwnership[tier].toString() + '% '}
+                    Ownership
+                  </Text>
+                ) : (
+                  '⸻'
+                )}
+              </CardContentBox>
+            </InfoCard>
+          </Grid.Col>
+        ))}
         <Grid.Col span={12}>
           <Text align={'center'}>
             Total Treasury Ownership:{' '}
@@ -108,11 +120,7 @@ const Home: NextPageWithLayout = () => {
           <InfoCard header={'SAFE Price'}>
             <CardContentBox>
               <h1 style={{ color: '#F5F5F5' }}>
-                {safeTokenPrice ? (
-                  parseFloat(safeTokenPrice).toFixed(2).concat(' $USDC')
-                ) : (
-                  <Loader size='lg' color='#F5F5F5' />
-                )}
+                {safeTokenPrice ? parseFloat(safeTokenPrice).toFixed(2).concat(' $USDC') : '⸻'}
               </h1>
               <br />
             </CardContentBox>
