@@ -57,9 +57,10 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 fontFamily: '"Space Grotesk", sans-serif',
                 fontWeight: 450,
                 sizes: {
-                  h1: { fontSize: 36, lineHeight: '43px' },
+                  h1: { fontSize: 64, lineHeight: '43px', fontWeight: 500 },
                   h3: { fontSize: 24, lineHeight: '24px', fontWeight: 700 },
                   h4: { fontSize: 20, lineHeight: '20px', fontWeight: 700 },
+                  h5: { fontSize: 40, lineHeight: '48px', fontWeight: 450 },
                 },
               },
               defaultGradient: {
@@ -103,14 +104,19 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                         backgroundClip: 'padding-box',
                         position: 'relative',
                         boxSizing: 'border-box',
-                        background: 'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
+                        background:
+                          'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
                         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
                         backdropFilter: 'blur(3px)',
                         wordWrap: 'normal',
                         '&::before': { backgroundColor: 'white' },
                       },
                       title: { color: 'white' },
-                      description: { color: 'white', wordWrap: 'break-word', wordBreak: 'break-word' },
+                      description: {
+                        color: 'white',
+                        wordWrap: 'break-word',
+                        wordBreak: 'break-word',
+                      },
                       closeButton: {
                         color: 'white',
                         '&:hover': { backgroundColor: 'orange' },
@@ -139,7 +145,8 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 Modal: {
                   styles: (theme) => ({
                     modal: {
-                      background: 'linear-gradient(180deg, rgba(242, 236, 228, 0) 0%, rgba(242, 236, 228, 0) 49%, rgba(242, 236, 228, 0.1) 50%, rgba(242, 236, 228, 0.4)75%, rgba(242, 236, 228, 0.1) 100%), url("/assets/nft-modal-background.png") top/cover no-repeat',
+                      background:
+                        'linear-gradient(180deg, rgba(242, 236, 228, 0) 0%, rgba(242, 236, 228, 0) 49%, rgba(242, 236, 228, 0.1) 50%, rgba(242, 236, 228, 0.4)75%, rgba(242, 236, 228, 0.1) 100%), url("/assets/nft-modal-background.png") top/cover no-repeat',
                       // background: 'url("/assets/nft-modal-background.png"), linear-gradient(0deg, rgba(242, 236, 228, 0.5) 0%, rgba(242, 236, 228, 0.6)25%, rgba(242, 236, 228, 0.3) 50%) top/cover no-repeat',
                       boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
                       backdropFilter: 'blur(3px)',
@@ -176,9 +183,9 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                     tooltip: {
                       fontSize: 'md',
                       wordWrap: 'normal',
-                    }
-                  })
-                }
+                    },
+                  }),
+                },
               },
             }}
           >

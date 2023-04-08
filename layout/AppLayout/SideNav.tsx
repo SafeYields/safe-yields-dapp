@@ -72,6 +72,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
     },
 
     glowingLogo: {
+      cursor: 'pointer',
       animationDelay: '10s',
       borderRadius: '100%',
       background: 'transparent',
@@ -200,7 +201,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
 });
 
 const ITEMS = [
-  { href: getPath('HOME'), label: 'Website', Icon: Home },
+  { href: getPath('WEBSITE'), label: 'Website', Icon: Home },
   { href: getPath('DASHBOARD'), label: 'Dashboard', Icon: LayoutDashboard },
   { href: getPath('YIELD'), label: 'Yield aggregator', Icon: ReportMoney, comingSoon: true },
   { href: getPath('EMMA'), label: 'Emma the trading Bot', Icon: Robot, comingSoon: true },
@@ -213,29 +214,11 @@ const ITEMS = [
 export const SideNav: FC<{ className?: string }> = ({ className }) => {
   const [collapsed, handlers] = useDisclosure(false);
   const { classes, cx } = useStyles({ collapsed });
-  if (process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE) {
-    return (
-      <Navbar p='md' className={cx(classes.navbar, className)} style={{ borderWidth: '0px', position: 'absolute' }}>
-        <Navbar.Section grow>
-          <Group className={cx(classes.safeYieldsLogo)} position='apart'>
-            <Link href={getPath('NFT')}>
-              <Image
-                src='/assets/safe-yields-logo.svg'
-                alt='Safe Yields Logo'
-                className={classes.glowingLogo}
-              />
-            </Link>
-          </Group>
-        </Navbar.Section>
-      </Navbar>
-    )
-      ;
-  } else
     return (
       <Navbar p='md' className={cx(classes.navbar, className)}>
         <Navbar.Section grow>
           <Group className={classes.safeYieldsLogo} position='apart'>
-            <Link href={getPath('DASHBOARD')}>
+            <Link href={getPath('HOME')}>
               <Image
                 src='/assets/safe-yields-logo.svg'
                 alt='Safe Yields Logo'

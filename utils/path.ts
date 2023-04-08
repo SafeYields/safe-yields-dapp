@@ -1,7 +1,8 @@
 const PATH = {
-  HOME: 'https://www.safeyields.io',
+  HOME: '/',
+  WEBSITE: 'https://www.safeyields.io',
   NOTIFICATION: '/notification',
-  DASHBOARD: '/',
+  DASHBOARD: '/dashboard',
   YIELD: '/yield',
   EMMA: '/emma-the-bot',
   SAFE: '/safe',
