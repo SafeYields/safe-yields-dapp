@@ -15,7 +15,7 @@ const PATH = {
 export const getPath = (pathKey: keyof typeof PATH, ...args: string[]) => {
   const val = PATH[pathKey];
 
-  if (!args || pathKey == 'HOME') {
+  if (!args || pathKey == 'HOME' || pathKey == 'WEBSITE') {
     return val;
   }
 
