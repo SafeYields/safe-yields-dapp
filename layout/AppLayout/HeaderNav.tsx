@@ -1,21 +1,12 @@
-import {
-  ActionIcon, Container, createStyles,
-  Group,
-  Header,
-  Indicator,
-} from '@mantine/core';
+import { ActionIcon, Container, createStyles, Group, Header, Indicator } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Account } from 'components/Account';
 import Link from 'next/link';
 import { FC, ReactNode, useState } from 'react';
-import {
-  Bell,
-  Home,
-  Moneybag,
-  UserCircle,
-} from 'tabler-icons-react';
-import { getPath } from 'utils';
+import { Bell, Home, Moneybag, UserCircle } from 'tabler-icons-react';
+import { ActiveLink, getPath } from 'utils';
 
+import useWalletConnected from '../../hooks/useWalletConnected';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -55,12 +46,9 @@ const useStyles = createStyles((theme) => ({
   },
 
   linkActive: {
-    // '&, &:hover': {
-    //   color: theme.colors.highlightGreen[0]
-    // },
+    color: theme.colors.highlightGreen[0],
   },
 }));
-
 
 export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
   const [opened, { toggle }] = useDisclosure(false);
@@ -72,38 +60,38 @@ export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
   ];
 
   const [active, setActive] = useState(links[0].link);
+  const injectedWalletConnected = useWalletConnected();
   const { classes, cx } = useStyles();
 
   const items = links.map((link) => (
-    <a
-      key={link.label}
-      href={link.link}
-      className={cx(classes.link, { [classes.linkActive]: active === link.link })}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(link.link);
-      }}
-    >
-      {link.label}
-    </a>
+    <ActiveLink href={link.link} key={link.label} passHref>
+      {(isActive) => (
+        <a key={link.label} className={cx(classes.link, { [classes.linkActive]: isActive })}>
+          {link.label}
+        </a>
+      )}
+    </ActiveLink>
   ));
 
   return (
-    <Header height={{ base: 50, md: 70 }} p='sm' mb={120} mt={45}
-            sx={(theme) => ({
-              position: 'absolute',
-              padding: `${theme.spacing.xs}px 0px`,
-              borderBottom: `1px solid ${'transparent'}`,
-              backgroundColor: 'transparent',
-            })}
+    <Header
+      height={{ base: 50, md: 70 }}
+      p='sm'
+      mb={120}
+      mt={45}
+      sx={(theme) => ({
+        position: 'absolute',
+        padding: `${theme.spacing.xs}px 0px`,
+        borderBottom: `1px solid ${'transparent'}`,
+        backgroundColor: 'transparent',
+      })}
     >
       <Container className={classes.header}>
-        {!process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE &&
         <Group spacing={50} className={classes.links}>
-              {left}
-              {items}
-        </Group>}
+          {left}
+          {!injectedWalletConnected && items}
           <Account />
+        </Group>
         {/* <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />*/}
       </Container>
     </Header>

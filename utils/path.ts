@@ -9,13 +9,13 @@ const PATH = {
   NFT: '/nft',
   INVESTMENT: '/investment-pool',
   EXPENSE: '/expense-log',
-  WHITEPAPER: '/whitepaper',
+  WHITEPAPER: 'https://www.safeyields.io/safeyields_whitepaper.pdf',
 } as const;
 
 export const getPath = (pathKey: keyof typeof PATH, ...args: string[]) => {
   const val = PATH[pathKey];
 
-  if (!args || pathKey == 'HOME' || pathKey == 'WEBSITE') {
+  if (!args || pathKey == 'HOME' || val.startsWith('http')) {
     return val;
   }
 
