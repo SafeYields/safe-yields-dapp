@@ -163,7 +163,7 @@ const Home: NextPageWithLayout = () => {
             {nftOfTreasury?.concat(' %') ?? <Loader size='xs' color='#F5F5F5' />}
           </Text>
         </Grid.Col>
-        <Grid.Col span={3}>
+        <Grid.Col span={2}>
           <InfoCard header={'SAFE Price'} minWidth={'130px'}>
             <CardContentBox>
               <h2 style={{ color: '#F5F5F5' }}>
@@ -173,7 +173,7 @@ const Home: NextPageWithLayout = () => {
             </CardContentBox>
           </InfoCard>
         </Grid.Col>
-        <Grid.Col span={3}>
+        <Grid.Col span={2}>
           <InfoCard header={'SAFE+ Price'} minWidth={'130px'}>
             <CardContentBox>
               <h2 style={{ color: '#F5F5F5' }}>

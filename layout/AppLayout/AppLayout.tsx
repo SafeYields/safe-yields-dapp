@@ -21,7 +21,6 @@ import { SideNav } from './SideNav';
 //   return SideNav;
 // });
 
-
 export const AppLayout: CustomLayout = (page) => {
   const [opened, handlers] = useDisclosure(false);
   return (
@@ -34,7 +33,7 @@ export const AppLayout: CustomLayout = (page) => {
             maxWidth: '100vw',
             overflowX: 'hidden',
             // background: 'url(/assets/background.jpg) fixed',
-            backgroundImage: 'url(/assets/background.jpg)',
+            backgroundImage: 'url(/assets/background.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
@@ -53,15 +52,17 @@ export const AppLayout: CustomLayout = (page) => {
             </MediaQuery>
           </>
         }
-        header={<HeaderNav
-          left={
-            <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
-              <ActionIcon variant='default' radius='xl' size={40} onClick={handlers.open}>
-                <Menu2 />
-              </ActionIcon>
-            </MediaQuery>
-          }
-        />}
+        header={
+          <HeaderNav
+            left={
+              <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
+                <ActionIcon variant='default' radius='xl' size={40} onClick={handlers.open}>
+                  <Menu2 />
+                </ActionIcon>
+              </MediaQuery>
+            }
+          />
+        }
       >
         <Box py='xs' px='md' sx={{ marginTop: '130px' }}>
           <LayoutErrorBoundary>{page}</LayoutErrorBoundary>
