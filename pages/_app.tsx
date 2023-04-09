@@ -57,7 +57,8 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 fontFamily: '"Space Grotesk", sans-serif',
                 fontWeight: 450,
                 sizes: {
-                  h1: { fontSize: 64, lineHeight: '43px', fontWeight: 500 },
+                  h1: { fontSize: 64, lineHeight: '64px', fontWeight: 500 },
+                  h2: { fontSize: 60, lineHeight: '60px', fontWeight: 500 },
                   h3: { fontSize: 24, lineHeight: '24px', fontWeight: 700 },
                   h4: { fontSize: 20, lineHeight: '20px', fontWeight: 700 },
                   h5: { fontSize: 40, lineHeight: '48px', fontWeight: 450 },

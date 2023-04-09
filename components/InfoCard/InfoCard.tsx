@@ -4,9 +4,9 @@ import { FC, ReactNode } from 'react';
 type InfoCardProps = {
   children: ReactNode;
   header: ReactNode;
+  minWidth?: string;
   maxWidth?: string;
   minHeight?: string;
-
   background?: string;
   gray?: boolean;
 };
@@ -14,6 +14,7 @@ type InfoCardProps = {
 export const InfoCard: FC<InfoCardProps> = ({
   children,
   header,
+  minWidth = '191px',
   maxWidth,
   minHeight,
   background,
@@ -64,7 +65,7 @@ export const InfoCard: FC<InfoCardProps> = ({
       },
       cardInner: {
         ...theme.fn.focusStyles(),
-        minWidth: '200px',
+        minWidth,
         minHeight: '138px',
         display: 'flex',
         alignItems: 'center',
@@ -74,7 +75,7 @@ export const InfoCard: FC<InfoCardProps> = ({
         columnGap: theme.spacing.sm,
         textDecoration: 'none',
         color: theme.colors.limeGreen[0],
-        padding: `${theme.spacing.sm}px ${theme.spacing.sm}px`,
+        padding: `${theme.spacing.sm}px 0`,
         borderRadius: '21px',
         borderWidth: '0px',
         borderStyle: 'solid',
