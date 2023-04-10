@@ -27,7 +27,6 @@
     "@ethersproject/providers": "^5.7.2",
     "@ethersproject/units": "^5.7.0",
     "@fontsource/space-grotesk": "^4.5.13",
-    "@kyberswap/widgets": "^0.0.3",
     "@mantine/core": "^5.10.0",
     "@mantine/hooks": "^5.10.0",
     "@mantine/next": "^5.10.0",

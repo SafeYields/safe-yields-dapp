@@ -15,9 +15,5 @@ export const PageContainer: FC<PageContainerProps> = ({
   items,
   fluid,
 }) => {
-  return (
-    <Container fluid={fluid} style={{ marginTop: '40px' }}>
-      {children}
-    </Container>
-  );
+  return <Container fluid={fluid}>{children}</Container>;
 };

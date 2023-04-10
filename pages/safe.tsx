@@ -1,8 +1,8 @@
-import { Widget } from '@kyberswap/widgets';
 import { Flex } from '@mantine/core';
 import { useWeb3React } from '@web3-react/core';
 
 import { PageContainer } from '../components/PageContainer';
+import SwapWidget from '../components/SwapWidget';
 import { AppLayout } from '../layout';
 
 const safeTheme = {
@@ -34,12 +34,7 @@ const Safe = () => {
   return (
     <PageContainer title='safe'>
       <Flex justify='center' align='center'>
-      <Widget
-        theme={safeTheme}
-        tokenList={[]}
-        provider={provider}
-        defaultTokenOut={chainId ? defaultTokenOut[chainId] : '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8'}
-      />
+        <SwapWidget />
       </Flex>
     </PageContainer>
   );

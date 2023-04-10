@@ -29,10 +29,10 @@ export const AppLayout: CustomLayout = (page) => {
         padding='md'
         styles={(theme) => ({
           body: {
-            minHeight: '100vh',
+            height: '100%',
+            // minHeight: '100vh',
             maxWidth: '100vw',
             overflowX: 'hidden',
-            // background: 'url(/assets/background.jpg) fixed',
             backgroundImage: 'url(/assets/background.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
