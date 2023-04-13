@@ -6,6 +6,7 @@ import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { GlobalStyleProvider } from 'style/GlobalStyleProvider';
+
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout;
 }
@@ -36,8 +37,11 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 mustardGreen: ['#CEDB3F'],
                 limeGreen: ['#D9E022', '#CBDA49'],
                 orange: ['#E89B17', '#F28705'],
+                gray: ['#F2ECE42D'],
+                transparentGray: ['rgba(255, 255, 255, 0.29)'],
                 white: ['#F2ECE4'],
-                greenGray: ['#36676A'],
+                greenGray: ['#36676A', '#85A7A8', '#90A4A2'],
+                emeraldGreen: ['#053234'],
                 almostWhite: ['#F5F5F5'],
                 veryDarkGreen: ['#0B1B03'],
               },
@@ -129,7 +133,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 Button: {
                   defaultProps: {
                     size: 'xs',
-                    color: 'cyan',
+                    color: 'white',
                   },
                 },
                 Container: {
@@ -184,6 +188,70 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                     tooltip: {
                       fontSize: 'md',
                       wordWrap: 'normal',
+                    },
+                  }),
+                },
+                Select: {
+                  styles: (theme) => ({
+                    input: {
+                      width: '100%',
+                      fontWeight: 700,
+                      borderRadius: '99px',
+                      border: 'none',
+                      fontSize: '14px',
+                      lineHeight: '14px',
+                      backgroundColor: theme.colors.transparentGray[0],
+                      color: theme.colors.emeraldGreen[0],
+                    },
+                    dropdown: {
+                      padding: 0,
+                      marginTop: -3,
+                      borderRadius: 12,
+                      border: 'none',
+                      overflow: 'hidden',
+                      color: theme.colors.emeraldGreen[0],
+                      backgroundColor: theme.colors.greenGray[2],
+                      '.mantine-ScrollArea-scrollbar': {
+                        backgroundColor: theme.colors.greenGray[2],
+                      },
+
+                      '.mantine-ScrollArea-thumb': {
+                        backgroundColor: theme.colors.transparentGray[0],
+                        '&:hover': {
+                          backgroundColor: 'rgba(152, 152, 154, 0.75) !important',
+                        },
+                      },
+
+                      '.mantine-ScrollArea-viewport *:not(.mantine-Select-item)': {
+                        backgroundColor: theme.colors.greenGray[2],
+                        padding: '0 !important',
+                      },
+                    },
+                    item: {
+                      borderRadius: 12,
+                      height: 36,
+                      padding: '7px 12px',
+                      backgroundColor: theme.colors.greenGray[2],
+                      '&[data-selected]': {
+                        color: theme.colors.emeraldGreen[0],
+                        backgroundColor: theme.colors.mustardGreen[0],
+                        '&, &:hover': {
+                          backgroundColor: theme.colors.mustardGreen[0],
+                        },
+                      },
+                      '&[data-hovered]': {
+                        backgroundColor: theme.colors.mustardGreen[0],
+                      },
+                    },
+                  }),
+                },
+                ScrollArea: {
+                  styles: (theme) => ({
+                    root: {
+                      backgroundColor: 'transparent',
+                    },
+                    viewport: {
+                      borderRadius: '7px',
                     },
                   }),
                 },
