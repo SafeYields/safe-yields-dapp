@@ -1,5 +1,16 @@
-import { Box, createStyles, Flex, Input, Select, Text, Title } from '@mantine/core';
-import { useState } from 'react';
+import {
+  Avatar,
+  Box,
+  createStyles,
+  Flex,
+  Group,
+  Input,
+  Select,
+  Text,
+  Title,
+  useMantineTheme,
+} from '@mantine/core';
+import { forwardRef, useState } from 'react';
 import { AdjustmentsHorizontal, CaretDown } from 'tabler-icons-react';
 
 enum ModalType {
@@ -11,6 +22,24 @@ enum ModalType {
   IMPORT_TOKEN = 'import_token',
 }
 
+interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
+  image: string;
+  value: string;
+}
+
+const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
+  ({ image, value, ...others }: ItemProps, ref) => (
+    <div ref={ref} {...others}>
+      <Group noWrap style={{ backgroundColor: 'transparent' }}>
+        <Avatar src={image} radius='xl' />
+        <Text size='sm' style={{ backgroundColor: 'transparent', color: others.color }}>
+          {value}
+        </Text>
+      </Group>
+    </div>
+  ),
+);
+SelectItem.displayName = 'SelectItem';
 const SwapWidget = () => {
   const useStyles = createStyles<string>((theme, params, getRef) => {
     return {
@@ -82,7 +111,38 @@ const SwapWidget = () => {
     };
   });
   const { classes, cx } = useStyles();
+  const theme = useMantineTheme();
   const [showModal, setShowModal] = useState<ModalType | null>(null);
+
+  // select
+  const [value, setValue] = useState<string | null>(null);
+  const [valueIndex, setValueIndex] = useState<number>(0);
+  const data = [
+    {
+      image: 'https://img.icons8.com/clouds/256/000000/futurama-mom.png',
+      value: 'USDC',
+      label: 'USDC',
+    },
+    {
+      image: 'https://img.icons8.com/clouds/256/000000/futurama-bender.png',
+      value: 'Eth',
+      label: 'Eth',
+    },
+    {
+      image: 'https://img.icons8.com/clouds/256/000000/homer-simpson.png',
+      value: 'USDT',
+      label: 'USDT',
+    },
+    {
+      image: 'https://img.icons8.com/clouds/256/000000/spongebob-squarepants.png',
+      value: 'USDs',
+      label: 'USDs',
+    },
+  ];
+  const handleChange = (value: string | null) => {
+    setValue(value);
+    setValueIndex(data.findIndex((d) => d.value === value));
+  };
 
   // const {
   //   loading,
@@ -128,15 +188,17 @@ const SwapWidget = () => {
             <Text className={classes.maxButton}>Max.</Text>
             <Select
               size='lg'
-              w={'7 0%'}
               rightSection={<CaretDown className={classes.chevron} />}
+              itemComponent={SelectItem}
+              defaultValue='USDC'
+              searchable
               styles={{ rightSection: { pointerEvents: 'none' } }}
-              data={[
-                { value: 'Eth', label: 'Eth' },
-                { value: 'USDC', label: 'USDC' },
-                { value: 'USDT', label: 'USDT' },
-                { value: 'USDs', label: 'USDs' },
-              ]}
+              data={data}
+              onChange={handleChange}
+              icon={<Avatar src={data[valueIndex].image} radius='xl' />}
+              filter={(value, item) =>
+                item.value.toLowerCase().includes(value.toLowerCase().trim())
+              }
             />
           </Flex>
         </Box>
