@@ -1,24 +1,18 @@
+import { BigNumber } from '@ethersproject/bignumber';
 import { parseUnits } from '@ethersproject/units';
-import { BigNumber } from 'ethers';
+import {
+  AGGREGATOR_PATH,
+  NATIVE_TOKEN_ADDRESS,
+  SUPPORTED_NETWORKS,
+  ZERO_ADDRESS,
+} from '@utils/constants';
+import { useWeb3React } from '@web3-react/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import useSafeTokenContract from './useSafeTokenContract';
 import useTokenBalances from './useTokenBalances';
 import { useTokens } from './useTokens';
-import { useActiveWeb3 } from './useWeb3Provider';
-
-const AGGREGATOR_PATH: { [chainId: number]: string } = {
-  43114: 'avalanche',
-};
-const NATIVE_TOKEN_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
-
-const SCAN_LINK: { [chainId: number]: string } = {
-  43114: 'https://snowtrace.io',
-};
-
-const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
-
-const SUPPORTED_NETWORKS = Object.keys(SCAN_LINK);
-
+import useUsdcContract from './useUsdcContract';
 export interface Trade {
   amountInUsd: number;
   amountOutUsd: number;
@@ -36,12 +30,8 @@ export interface Dex {
 }
 
 const useSwap = ({
-  defaultTokenIn,
-  defaultTokenOut,
   feeSetting,
 }: {
-  defaultTokenIn?: string;
-  defaultTokenOut?: string;
   feeSetting?: {
     chargeFeeBy: 'currency_in' | 'currency_out';
     feeAmount: number;
@@ -49,10 +39,15 @@ const useSwap = ({
     isInBps: boolean;
   };
 }) => {
-  const { provider, chainId } = useActiveWeb3();
+  const { provider, chainId: chain } = useWeb3React();
+  const usdc = useUsdcContract();
+  const safe = useSafeTokenContract();
+  const defaultTokenIn = usdc?.address;
+  const defaultTokenOut = safe?.address;
   const [tokenIn, setTokenIn] = useState(defaultTokenIn || NATIVE_TOKEN_ADDRESS);
   const [tokenOut, setTokenOut] = useState(defaultTokenOut || '');
   const tokens = useTokens();
+  const chainId = chain || 42161;
 
   const isUnsupported = !SUPPORTED_NETWORKS.includes(chainId.toString());
   useEffect(() => {

@@ -1,3 +1,5 @@
+import { BigNumber } from '@ethersproject/bignumber';
+import { formatUnits } from '@ethersproject/units';
 import {
   Avatar,
   Box,
@@ -10,8 +12,15 @@ import {
   Title,
   useMantineTheme,
 } from '@mantine/core';
+import { NATIVE_TOKEN, NATIVE_TOKEN_ADDRESS, SUPPORTED_NETWORKS } from '@utils/constants';
+import tokens from '@utils/tokens';
+import { useWeb3React } from '@web3-react/core';
 import { forwardRef, useState } from 'react';
-import { AdjustmentsHorizontal, CaretDown } from 'tabler-icons-react';
+import { AdjustmentsHorizontal, CaretDown, SwitchVertical } from 'tabler-icons-react';
+
+import useSwap from '../../hooks/useSwap';
+import useTokenBalances from '../../hooks/useTokenBalances';
+import RefreshBtn from '../RefreshBtn';
 
 enum ModalType {
   SETTING = 'setting',
@@ -108,16 +117,30 @@ const SwapWidget = () => {
       chevron: {
         color: theme.colors.emeraldGreen[0],
       },
+      rate: {
+        fontSize: '14px',
+        fontWeight: 500,
+        color: 'white',
+        marginLeft: '4px',
+      },
+      switchButton: {
+        color: 'white',
+        backgroundColor: theme.colors.gray[0],
+        borderRadius: '50%',
+        padding: '0.5rem',
+      },
     };
   });
   const { classes, cx } = useStyles();
   const theme = useMantineTheme();
   const [showModal, setShowModal] = useState<ModalType | null>(null);
+  const { chainId } = useWeb3React();
+  const isUnsupported = !chainId || !SUPPORTED_NETWORKS.includes(chainId.toString());
 
   // select
   const [value, setValue] = useState<string | null>(null);
   const [valueIndex, setValueIndex] = useState<number>(0);
-  const data = [
+  const tokensIn = [
     {
       image: 'https://img.icons8.com/clouds/256/000000/futurama-mom.png',
       value: 'USDC',
@@ -141,29 +164,74 @@ const SwapWidget = () => {
   ];
   const handleChange = (value: string | null) => {
     setValue(value);
-    setValueIndex(data.findIndex((d) => d.value === value));
+    setValueIndex(tokensIn.findIndex((d) => d.value === value));
   };
 
-  // const {
-  //   loading,
-  //   error,
-  //   tokenIn,
-  //   tokenOut,
-  //   setTokenIn,
-  //   setTokenOut,
-  //   inputAmout,
-  //   setInputAmount,
-  //   trade: routeTrade,
-  //   slippage,
-  //   setSlippage,
-  //   getRate,
-  //   deadline,
-  //   setDeadline,
-  //   allDexes,
-  //   excludedDexes,
-  //   setExcludedDexes,
-  //   setTrade,
-  // } = useSwap();
+  const feeSetting = {
+    feeAmount: 0,
+    isInBps: true,
+    chargeFeeBy: 'currency_in' as 'currency_in' | 'currency_out',
+    feeReceiver:
+      process.env.NEXT_PUBLIC_FEE_RECEIVER || '0xca086A28753a0826733D53A7e674011307e027d8',
+  };
+
+  const {
+    loading,
+    error,
+    tokenIn,
+    tokenOut,
+    setTokenIn,
+    setTokenOut,
+    inputAmout,
+    setInputAmount,
+    trade: routeTrade,
+    slippage,
+    setSlippage,
+    getRate,
+    deadline,
+    setDeadline,
+    allDexes,
+    excludedDexes,
+    setExcludedDexes,
+    setTrade,
+  } = useSwap({ feeSetting });
+
+  const trade = isUnsupported ? null : routeTrade;
+
+  const [inverseRate, setInverseRate] = useState(false);
+
+  const { balances, refetch } = useTokenBalances(tokens.map((item) => item.address));
+
+  const tokenInInfo =
+    tokenIn === NATIVE_TOKEN_ADDRESS && chainId
+      ? NATIVE_TOKEN[chainId]
+      : tokens.find((item) => item.address === tokenIn);
+
+  const tokenOutInfo =
+    tokenOut === NATIVE_TOKEN_ADDRESS && chainId
+      ? NATIVE_TOKEN[chainId]
+      : tokens.find((item) => item.address === tokenOut);
+
+  const amountOut = trade?.outputAmount
+    ? formatUnits(trade.outputAmount, tokenOutInfo?.decimals).toString()
+    : '';
+
+  let minAmountOut = '';
+
+  if (amountOut) {
+    minAmountOut = (Number(amountOut) * (1 - slippage / 10_000)).toPrecision(8).toString();
+  }
+
+  const tokenInBalance = balances[tokenIn] || BigNumber.from(0);
+  const tokenOutBalance = balances[tokenOut] || BigNumber.from(0);
+
+  const tokenInWithUnit = formatUnits(tokenInBalance, tokenInInfo?.decimals || 18);
+  const tokenOutWithUnit = formatUnits(tokenOutBalance, tokenOutInfo?.decimals || 18);
+  const rate =
+    trade?.inputAmount &&
+    trade?.outputAmount &&
+    parseFloat(formatUnits(trade.outputAmount, tokenOutInfo?.decimals || 18)) /
+      parseFloat(inputAmout);
 
   const formattedTokenInBalance = parseFloat(
     parseFloat('21412.4275467564473632024').toPrecision(10),
@@ -193,9 +261,65 @@ const SwapWidget = () => {
               defaultValue='USDC'
               searchable
               styles={{ rightSection: { pointerEvents: 'none' } }}
-              data={data}
+              data={tokensIn}
               onChange={handleChange}
-              icon={<Avatar src={data[valueIndex].image} radius='xl' />}
+              icon={<Avatar src={tokensIn[valueIndex].image} radius='xl' />}
+              filter={(value, item) =>
+                item.value.toLowerCase().includes(value.toLowerCase().trim())
+              }
+            />
+          </Flex>
+        </Box>
+      </Box>
+      <Group noWrap position={'apart'} align={'center'}>
+        <Group noWrap position={'left'} align={'center'} style={{ margin: '1rem' }}>
+          <RefreshBtn
+            loading={loading}
+            onRefresh={() => {
+              getRate();
+            }}
+            trade={trade}
+          />
+          <Text className={classes.rate}>
+            {(() => {
+              if (!rate) return '--';
+              return !inverseRate
+                ? `1 ${tokenInInfo?.symbol} = ${+rate.toPrecision(10)} ${tokenOutInfo?.symbol}`
+                : `1 ${tokenOutInfo?.symbol} = ${+(1 / rate).toPrecision(10)} ${
+                    tokenInInfo?.symbol
+                  }`;
+            })()}
+          </Text>
+        </Group>
+        <SwitchVertical
+          size={'36px'}
+          className={classes.switchButton}
+          onClick={() => {
+            setTrade(null);
+            setTokenIn(tokenOut);
+            setTokenOut(tokenIn);
+          }}
+        />
+      </Group>
+      <Box className={classes.inputWrapper}>
+        <Box className={classes.balanceRow}>
+          <Text className={classes.balanceHeader}>To</Text>
+          <Text className={classes.balanceHeader}>Balance: {formattedTokenInBalance}</Text>
+        </Box>
+        <Box className={classes.inputRow}>
+          <Input className={classes.input} />
+          <Flex gap='xs' justify='center' align='center'>
+            <Text className={classes.maxButton}>Max.</Text>
+            <Select
+              size='lg'
+              rightSection={<CaretDown className={classes.chevron} />}
+              itemComponent={SelectItem}
+              defaultValue='SAFE'
+              searchable
+              styles={{ rightSection: { pointerEvents: 'none' } }}
+              data={tokensIn}
+              onChange={handleChange}
+              icon={<Avatar src={tokensIn[valueIndex].image} radius='xl' />}
               filter={(value, item) =>
                 item.value.toLowerCase().includes(value.toLowerCase().trim())
               }
