@@ -100,8 +100,12 @@ const Nft: NextPageWithLayout = () => {
                     style={{ height: '24px' }}
                     onClick={() => handleModalOpen(tier)}
                     loading={executionInProgress}
-                    disabled={true}
-                    // disabled={!injectedWalletConnected || executionInProgress || !enoughBalanceForTier(tier) || !presaleNFTAvailableForTier(tier)}
+                    disabled={
+                      !injectedWalletConnected ||
+                      executionInProgress ||
+                      !enoughBalanceForTier(tier) ||
+                      !presaleNFTAvailableForTier(tier)
+                    }
                   >
                     {!contractsLoaded
                       ? 'Buy'

@@ -46,6 +46,9 @@ const Home: NextPageWithLayout = () => {
     </h1>
   );
   const router = useRouter();
+  if (process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE) {
+    router.push('/nft');
+  }
   return (
     <PageContainer title='Welcome'>
       <Stack justify={'center'} spacing={'md'} style={{ height: '50vh' }}>
