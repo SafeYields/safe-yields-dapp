@@ -1,20 +1,21 @@
 const PATH = {
-  HOME: 'https://www.safeyields.io',
+  HOME: '/',
+  WEBSITE: 'https://www.safeyields.io',
   NOTIFICATION: '/notification',
-  DASHBOARD: '/',
+  DASHBOARD: '/dashboard',
   YIELD: '/yield',
   EMMA: '/emma-the-bot',
   SAFE: '/safe',
   NFT: '/nft',
   INVESTMENT: '/investment-pool',
   EXPENSE: '/expense-log',
-  WHITEPAPER: '/whitepaper',
+  WHITEPAPER: 'https://www.safeyields.io/safeyields_whitepaper.pdf',
 } as const;
 
 export const getPath = (pathKey: keyof typeof PATH, ...args: string[]) => {
   const val = PATH[pathKey];
 
-  if (!args || pathKey == 'HOME') {
+  if (!args || pathKey == 'HOME' || val.startsWith('http')) {
     return val;
   }
 

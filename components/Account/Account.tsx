@@ -15,7 +15,8 @@ import useUsdcBalance from '../../hooks/useUsdcBalance';
 import { FormattedAmount } from '../FormatPrice';
 import useStyles from './Account.styles';
 
-const { useChainId, useAccount, useIsActivating, useIsActive, useProvider, useENSName } = hooksMetamask;
+const { useChainId, useAccount, useIsActivating, useIsActive, useProvider, useENSName } =
+  hooksMetamask;
 export const transactionInProgressAtom = atom(false);
 
 export const Account = () => {
@@ -36,12 +37,7 @@ export const Account = () => {
 
   const [error, setError] = useState(undefined);
 
-
-  const {
-    isMetaMaskInstalled,
-    startOnboarding,
-    stopOnboarding,
-  } = useMetaMaskOnboarding();
+  const { isMetaMaskInstalled, startOnboarding, stopOnboarding } = useMetaMaskOnboarding();
 
   const [web3Available, setweb3Available] = useState(false);
   useEffect(() => setweb3Available(typeof window !== 'undefined' && !!window?.ethereum), []);
@@ -54,7 +50,6 @@ export const Account = () => {
       stopOnboarding();
     }
   }, [active, error, stopOnboarding]);
-
 
   const ENSName = useENSName();
 
@@ -71,7 +66,6 @@ export const Account = () => {
     }
   };
 
-
   if (typeof account !== 'string' || (chainId && chainId !== supportedChainId)) {
     return (
       <div>
@@ -81,13 +75,7 @@ export const Account = () => {
             loading={connecting || inProgress}
             loaderProps={{ color: 'yellow', size: 'sm', variant: 'dots' }}
             variant='light'
-            leftIcon={
-              isMetaMaskInstalled ? (
-                <Unlink size={20} />
-              ) : (
-                <Download size={20} />
-              )
-            }
+            leftIcon={isMetaMaskInstalled ? <Unlink size={20} /> : <Download size={20} />}
             radius='xl'
             size='md'
             styles={{
@@ -97,7 +85,8 @@ export const Account = () => {
             onClick={() => {
               if (!connecting) {
                 setConnecting(true);
-                metaMask.activate(chainConfig)
+                metaMask
+                  .activate(chainConfig)
                   .then(() => {
                     setConnecting(false);
                     setError(undefined);
@@ -113,64 +102,76 @@ export const Account = () => {
               }
             }}
           >
-            {(typeof account !== 'string') && !(chainId && chainId !== supportedChainId) && (isMetaMaskInstalled ? `Connect to MetaMask ${testnetNotification()}` : `Connect to Wallet ${testnetNotification()}`)}
+            {typeof account !== 'string' &&
+              !(chainId && chainId !== supportedChainId) &&
+              (isMetaMaskInstalled
+                ? `Connect to MetaMask ${testnetNotification()}`
+                : `Connect to Wallet ${testnetNotification()}`)}
             {chainId && chainId !== supportedChainId && 'Wrong Network'}
           </Button>
         ) : (
-          <Button className={cx(classes.button)} radius='xl'
-                  size='md'
-                  leftIcon={
-                    <Download size={20} />
-                  }
-                  styles={{
-                    root: { paddingRight: 14, height: 48 },
-                    leftIcon: { marginLeft: 0 },
-                  }} onClick={startOnboarding}>Install Metamask</Button>
+          <Button
+            className={cx(classes.button)}
+            radius='xl'
+            size='md'
+            leftIcon={<Download size={20} />}
+            styles={{
+              root: { paddingRight: 14, height: 48 },
+              leftIcon: { marginLeft: 0 },
+            }}
+            onClick={startOnboarding}
+          >
+            Install Metamask
+          </Button>
         )}
       </div>
     );
   }
 
   const RefferalButton: FC<{ styles?: Styles<string> }> = ({ styles }) =>
-    !!process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE && !router.asPath.includes('nitro') ? <Button className={cx(classes.outline)}
-                                                        variant='light'
-                                                        radius='xl'
-                                                        size='md'
-                                                        styles={{
-                                                          root: { paddingRight: 14, height: 48, marginLeft: 'auto' },
-                                                          ...styles,
-                                                        }}
-                                                        onClick={() => {
-                                                          const url = window.location.href;
-                                                          navigator.clipboard.writeText(url.substring(0, url.indexOf('nft')) + 'nft/' + account);
-                                                          showNotification({
-                                                            message: 'You referral link copied to clipboard. Feel free to share!',
-                                                          });
-                                                        }}
-    >
-      Create referral link
-    </Button> : <></>;
+    !router.asPath.includes('nitro') ? (
+      <Button
+        className={cx(classes.outline)}
+        variant='light'
+        radius='xl'
+        size='md'
+        styles={{
+          root: { paddingRight: 14, height: 48, marginLeft: 'auto' },
+          ...styles,
+        }}
+        onClick={() => {
+          const url = window.location.href;
+          navigator.clipboard.writeText(url.substring(0, url.indexOf('nft')) + 'nft/' + account);
+          showNotification({
+            message: 'You referral link copied to clipboard. Feel free to share!',
+          });
+        }}
+      >
+        Create referral link
+      </Button>
+    ) : (
+      <></>
+    );
 
   return (
     <Flex align='top' justify='center' gap='sm' mt={mobile ? '20px' : '0px'}>
-      {!mobile &&
-        <RefferalButton />
-      }
+      {!mobile && <RefferalButton />}
       <Stack spacing='xs' justify='center' align='center' style={{ textAlign: 'center' }}>
-        <Button className={cx(classes.button, classes.buttonActive)}
-                variant='light'
-                leftIcon={<Link size={20} />}
-                radius='xl'
-                size='md'
-                loading={isActivating || inProgress}
-                styles={{
-                  root: { paddingRight: 14, height: 48 },
-                  leftIcon: { marginLeft: 0 },
-                }}
+        <Button
+          className={cx(classes.button, classes.buttonActive)}
+          variant='light'
+          leftIcon={<Link size={20} />}
+          radius='xl'
+          size='md'
+          loading={isActivating || inProgress}
+          styles={{
+            root: { paddingRight: 14, height: 48 },
+            leftIcon: { marginLeft: 0 },
+          }}
         >
           {ENSName || `${shortenHex(account, 7)} ${testnetNotification()}`}
         </Button>
-        <FormattedAmount caption='Your balance: ' price={!(usdcBalance) || usdcBalance} />
+        <FormattedAmount caption='Your balance: ' price={!usdcBalance || usdcBalance} />
         {mobile && <RefferalButton styles={{ root: { minWidth: '220px' } }} />}
       </Stack>
     </Flex>
