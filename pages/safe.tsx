@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 
 import { PageContainer } from '../components/PageContainer';
 import SwapWidget from '../components/SwapWidget';
+import { TokenListProvider } from '../hooks/useTokens';
 import { AppLayout } from '../layout';
 
 const safeTheme = {
@@ -34,7 +35,10 @@ const Safe = () => {
   return (
     <PageContainer title='safe'>
       <Flex justify='center' align='center'>
-        <SwapWidget />
+        <TokenListProvider tokenList={[]}>
+          <SwapWidget />
+        </TokenListProvider>
+        »
       </Flex>
     </PageContainer>
   );

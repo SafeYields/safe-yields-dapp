@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
 import { DEFAULT_TOKENS, TokenInfo } from 'utils/constants';
 
 const TokenContext = createContext<{
@@ -57,18 +57,16 @@ export const TokenListProvider = ({
   };
 
   return (
-    chainId && (
-      <TokenContext.Provider
-        value={{
-          tokenList: tokenList?.length ? tokenList : DEFAULT_TOKENS[chainId],
-          importedTokens,
-          addToken,
-          removeToken,
-        }}
-      >
-        {children}
-      </TokenContext.Provider>
-    )
+    <TokenContext.Provider
+      value={{
+        tokenList: tokenList?.length ? tokenList : DEFAULT_TOKENS[chainId || 42161],
+        importedTokens,
+        addToken,
+        removeToken,
+      }}
+    >
+      {children}
+    </TokenContext.Provider>
   );
 };
 
@@ -76,12 +74,15 @@ export const useTokens = () => {
   const { tokenList, importedTokens } = useContext(TokenContext);
   const { chainId } = useWeb3React();
 
-  return [
-    ...importedTokens
-      .filter((item) => item.chainId === chainId)
-      .map((item) => ({ ...item, isImport: true })),
-    ...(tokenList || []),
-  ];
+  return useMemo(
+    () => [
+      ...importedTokens
+        .filter((item) => item.chainId === chainId)
+        .map((item) => ({ ...item, isImport: true })),
+      ...(tokenList || []),
+    ],
+    [tokenList, importedTokens, chainId],
+  );
 };
 
 export const useImportedTokens = () => {

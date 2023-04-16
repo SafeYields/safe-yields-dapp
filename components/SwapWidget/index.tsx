@@ -1,26 +1,25 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
 import {
-  Avatar,
   Box,
   createStyles,
   Flex,
   Group,
-  Input,
-  Select,
+  NumberInput,
   Text,
   Title,
   useMantineTheme,
 } from '@mantine/core';
 import { NATIVE_TOKEN, NATIVE_TOKEN_ADDRESS, SUPPORTED_NETWORKS } from '@utils/constants';
-import tokens from '@utils/tokens';
 import { useWeb3React } from '@web3-react/core';
-import { forwardRef, useState } from 'react';
-import { AdjustmentsHorizontal, CaretDown, SwitchVertical } from 'tabler-icons-react';
+import { useState } from 'react';
+import { AdjustmentsHorizontal, SwitchVertical } from 'tabler-icons-react';
 
 import useSwap from '../../hooks/useSwap';
 import useTokenBalances from '../../hooks/useTokenBalances';
+import { useTokens } from '../../hooks/useTokens';
 import RefreshBtn from '../RefreshBtn';
+import SelectToken from '../SelectToken';
 
 enum ModalType {
   SETTING = 'setting',
@@ -31,142 +30,101 @@ enum ModalType {
   IMPORT_TOKEN = 'import_token',
 }
 
-interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
-  image: string;
-  value: string;
-}
-
-const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ image, value, ...others }: ItemProps, ref) => (
-    <div ref={ref} {...others}>
-      <Group noWrap style={{ backgroundColor: 'transparent' }}>
-        <Avatar src={image} radius='xl' />
-        <Text size='sm' style={{ backgroundColor: 'transparent', color: others.color }}>
-          {value}
-        </Text>
-      </Group>
-    </div>
-  ),
-);
-SelectItem.displayName = 'SelectItem';
-const SwapWidget = () => {
-  const useStyles = createStyles<string>((theme, params, getRef) => {
-    return {
-      wrapper: {
-        position: 'absolute',
-        top: '140px',
-        borderRadius: '21px',
-        padding: '27px',
-        width: '438px',
-        height: '515px',
-        background:
-          'linear-gradient(180deg, rgba(217, 217, 217, 0.32) 0%, rgba(217, 217, 217, 0.13) 100%)',
-        boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-        backdropFilter: 'blur(3px)',
+const useStyles = createStyles<string>((theme, params, getRef) => {
+  return {
+    wrapper: {
+      position: 'absolute',
+      top: '140px',
+      borderRadius: '21px',
+      padding: '27px',
+      width: '638px',
+      height: '515px',
+      background:
+        'linear-gradient(180deg, rgba(217, 217, 217, 0.32) 0%, rgba(217, 217, 217, 0.13) 100%)',
+      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+      backdropFilter: 'blur(3px)',
+    },
+    titleRow: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      fontSize: '1.25rem',
+      fontWeight: 500,
+      alignItems: 'center',
+    },
+    settings: {
+      color: 'white',
+      cursor: 'pointer',
+      '&:hover': {
+        color: 'orange',
       },
-      titleRow: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        fontSize: '1.25rem',
-        fontWeight: 500,
-        alignItems: 'center',
-      },
-      settings: {
-        color: 'white',
-        cursor: 'pointer',
-        '&:hover': {
-          color: 'orange',
-        },
-      },
-      inputWrapper: {
-        borderRadius: '7px',
-        padding: '0.75rem',
-        background: theme.colors.gray[0],
-        marginTop: '1rem',
-      },
-      balanceRow: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      },
-      balanceHeader: {
-        marginLeft: '12px',
-        color: theme.colors.emeraldGreen[0],
-      },
-      inputRow: {
-        display: 'flex',
-        alignItems: 'center',
-        marginTop: '0.75rem',
-      },
+    },
+    inputWrapper: {
+      borderRadius: '7px',
+      padding: '0.75rem',
+      background: theme.colors.gray[0],
+      marginTop: '1rem',
+    },
+    balanceRow: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    balanceHeader: {
+      marginLeft: '12px',
+      color: theme.colors.emeraldGreen[0],
+    },
+    inputRow: {
+      display: 'flex',
+      alignItems: 'center',
+      marginTop: '0.75rem',
+    },
+    input: {
       input: {
-        input: {
-          background: 'transparent',
-          border: 'none',
-          color: theme.colors.limeGreen[1],
-          fontWeight: 700,
-          fontSize: '20px',
-        },
+        background: 'transparent',
+        border: 'none',
+        color: theme.colors.limeGreen[1],
+        fontWeight: 700,
+        fontSize: '20px',
       },
-      maxButton: {
-        color: 'white',
-        cursor: 'pointer',
-        '&:hover': {
-          color: 'orange',
-        },
+    },
+    maxButton: {
+      color: 'white',
+      cursor: 'pointer',
+      '&:hover': {
+        color: 'orange',
       },
-      chevron: {
-        color: theme.colors.emeraldGreen[0],
-      },
-      rate: {
-        fontSize: '14px',
-        fontWeight: 500,
-        color: 'white',
-        marginLeft: '4px',
-      },
-      switchButton: {
-        color: 'white',
-        backgroundColor: theme.colors.gray[0],
-        borderRadius: '50%',
-        padding: '0.5rem',
-      },
-    };
-  });
+    },
+    chevron: {
+      color: theme.colors.emeraldGreen[0],
+    },
+    rate: {
+      fontSize: '14px',
+      fontWeight: 500,
+      color: 'white',
+      marginLeft: '4px',
+    },
+    switchButton: {
+      color: 'white',
+      backgroundColor: theme.colors.gray[0],
+      borderRadius: '50%',
+      padding: '0.5rem',
+      pointer: 'cursor',
+    },
+  };
+});
+
+const SwapWidget = () => {
   const { classes, cx } = useStyles();
   const theme = useMantineTheme();
   const [showModal, setShowModal] = useState<ModalType | null>(null);
   const { chainId } = useWeb3React();
   const isUnsupported = !chainId || !SUPPORTED_NETWORKS.includes(chainId.toString());
 
-  // select
-  const [value, setValue] = useState<string | null>(null);
-  const [valueIndex, setValueIndex] = useState<number>(0);
-  const tokensIn = [
-    {
-      image: 'https://img.icons8.com/clouds/256/000000/futurama-mom.png',
-      value: 'USDC',
-      label: 'USDC',
-    },
-    {
-      image: 'https://img.icons8.com/clouds/256/000000/futurama-bender.png',
-      value: 'Eth',
-      label: 'Eth',
-    },
-    {
-      image: 'https://img.icons8.com/clouds/256/000000/homer-simpson.png',
-      value: 'USDT',
-      label: 'USDT',
-    },
-    {
-      image: 'https://img.icons8.com/clouds/256/000000/spongebob-squarepants.png',
-      value: 'USDs',
-      label: 'USDs',
-    },
-  ];
-  const handleChange = (value: string | null) => {
-    setValue(value);
-    setValueIndex(tokensIn.findIndex((d) => d.value === value));
+  const tokens = useTokens();
+  const handleChangeTokenIn = (address: string) => {
+    setTokenIn(address);
+    setShowModal(null);
   };
-
   const feeSetting = {
     feeAmount: 0,
     isInBps: true,
@@ -199,7 +157,6 @@ const SwapWidget = () => {
   const trade = isUnsupported ? null : routeTrade;
 
   const [inverseRate, setInverseRate] = useState(false);
-
   const { balances, refetch } = useTokenBalances(tokens.map((item) => item.address));
 
   const tokenInInfo =
@@ -233,9 +190,6 @@ const SwapWidget = () => {
     parseFloat(formatUnits(trade.outputAmount, tokenOutInfo?.decimals || 18)) /
       parseFloat(inputAmout);
 
-  const formattedTokenInBalance = parseFloat(
-    parseFloat('21412.4275467564473632024').toPrecision(10),
-  );
   return (
     <Box className={classes.wrapper}>
       <Box className={classes.titleRow}>
@@ -248,26 +202,20 @@ const SwapWidget = () => {
       <Box className={classes.inputWrapper}>
         <Box className={classes.balanceRow}>
           <Text className={classes.balanceHeader}>From</Text>
-          <Text className={classes.balanceHeader}>Balance: {formattedTokenInBalance}</Text>
+          <Text className={classes.balanceHeader}>Balance: {tokenInWithUnit}</Text>
         </Box>
         <Box className={classes.inputRow}>
-          <Input className={classes.input} />
-          <Flex gap='xs' justify='center' align='center'>
+          <NumberInput
+            className={classes.input}
+            defaultValue={0}
+            precision={5}
+            min={0}
+            removeTrailingZeros
+            hideControls
+          />
+          <Flex gap='xs' justify='center' align='center' style={{ width: '600px' }}>
             <Text className={classes.maxButton}>Max.</Text>
-            <Select
-              size='lg'
-              rightSection={<CaretDown className={classes.chevron} />}
-              itemComponent={SelectItem}
-              defaultValue='USDC'
-              searchable
-              styles={{ rightSection: { pointerEvents: 'none' } }}
-              data={tokensIn}
-              onChange={handleChange}
-              icon={<Avatar src={tokensIn[valueIndex].image} radius='xl' />}
-              filter={(value, item) =>
-                item.value.toLowerCase().includes(value.toLowerCase().trim())
-              }
-            />
+            <SelectToken selectedToken={tokenIn} onChange={handleChangeTokenIn} />
           </Flex>
         </Box>
       </Box>
@@ -301,32 +249,6 @@ const SwapWidget = () => {
           }}
         />
       </Group>
-      <Box className={classes.inputWrapper}>
-        <Box className={classes.balanceRow}>
-          <Text className={classes.balanceHeader}>To</Text>
-          <Text className={classes.balanceHeader}>Balance: {formattedTokenInBalance}</Text>
-        </Box>
-        <Box className={classes.inputRow}>
-          <Input className={classes.input} />
-          <Flex gap='xs' justify='center' align='center'>
-            <Text className={classes.maxButton}>Max.</Text>
-            <Select
-              size='lg'
-              rightSection={<CaretDown className={classes.chevron} />}
-              itemComponent={SelectItem}
-              defaultValue='SAFE'
-              searchable
-              styles={{ rightSection: { pointerEvents: 'none' } }}
-              data={tokensIn}
-              onChange={handleChange}
-              icon={<Avatar src={tokensIn[valueIndex].image} radius='xl' />}
-              filter={(value, item) =>
-                item.value.toLowerCase().includes(value.toLowerCase().trim())
-              }
-            />
-          </Flex>
-        </Box>
-      </Box>
     </Box>
   );
 };
