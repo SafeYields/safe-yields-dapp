@@ -27,10 +27,8 @@ const Nft: NextPageWithLayout = () => {
   const router = useRouter();
   const injectedWalletConnected = useWalletConnected();
   const nftRegularPostPresalePrice = useFetchFromApi('nft/price')?.data;
-  const nftDiscountedPrice = nftRegularPostPresalePrice;
-  // const nftDiscountedPrice = useFetchFromApi('nft/presale-pricenft/presale-price')?.data;
-  const week = useFetchFromApi('nft/week')?.data;
-  // const presaleLaunchDate = useFetchFromApi('nft/presale')?.data;
+  const nftDiscountedPrice = ['118.125', '236.25', '472.5', '945'];
+  // const nftDiscountedPrice = useFetchFromApi('nft/presale-price')?.data;
   const safeNFTBalance = useSafeNFTBalance()?.data;
   const safeNFTOwnership = useSafeNFTOwnership();
   const nftContract = useNFTContract();
@@ -40,8 +38,7 @@ const Nft: NextPageWithLayout = () => {
   const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
   const contractsLoaded = !!nftRegularPostPresalePrice && !!usdcBalance && !!usdAllowance;
 
-  const presaleInProgress = false;
-  // const presaleInProgress = !!presaleLaunchDate && week && week > 0 && week <= 4;
+  const presaleInProgress = true;
 
   const { ref: whoReferred } = router.query;
   console.log('whoReferred', whoReferred);
@@ -50,7 +47,7 @@ const Nft: NextPageWithLayout = () => {
   console.log('referralAddress', referralAddress);
 
   const enoughBalanceForTier = (tier: number) =>
-    Number(nftDiscountedPrice[tier]) <= Number(usdcBalance);
+    nftDiscountedPrice && Number(nftDiscountedPrice[tier]) <= Number(usdcBalance);
   const presaleNFTAvailableForTier = (tier: number) =>
     contractsLoaded && presaleNFTAvailable && parseInt(presaleNFTAvailable[tier]) > 0;
 
