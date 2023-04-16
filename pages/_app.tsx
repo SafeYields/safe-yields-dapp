@@ -6,6 +6,7 @@ import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { GlobalStyleProvider } from 'style/GlobalStyleProvider';
+
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout;
 }
@@ -36,8 +37,11 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 mustardGreen: ['#CEDB3F'],
                 limeGreen: ['#D9E022', '#CBDA49'],
                 orange: ['#E89B17', '#F28705'],
+                gray: ['#F2ECE42D'],
+                transparentGray: ['rgba(255, 255, 255, 0.29)'],
                 white: ['#F2ECE4'],
-                greenGray: ['#36676A'],
+                greenGray: ['#36676A', '#85A7A8', '#90A4A2'],
+                emeraldGreen: ['#053234'],
                 almostWhite: ['#F5F5F5'],
                 veryDarkGreen: ['#0B1B03'],
               },
@@ -57,9 +61,11 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 fontFamily: '"Space Grotesk", sans-serif',
                 fontWeight: 450,
                 sizes: {
-                  h1: { fontSize: 36, lineHeight: '43px' },
+                  h1: { fontSize: 64, lineHeight: '64px', fontWeight: 500 },
+                  h2: { fontSize: 60, lineHeight: '60px', fontWeight: 500 },
                   h3: { fontSize: 24, lineHeight: '24px', fontWeight: 700 },
                   h4: { fontSize: 20, lineHeight: '20px', fontWeight: 700 },
+                  h5: { fontSize: 40, lineHeight: '48px', fontWeight: 450 },
                 },
               },
               defaultGradient: {
@@ -103,14 +109,19 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                         backgroundClip: 'padding-box',
                         position: 'relative',
                         boxSizing: 'border-box',
-                        background: 'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
+                        background:
+                          'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
                         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
                         backdropFilter: 'blur(3px)',
                         wordWrap: 'normal',
                         '&::before': { backgroundColor: 'white' },
                       },
                       title: { color: 'white' },
-                      description: { color: 'white', wordWrap: 'break-word', wordBreak: 'break-word' },
+                      description: {
+                        color: 'white',
+                        wordWrap: 'break-word',
+                        wordBreak: 'break-word',
+                      },
                       closeButton: {
                         color: 'white',
                         '&:hover': { backgroundColor: 'orange' },
@@ -122,7 +133,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 Button: {
                   defaultProps: {
                     size: 'xs',
-                    color: 'cyan',
+                    color: 'white',
                   },
                 },
                 Container: {
@@ -139,7 +150,8 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 Modal: {
                   styles: (theme) => ({
                     modal: {
-                      background: 'linear-gradient(180deg, rgba(242, 236, 228, 0) 0%, rgba(242, 236, 228, 0) 49%, rgba(242, 236, 228, 0.1) 50%, rgba(242, 236, 228, 0.4)75%, rgba(242, 236, 228, 0.1) 100%), url("/assets/nft-modal-background.png") top/cover no-repeat',
+                      background:
+                        'linear-gradient(180deg, rgba(242, 236, 228, 0) 0%, rgba(242, 236, 228, 0) 49%, rgba(242, 236, 228, 0.1) 50%, rgba(242, 236, 228, 0.4)75%, rgba(242, 236, 228, 0.1) 100%), url("/assets/nft-modal-background.png") top/cover no-repeat',
                       // background: 'url("/assets/nft-modal-background.png"), linear-gradient(0deg, rgba(242, 236, 228, 0.5) 0%, rgba(242, 236, 228, 0.6)25%, rgba(242, 236, 228, 0.3) 50%) top/cover no-repeat',
                       boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
                       backdropFilter: 'blur(3px)',
@@ -176,9 +188,73 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                     tooltip: {
                       fontSize: 'md',
                       wordWrap: 'normal',
-                    }
-                  })
-                }
+                    },
+                  }),
+                },
+                Select: {
+                  styles: (theme) => ({
+                    input: {
+                      width: '100%',
+                      fontWeight: 700,
+                      borderRadius: '99px',
+                      border: 'none',
+                      fontSize: '14px',
+                      lineHeight: '14px',
+                      backgroundColor: theme.colors.transparentGray[0],
+                      color: theme.colors.emeraldGreen[0],
+                    },
+                    dropdown: {
+                      padding: 0,
+                      marginTop: -3,
+                      borderRadius: 12,
+                      border: 'none',
+                      overflow: 'hidden',
+                      color: theme.colors.emeraldGreen[0],
+                      backgroundColor: theme.colors.greenGray[2],
+                      '.mantine-ScrollArea-scrollbar': {
+                        backgroundColor: theme.colors.greenGray[2],
+                      },
+
+                      '.mantine-ScrollArea-thumb': {
+                        backgroundColor: theme.colors.transparentGray[0],
+                        '&:hover': {
+                          backgroundColor: 'rgba(152, 152, 154, 0.75) !important',
+                        },
+                      },
+
+                      '.mantine-ScrollArea-viewport *:not(.mantine-Select-item)': {
+                        backgroundColor: theme.colors.greenGray[2],
+                        padding: '0 !important',
+                      },
+                    },
+                    item: {
+                      borderRadius: 12,
+                      height: 36,
+                      padding: '7px 12px',
+                      backgroundColor: theme.colors.greenGray[2],
+                      '&[data-selected]': {
+                        color: theme.colors.emeraldGreen[0],
+                        backgroundColor: theme.colors.mustardGreen[0],
+                        '&, &:hover': {
+                          backgroundColor: theme.colors.mustardGreen[0],
+                        },
+                      },
+                      '&[data-hovered]': {
+                        backgroundColor: theme.colors.mustardGreen[0],
+                      },
+                    },
+                  }),
+                },
+                ScrollArea: {
+                  styles: (theme) => ({
+                    root: {
+                      backgroundColor: 'transparent',
+                    },
+                    viewport: {
+                      borderRadius: '7px',
+                    },
+                  }),
+                },
               },
             }}
           >
