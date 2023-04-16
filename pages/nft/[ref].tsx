@@ -76,33 +76,14 @@ const Nft: NextPageWithLayout = () => {
           tier={selectedTier}
         />
       )}
-      {/* {week && presaleLaunchDate ?*/}
       <Grid
         grow
         gutter={'md'}
         align={'center'}
         justify={'space-between'}
         mt={'lg'}
-        style={{ textAlign: 'center', filter: isModalOpen ? 'blur(5px)' : 'none' }}
+        style={{ height: '60vh', textAlign: 'center', filter: isModalOpen ? 'blur(5px)' : 'none' }}
       >
-        <Grid.Col span={12}>
-          {/* <InfoCard header={`${5 - week}0% Discount ends in`} maxWidth='400px'>*/}
-          <InfoCard
-            header={
-              <Text>
-                Discounted sale hosted on{' '}
-                <Link href={'https://app.nitropad.io/safeyields/'}>
-                  <a style={{ color: 'white' }}>Nitropad</a>
-                </Link>
-              </Text>
-            }
-            maxWidth='400px'
-          >
-            {/* <CardContentBox>*/}
-            {/*  <CountdownTimer endDate={1680739200*1000} />*/}
-            {/* </CardContentBox>*/}
-          </InfoCard>
-        </Grid.Col>
         {[0, 1, 2, 3].map((tier) => (
           <Grid.Col span={3} key={tier}>
             <InfoCard
@@ -171,8 +152,7 @@ const Nft: NextPageWithLayout = () => {
             </Text>
           </Grid.Col>
         )}
-
-        <Grid.Col span={12} mt={'lg'}>
+        <Grid.Col span={12} mt={'sm'}>
           <Title order={4}> Don’t know how our NFTs work? Read our Whitepaper</Title>
           <Link
             href={'https://safeyields.io/safeyields_whitepaper.pdf'}
@@ -186,7 +166,6 @@ const Nft: NextPageWithLayout = () => {
           </Link>
         </Grid.Col>
       </Grid>
-      {/* : <></>}*/}
     </PageContainer>
   );
 };
