@@ -5,6 +5,7 @@ import {
   createStyles,
   Flex,
   Group,
+  Image,
   NumberInput,
   Text,
   Title,
@@ -18,6 +19,7 @@ import { AdjustmentsHorizontal, SwitchVertical } from 'tabler-icons-react';
 import useSwap from '../../hooks/useSwap';
 import useTokenBalances from '../../hooks/useTokenBalances';
 import { useTokens } from '../../hooks/useTokens';
+import { FancyButton } from '../FancyButton';
 import RefreshBtn from '../RefreshBtn';
 import SelectToken from '../SelectToken';
 
@@ -110,6 +112,9 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       padding: '0.5rem',
       pointer: 'cursor',
     },
+    kyberLogo: {
+      color: 'white',
+    },
   };
 });
 
@@ -123,7 +128,7 @@ const SwapWidget = () => {
   const tokens = useTokens();
 
   const feeSetting = {
-    feeAmount: 0,
+    feeAmount: 500,
     isInBps: true,
     chargeFeeBy: 'currency_in' as 'currency_in' | 'currency_out',
     feeReceiver:
@@ -193,7 +198,12 @@ const SwapWidget = () => {
       parseFloat(inputAmount);
 
   const handleChangeTokenIn = (address: string) => {
+    if (address === tokenOut) setTokenOut(tokenIn);
     setTokenIn(address);
+    setShowModal(null);
+  };
+  const handleChangeTokenOut = (address: string) => {
+    setTokenOut(address);
     setShowModal(null);
   };
 
@@ -258,6 +268,42 @@ const SwapWidget = () => {
             setTokenIn(tokenOut);
             setTokenOut(tokenIn);
           }}
+        />
+      </Group>
+      <Box className={classes.inputWrapper}>
+        <Box className={classes.balanceRow}>
+          <Text className={classes.balanceHeader}>To</Text>
+          <Text className={classes.balanceHeader}>
+            Balance: {parseFloat(tokenOutWithUnit).toFixed(5)}
+          </Text>
+        </Box>
+        <Box className={classes.inputRow}>
+          <NumberInput
+            className={classes.input}
+            value={parseFloat(tokenOutWithUnit)}
+            precision={5}
+            min={0}
+            removeTrailingZeros
+            hideControls
+          />
+          <Flex gap='xs' justify='right' align='center' style={{ width: '600px' }}>
+            <SelectToken selectedToken={tokenOut} onChange={handleChangeTokenOut} />
+          </Flex>
+        </Box>
+      </Box>
+
+      <FancyButton mt={'20px'} fullWidth>
+        Swap
+      </FancyButton>
+
+      <Group align={'center'} position={'center'} style={{ fontSize: '12px' }} mt={'20px'}>
+        Powered By
+        <Image
+          src='/assets/kyberswap.svg'
+          alt='Kyberswap'
+          m={0}
+          width={'70px'}
+          className={classes.kyberLogo}
         />
       </Group>
     </Box>
