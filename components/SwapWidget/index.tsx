@@ -121,10 +121,7 @@ const SwapWidget = () => {
   const isUnsupported = !chainId || !SUPPORTED_NETWORKS.includes(chainId.toString());
 
   const tokens = useTokens();
-  const handleChangeTokenIn = (address: string) => {
-    setTokenIn(address);
-    setShowModal(null);
-  };
+
   const feeSetting = {
     feeAmount: 0,
     isInBps: true,
@@ -156,6 +153,7 @@ const SwapWidget = () => {
 
   useEffect(() => {
     setTokenIn(tokens.find((item) => item.name === 'USDC')?.address || '');
+    setInputAmount('1');
   }, []);
 
   const trade = isUnsupported ? null : routeTrade;
@@ -193,6 +191,11 @@ const SwapWidget = () => {
     trade?.outputAmount &&
     parseFloat(formatUnits(trade.outputAmount, tokenOutInfo?.decimals || 18)) /
       parseFloat(inputAmount);
+
+  const handleChangeTokenIn = (address: string) => {
+    setTokenIn(address);
+    setShowModal(null);
+  };
 
   return (
     <Box className={classes.wrapper}>

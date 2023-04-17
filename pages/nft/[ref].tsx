@@ -27,7 +27,7 @@ const Nft: NextPageWithLayout = () => {
   const router = useRouter();
   const injectedWalletConnected = useWalletConnected();
   const nftRegularPostPresalePrice = useFetchFromApi('nft/price')?.data;
-  const nftDiscountedPrice = ['118.125', '236.25', '472.5', '945'];
+  const nftDiscountedPrice = ['124.6875', '249.375', '498.75', '997.5'];
   // const nftDiscountedPrice = useFetchFromApi('nft/presale-price')?.data;
   const safeNFTBalance = useSafeNFTBalance()?.data;
   const safeNFTOwnership = useSafeNFTOwnership();
