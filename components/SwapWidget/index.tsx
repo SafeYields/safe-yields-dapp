@@ -12,7 +12,7 @@ import {
 } from '@mantine/core';
 import { NATIVE_TOKEN, NATIVE_TOKEN_ADDRESS, SUPPORTED_NETWORKS } from '@utils/constants';
 import { useWeb3React } from '@web3-react/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AdjustmentsHorizontal, SwitchVertical } from 'tabler-icons-react';
 
 import useSwap from '../../hooks/useSwap';
@@ -140,7 +140,7 @@ const SwapWidget = () => {
     tokenOut,
     setTokenIn,
     setTokenOut,
-    inputAmout,
+    inputAmount,
     setInputAmount,
     trade: routeTrade,
     slippage,
@@ -153,6 +153,10 @@ const SwapWidget = () => {
     setExcludedDexes,
     setTrade,
   } = useSwap({ feeSetting });
+
+  useEffect(() => {
+    setTokenIn(tokens.find((item) => item.name === 'USDC')?.address || '');
+  }, []);
 
   const trade = isUnsupported ? null : routeTrade;
 
@@ -188,7 +192,7 @@ const SwapWidget = () => {
     trade?.inputAmount &&
     trade?.outputAmount &&
     parseFloat(formatUnits(trade.outputAmount, tokenOutInfo?.decimals || 18)) /
-      parseFloat(inputAmout);
+      parseFloat(inputAmount);
 
   return (
     <Box className={classes.wrapper}>
@@ -202,19 +206,23 @@ const SwapWidget = () => {
       <Box className={classes.inputWrapper}>
         <Box className={classes.balanceRow}>
           <Text className={classes.balanceHeader}>From</Text>
-          <Text className={classes.balanceHeader}>Balance: {tokenInWithUnit}</Text>
+          <Text className={classes.balanceHeader}>
+            Balance: {parseFloat(tokenInWithUnit).toFixed(5)}
+          </Text>
         </Box>
         <Box className={classes.inputRow}>
           <NumberInput
             className={classes.input}
-            defaultValue={0}
+            value={parseFloat(inputAmount)}
             precision={5}
             min={0}
             removeTrailingZeros
             hideControls
           />
-          <Flex gap='xs' justify='center' align='center' style={{ width: '600px' }}>
-            <Text className={classes.maxButton}>Max.</Text>
+          <Flex gap='xs' justify='right' align='center' style={{ width: '600px' }}>
+            <Text className={classes.maxButton} onClick={() => setInputAmount(tokenInWithUnit)}>
+              Max.
+            </Text>
             <SelectToken selectedToken={tokenIn} onChange={handleChangeTokenIn} />
           </Flex>
         </Box>
