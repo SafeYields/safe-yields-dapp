@@ -17,12 +17,18 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       columnGap: theme.spacing.sm,
       textDecoration: 'none',
       fontSize: theme.fontSizes.md,
-      color: theme.colors[theme.primaryColor][0],
+      color: 'white',
       lineHeight: '16.8px',
       fontWeight: 400,
       border: 'none',
       backgroundSize: '300% 100%',
-      backgroundImage: theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0], theme.colors.mustardGreen[0], theme.colors.orange[0]),
+      backgroundImage: theme.fn.linearGradient(
+        90,
+        theme.colors.mustardGreen[0],
+        theme.colors.orange[0],
+        theme.colors.mustardGreen[0],
+        theme.colors.orange[0],
+      ),
       borderRadius: '50px',
       mozTransition: 'all 0.4s ease-in-out',
       oTransition: 'all 0.4s ease-in-out',
@@ -31,6 +37,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       ':disabled': {
         opacity: 0.5,
         cursor: 'not-allowed',
+        color: 'black',
       },
 
       '&:hover': {
@@ -48,19 +55,19 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
   };
 });
 
-export const FancyButton: FC<ButtonProps & {
-  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
-}> = ({
-        children,
-        ...restProps
-      }) => {
+export const FancyButton: FC<
+  ButtonProps & {
+    onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
+  }
+> = ({ children, ...restProps }) => {
   const { classes, cx } = useStyles();
   return (
-    <Button className={cx(classes.button, classes.buttonActive)}
-            variant='light'
-            radius='xl'
-            size='sm'
-            {...restProps}
+    <Button
+      className={cx(classes.button, classes.buttonActive)}
+      variant='light'
+      radius='xl'
+      size='sm'
+      {...restProps}
     >
       {children}
     </Button>
