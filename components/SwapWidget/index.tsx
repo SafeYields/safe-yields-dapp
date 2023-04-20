@@ -5,20 +5,24 @@ import {
   createStyles,
   Flex,
   Group,
-  Image,
   NumberInput,
   Text,
   Title,
   useMantineTheme,
 } from '@mantine/core';
-import { NATIVE_TOKEN, NATIVE_TOKEN_ADDRESS, SUPPORTED_NETWORKS } from '@utils/constants';
+import {
+  NATIVE_TOKEN,
+  NATIVE_TOKEN_ADDRESS,
+  SAFE_TOKEN_ADDRESS,
+  USDC_TOKEN_ADDRESS,
+} from '@utils/constants';
 import { useWeb3React } from '@web3-react/core';
 import { useEffect, useState } from 'react';
 import { AdjustmentsHorizontal, SwitchVertical } from 'tabler-icons-react';
 
 import useSwap from '../../hooks/useSwap';
 import useTokenBalances from '../../hooks/useTokenBalances';
-import { useTokens } from '../../hooks/useTokens';
+import { useSafeTokens, useTokens } from '../../hooks/useTokens';
 import { FancyButton } from '../FancyButton';
 import RefreshBtn from '../RefreshBtn';
 import SelectToken from '../SelectToken';
@@ -39,7 +43,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       top: '140px',
       borderRadius: '21px',
       padding: '27px',
-      width: '638px',
+      width: '538px',
       height: '515px',
       background:
         'linear-gradient(180deg, rgba(217, 217, 217, 0.32) 0%, rgba(217, 217, 217, 0.13) 100%)',
@@ -87,6 +91,9 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
         color: theme.colors.limeGreen[1],
         fontWeight: 700,
         fontSize: '20px',
+        ':disabled': {
+          color: theme.colors.limeGreen[1],
+        },
       },
     },
     maxButton: {
@@ -110,7 +117,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       backgroundColor: theme.colors.gray[0],
       borderRadius: '50%',
       padding: '0.5rem',
-      pointer: 'cursor',
+      cursor: 'pointer',
     },
     kyberLogo: {
       color: 'white',
@@ -123,9 +130,11 @@ const SwapWidget = () => {
   const theme = useMantineTheme();
   const [showModal, setShowModal] = useState<ModalType | null>(null);
   const { chainId } = useWeb3React();
-  const isUnsupported = !chainId || !SUPPORTED_NETWORKS.includes(chainId.toString());
+  const isUnsupported = false;
+  // const isUnsupported = !chainId || !SUPPORTED_NETWORKS.includes(chainId.toString());
 
-  const tokens = useTokens();
+  const tokensExternalList = useTokens();
+  const tokensSafeList = useSafeTokens();
 
   const feeSetting = {
     feeAmount: 500,
@@ -155,26 +164,32 @@ const SwapWidget = () => {
     setExcludedDexes,
     setTrade,
   } = useSwap({ feeSetting });
+  const [inverseRate, setInverseRate] = useState(false);
+  const { balances, refetch } = useTokenBalances(tokensExternalList.map((item) => item.address));
 
   useEffect(() => {
-    setTokenIn(tokens.find((item) => item.name === 'USDC')?.address || '');
+    // setTokenIn(
+    //   tokensExternalList.find((item) => item.name === 'USDC')?.address || USDC_TOKEN_ADDRESS,
+    // );
+    setTokenIn(USDC_TOKEN_ADDRESS);
+    setTokenOut(SAFE_TOKEN_ADDRESS);
+    // setTokenOut(tokensSafeList.find((item) => item.name === 'SAFE')?.address || SAFE_TOKEN_ADDRESS);
     setInputAmount('1');
-  }, []);
+  }, [balances]);
+
+  const [directionToSafe, setDirectionToSafe] = useState<boolean>(true);
 
   const trade = isUnsupported ? null : routeTrade;
-
-  const [inverseRate, setInverseRate] = useState(false);
-  const { balances, refetch } = useTokenBalances(tokens.map((item) => item.address));
 
   const tokenInInfo =
     tokenIn === NATIVE_TOKEN_ADDRESS && chainId
       ? NATIVE_TOKEN[chainId]
-      : tokens.find((item) => item.address === tokenIn);
+      : [...tokensExternalList, ...tokensSafeList].find((item) => item.address === tokenIn);
 
   const tokenOutInfo =
     tokenOut === NATIVE_TOKEN_ADDRESS && chainId
       ? NATIVE_TOKEN[chainId]
-      : tokens.find((item) => item.address === tokenOut);
+      : [...tokensExternalList, ...tokensSafeList].find((item) => item.address === tokenOut);
 
   const amountOut = trade?.outputAmount
     ? formatUnits(trade.outputAmount, tokenOutInfo?.decimals).toString()
@@ -225,18 +240,24 @@ const SwapWidget = () => {
         </Box>
         <Box className={classes.inputRow}>
           <NumberInput
+            type={'number'}
             className={classes.input}
             value={parseFloat(inputAmount)}
             precision={5}
-            min={0}
+            min={1}
             removeTrailingZeros
             hideControls
+            onChange={(value) => value && setInputAmount(value.toString())}
           />
           <Flex gap='xs' justify='right' align='center' style={{ width: '600px' }}>
             <Text className={classes.maxButton} onClick={() => setInputAmount(tokenInWithUnit)}>
               Max.
             </Text>
-            <SelectToken selectedToken={tokenIn} onChange={handleChangeTokenIn} />
+            <SelectToken
+              selectedTokenAddress={tokenIn}
+              onChange={handleChangeTokenIn}
+              safeList={!directionToSafe}
+            />
           </Flex>
         </Box>
       </Box>
@@ -249,7 +270,7 @@ const SwapWidget = () => {
             }}
             trade={trade}
           />
-          <Text className={classes.rate}>
+          <Text className={classes.rate} onClick={() => rate && setInverseRate((prev) => !prev)}>
             {(() => {
               if (!rate) return '--';
               return !inverseRate
@@ -264,6 +285,7 @@ const SwapWidget = () => {
           size={'36px'}
           className={classes.switchButton}
           onClick={() => {
+            setDirectionToSafe(!directionToSafe);
             setTrade(null);
             setTokenIn(tokenOut);
             setTokenOut(tokenIn);
@@ -279,15 +301,21 @@ const SwapWidget = () => {
         </Box>
         <Box className={classes.inputRow}>
           <NumberInput
+            disabled
             className={classes.input}
-            value={parseFloat(tokenOutWithUnit)}
+            value={+Number(amountOut).toPrecision(5)}
             precision={5}
             min={0}
             removeTrailingZeros
             hideControls
+            display={amountOut}
           />
           <Flex gap='xs' justify='right' align='center' style={{ width: '600px' }}>
-            <SelectToken selectedToken={tokenOut} onChange={handleChangeTokenOut} />
+            <SelectToken
+              selectedTokenAddress={tokenOut}
+              onChange={handleChangeTokenOut}
+              safeList={directionToSafe}
+            />
           </Flex>
         </Box>
       </Box>
@@ -296,16 +324,16 @@ const SwapWidget = () => {
         Swap
       </FancyButton>
 
-      <Group align={'center'} position={'center'} style={{ fontSize: '12px' }} mt={'20px'}>
-        Powered By
-        <Image
-          src='/assets/kyberswap.svg'
-          alt='Kyberswap'
-          m={0}
-          width={'70px'}
-          className={classes.kyberLogo}
-        />
-      </Group>
+      {/* <Group align={'center'} position={'center'} style={{ fontSize: '12px' }} mt={'20px'}>*/}
+      {/*  Powered By*/}
+      {/*  <Image*/}
+      {/*    src='/assets/kyberswap.svg'*/}
+      {/*    alt='Kyberswap'*/}
+      {/*    m={0}*/}
+      {/*    width={'70px'}*/}
+      {/*    className={classes.kyberLogo}*/}
+      {/*  />*/}
+      {/* </Group>*/}
     </Box>
   );
 };

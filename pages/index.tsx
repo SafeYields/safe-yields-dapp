@@ -46,7 +46,7 @@ const Home: NextPageWithLayout = () => {
     </h1>
   );
   const router = useRouter();
-  if (process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE) {
+  if (process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE?.toLowerCase() === 'true') {
     router.push('/nft');
   }
   return (
