@@ -11,15 +11,10 @@ import {
   Title,
   useMantineTheme,
 } from '@mantine/core';
-import {
-  NATIVE_TOKEN,
-  NATIVE_TOKEN_ADDRESS,
-  SAFE_TOKEN_ADDRESS,
-  USDC_TOKEN_ADDRESS,
-} from '@utils/constants';
+import { NATIVE_TOKEN, NATIVE_TOKEN_ADDRESS } from '@utils/constants';
 import { useWeb3React } from '@web3-react/core';
 import { useAtom } from 'jotai';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AdjustmentsHorizontal, SwitchVertical } from 'tabler-icons-react';
 
 import { executeContractHandler } from '../../handlers/executeContractHandler';
@@ -144,6 +139,8 @@ const SwapWidget = () => {
   const tokensExternalList = useTokens();
   const tokensSafeList = useSafeTokens();
 
+  const allTokens = [...tokensExternalList, ...tokensSafeList];
+
   const feeSetting = {
     feeAmount: 500,
     isInBps: true,
@@ -173,19 +170,17 @@ const SwapWidget = () => {
     setTrade,
   } = useSwap({ feeSetting });
   const [inverseRate, setInverseRate] = useState(false);
-  const { balances, refetch } = useTokenBalances(
-    [...tokensExternalList, ...tokensSafeList].map((item) => item.address),
-  );
+  const { balances, refetch } = useTokenBalances(allTokens.map((item) => item.address));
 
-  useEffect(() => {
-    // setTokenIn(
-    //   tokensExternalList.find((item) => item.name === 'USDC')?.address || USDC_TOKEN_ADDRESS,
-    // );
-    setTokenIn(USDC_TOKEN_ADDRESS);
-    setTokenOut(SAFE_TOKEN_ADDRESS);
-    // setTokenOut(tokensSafeList.find((item) => item.name === 'SAFE')?.address || SAFE_TOKEN_ADDRESS);
-    setInputAmount('1');
-  }, [balances]);
+  // useEffect(() => {
+  //   // setTokenIn(
+  //   //   tokensExternalList.find((item) => item.name === 'USDC')?.address || USDC_TOKEN_ADDRESS,
+  //   // );
+  //   setTokenIn(setTokenIn);
+  //   setTokenOut(tokenOut);
+  //   // setTokenOut(tokensSafeList.find((item) => item.name === 'SAFE')?.address || SAFE_TOKEN_ADDRESS);
+  //   // setInputAmount('1');
+  // }, [balances]);
 
   const [directionToSafe, setDirectionToSafe] = useState<boolean>(true);
 
@@ -194,12 +189,12 @@ const SwapWidget = () => {
   const tokenInInfo =
     tokenIn === NATIVE_TOKEN_ADDRESS && chainId
       ? NATIVE_TOKEN[chainId]
-      : [...tokensExternalList, ...tokensSafeList].find((item) => item.address === tokenIn);
+      : allTokens.find((item) => item.address === tokenIn);
 
   const tokenOutInfo =
     tokenOut === NATIVE_TOKEN_ADDRESS && chainId
       ? NATIVE_TOKEN[chainId]
-      : [...tokensExternalList, ...tokensSafeList].find((item) => item.address === tokenOut);
+      : allTokens.find((item) => item.address === tokenOut);
 
   const amountOut = trade?.outputAmount
     ? formatUnits(trade.outputAmount, tokenOutInfo?.decimals).toString()
@@ -208,7 +203,7 @@ const SwapWidget = () => {
   let minAmountOut = '';
 
   if (amountOut) {
-    minAmountOut = (Number(amountOut) * (1 - slippage / 10_000)).toPrecision(8).toString();
+    minAmountOut = (Number(amountOut) * (1 - slippage / 10_000)).toPrecision(10).toString();
   }
 
   const tokenInBalance = balances[tokenIn] || BigNumber.from(0);
@@ -219,7 +214,7 @@ const SwapWidget = () => {
   const rate =
     trade?.inputAmount &&
     trade?.outputAmount &&
-    parseFloat(formatUnits(trade.outputAmount, tokenOutInfo?.decimals || 18)) /
+    parseFloat(formatUnits(trade.outputAmount, tokenOutInfo?.decimals || 6)) /
       parseFloat(inputAmount);
 
   const handleChangeTokenIn = (address: string) => {
@@ -338,14 +333,14 @@ const SwapWidget = () => {
         <Box className={classes.balanceRow}>
           <Text className={classes.balanceHeader}>To</Text>
           <Text className={classes.balanceHeader}>
-            Balance: {parseFloat(tokenOutWithUnit).toFixed(5)}
+            Balance: {parseFloat(tokenOutWithUnit).toPrecision(10)}
           </Text>
         </Box>
         <Box className={classes.inputRow}>
           <NumberInput
             disabled
             className={classes.input}
-            value={+Number(amountOut).toPrecision(5)}
+            value={+Number(amountOut).toPrecision(10)}
             precision={5}
             min={0}
             removeTrailingZeros
