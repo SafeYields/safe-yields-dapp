@@ -1,9 +1,10 @@
 import { useWeb3React } from '@web3-react/core';
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
-import { DEFAULT_TOKENS, TokenInfo } from 'utils/constants';
+import { DEFAULT_TOKENS, SAFE_TOKENS, TokenInfo } from 'utils/constants';
 
 const TokenContext = createContext<{
   tokenList?: TokenInfo[];
+  safeTokensList?: TokenInfo[];
   importedTokens: TokenInfo[];
   addToken: (token: TokenInfo) => void;
   removeToken: (token: TokenInfo) => void;
@@ -59,7 +60,8 @@ export const TokenListProvider = ({
   return (
     <TokenContext.Provider
       value={{
-        tokenList: tokenList?.length ? tokenList : DEFAULT_TOKENS[chainId || 42161],
+        tokenList: tokenList?.length ? tokenList : DEFAULT_TOKENS[chainId || 421613],
+        safeTokensList: SAFE_TOKENS[chainId || 421613],
         importedTokens,
         addToken,
         removeToken,
@@ -83,6 +85,12 @@ export const useTokens = () => {
     ],
     [tokenList, importedTokens, chainId],
   );
+};
+
+export const useSafeTokens = () => {
+  const { safeTokensList } = useContext(TokenContext);
+  const { chainId } = useWeb3React();
+  return useMemo(() => safeTokensList!, [chainId]);
 };
 
 export const useImportedTokens = () => {

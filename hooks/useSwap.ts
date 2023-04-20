@@ -1,9 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { parseUnits } from '@ethersproject/units';
 import {
-  AGGREGATOR_PATH,
   NATIVE_TOKEN_ADDRESS,
+  SAFE_TOKEN_ADDRESS,
   SUPPORTED_NETWORKS,
+  USDC_TOKEN_ADDRESS,
   ZERO_ADDRESS,
 } from '@utils/constants';
 import { useWeb3React } from '@web3-react/core';
@@ -42,10 +43,10 @@ const useSwap = ({
   const { provider, chainId: chain } = useWeb3React();
   const usdc = useUsdcContract();
   const safe = useSafeTokenContract();
-  const defaultTokenIn = usdc?.address;
-  const defaultTokenOut = safe?.address;
-  const [tokenIn, setTokenIn] = useState(defaultTokenIn || NATIVE_TOKEN_ADDRESS);
-  const [tokenOut, setTokenOut] = useState(defaultTokenOut || '');
+  const defaultTokenIn = usdc?.address || USDC_TOKEN_ADDRESS;
+  const defaultTokenOut = safe?.address || SAFE_TOKEN_ADDRESS;
+  const [tokenIn, setTokenIn] = useState(defaultTokenIn);
+  const [tokenOut, setTokenOut] = useState(defaultTokenOut);
   const tokens = useTokens();
   const chainId = chain || 42161;
 
@@ -57,8 +58,8 @@ const useSwap = ({
       setTrade(null);
     } else {
       setTrade(null);
-      setTokenIn(defaultTokenIn || NATIVE_TOKEN_ADDRESS);
-      setTokenOut(defaultTokenOut || '');
+      setTokenIn(defaultTokenIn);
+      setTokenOut(defaultTokenOut);
     }
   }, [isUnsupported, chainId]);
 
@@ -80,7 +81,7 @@ const useSwap = ({
     const fetchAllDexes = async () => {
       if (isUnsupported) return;
       const res = await fetch(
-        `https://ks-setting.kyberswap.com/api/v1/dexes?chain=${AGGREGATOR_PATH[chainId]}&isEnabled=true&pageSize=100`,
+        'https://ks-setting.kyberswap.com/api/v1/dexes?chain=arbitrum&isEnabled=true&pageSize=100',
       ).then((res) => res.json());
 
       let dexes: Dex[] = res?.data?.dexes || [];
@@ -191,9 +192,8 @@ const useSwap = ({
     const controller = new AbortController();
     controllerRef.current = controller;
     const res = await fetch(
-      `https://aggregator-api.kyberswap.com/${AGGREGATOR_PATH[chainId]}/route/encode?${search.slice(
-        1,
-      )}`,
+      `${process.env.NEXT_PUBLIC_SAFE_API_URL}/swap/estimate?${search.slice(1)}`,
+      // `https://aggregator-api.kyberswap.com/arbitrum/route/encode?${search.slice(1)}`,
       {
         headers: {
           'accept-version': 'Latest',
@@ -201,6 +201,13 @@ const useSwap = ({
         signal: controllerRef.current?.signal,
       },
     ).then((r) => r.json());
+
+    // const res = await fetch(`${process.env.NEXT_PUBLIC_SAFE_API_URL}/safe/price`, {
+    //   headers: {
+    //     'accept-version': 'Latest',
+    //   },
+    //   signal: controllerRef.current?.signal,
+    // }).then((r) => r.json());
 
     setTrade(res);
     if (Number(res?.outputAmount)) {

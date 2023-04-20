@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { formatUnits } from '@ethersproject/units';
+import { MaxUint256 } from '@ethersproject/constants';
+import { formatUnits, parseUnits } from '@ethersproject/units';
 import {
   Box,
   createStyles,
@@ -10,14 +11,27 @@ import {
   Title,
   useMantineTheme,
 } from '@mantine/core';
-import { NATIVE_TOKEN, NATIVE_TOKEN_ADDRESS, SUPPORTED_NETWORKS } from '@utils/constants';
+import {
+  NATIVE_TOKEN,
+  NATIVE_TOKEN_ADDRESS,
+  SAFE_TOKEN_ADDRESS,
+  USDC_TOKEN_ADDRESS,
+} from '@utils/constants';
 import { useWeb3React } from '@web3-react/core';
+import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { AdjustmentsHorizontal, SwitchVertical } from 'tabler-icons-react';
 
+import { executeContractHandler } from '../../handlers/executeContractHandler';
+import useSafeTokenContract from '../../hooks/useSafeTokenContract';
 import useSwap from '../../hooks/useSwap';
 import useTokenBalances from '../../hooks/useTokenBalances';
-import { useTokens } from '../../hooks/useTokens';
+import { useSafeTokens, useTokens } from '../../hooks/useTokens';
+import useUsdcAllowance from '../../hooks/useUsdcAllowance';
+import useUsdcBalance from '../../hooks/useUsdcBalance';
+import useUsdcContract from '../../hooks/useUsdcContract';
+import { transactionInProgressAtom } from '../Account/Account';
+import { FancyButton } from '../FancyButton';
 import RefreshBtn from '../RefreshBtn';
 import SelectToken from '../SelectToken';
 
@@ -37,7 +51,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       top: '140px',
       borderRadius: '21px',
       padding: '27px',
-      width: '638px',
+      width: '538px',
       height: '515px',
       background:
         'linear-gradient(180deg, rgba(217, 217, 217, 0.32) 0%, rgba(217, 217, 217, 0.13) 100%)',
@@ -85,6 +99,9 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
         color: theme.colors.limeGreen[1],
         fontWeight: 700,
         fontSize: '20px',
+        ':disabled': {
+          color: theme.colors.limeGreen[1],
+        },
       },
     },
     maxButton: {
@@ -108,7 +125,10 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       backgroundColor: theme.colors.gray[0],
       borderRadius: '50%',
       padding: '0.5rem',
-      pointer: 'cursor',
+      cursor: 'pointer',
+    },
+    kyberLogo: {
+      color: 'white',
     },
   };
 });
@@ -118,12 +138,14 @@ const SwapWidget = () => {
   const theme = useMantineTheme();
   const [showModal, setShowModal] = useState<ModalType | null>(null);
   const { chainId } = useWeb3React();
-  const isUnsupported = !chainId || !SUPPORTED_NETWORKS.includes(chainId.toString());
+  const isUnsupported = false;
+  // const isUnsupported = !chainId || !SUPPORTED_NETWORKS.includes(chainId.toString());
 
-  const tokens = useTokens();
+  const tokensExternalList = useTokens();
+  const tokensSafeList = useSafeTokens();
 
   const feeSetting = {
-    feeAmount: 0,
+    feeAmount: 500,
     isInBps: true,
     chargeFeeBy: 'currency_in' as 'currency_in' | 'currency_out',
     feeReceiver:
@@ -150,26 +172,34 @@ const SwapWidget = () => {
     setExcludedDexes,
     setTrade,
   } = useSwap({ feeSetting });
+  const [inverseRate, setInverseRate] = useState(false);
+  const { balances, refetch } = useTokenBalances(
+    [...tokensExternalList, ...tokensSafeList].map((item) => item.address),
+  );
 
   useEffect(() => {
-    setTokenIn(tokens.find((item) => item.name === 'USDC')?.address || '');
+    // setTokenIn(
+    //   tokensExternalList.find((item) => item.name === 'USDC')?.address || USDC_TOKEN_ADDRESS,
+    // );
+    setTokenIn(USDC_TOKEN_ADDRESS);
+    setTokenOut(SAFE_TOKEN_ADDRESS);
+    // setTokenOut(tokensSafeList.find((item) => item.name === 'SAFE')?.address || SAFE_TOKEN_ADDRESS);
     setInputAmount('1');
-  }, []);
+  }, [balances]);
+
+  const [directionToSafe, setDirectionToSafe] = useState<boolean>(true);
 
   const trade = isUnsupported ? null : routeTrade;
-
-  const [inverseRate, setInverseRate] = useState(false);
-  const { balances, refetch } = useTokenBalances(tokens.map((item) => item.address));
 
   const tokenInInfo =
     tokenIn === NATIVE_TOKEN_ADDRESS && chainId
       ? NATIVE_TOKEN[chainId]
-      : tokens.find((item) => item.address === tokenIn);
+      : [...tokensExternalList, ...tokensSafeList].find((item) => item.address === tokenIn);
 
   const tokenOutInfo =
     tokenOut === NATIVE_TOKEN_ADDRESS && chainId
       ? NATIVE_TOKEN[chainId]
-      : tokens.find((item) => item.address === tokenOut);
+      : [...tokensExternalList, ...tokensSafeList].find((item) => item.address === tokenOut);
 
   const amountOut = trade?.outputAmount
     ? formatUnits(trade.outputAmount, tokenOutInfo?.decimals).toString()
@@ -184,8 +214,8 @@ const SwapWidget = () => {
   const tokenInBalance = balances[tokenIn] || BigNumber.from(0);
   const tokenOutBalance = balances[tokenOut] || BigNumber.from(0);
 
-  const tokenInWithUnit = formatUnits(tokenInBalance, tokenInInfo?.decimals || 18);
-  const tokenOutWithUnit = formatUnits(tokenOutBalance, tokenOutInfo?.decimals || 18);
+  const tokenInWithUnit = formatUnits(tokenInBalance, tokenInInfo?.decimals || 6);
+  const tokenOutWithUnit = formatUnits(tokenOutBalance, tokenOutInfo?.decimals || 6);
   const rate =
     trade?.inputAmount &&
     trade?.outputAmount &&
@@ -193,9 +223,46 @@ const SwapWidget = () => {
       parseFloat(inputAmount);
 
   const handleChangeTokenIn = (address: string) => {
+    if (address === tokenOut) setTokenOut(tokenIn);
     setTokenIn(address);
     setShowModal(null);
   };
+  const handleChangeTokenOut = (address: string) => {
+    setTokenOut(address);
+    setShowModal(null);
+  };
+
+  const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
+  const safeContract = useSafeTokenContract();
+  const usdcContract = useUsdcContract();
+  const usdAllowance = useUsdcAllowance(safeContract?.address)?.data;
+  const usdcBalance = useUsdcBalance()?.data;
+
+  const contractsLoaded = !!usdcBalance && !!usdAllowance;
+
+  const enoughBalance = contractsLoaded && parseFloat(tokenInWithUnit) >= parseFloat(inputAmount);
+  const enoughAllowance = contractsLoaded && Number(usdAllowance) >= Number(inputAmount);
+
+  const buySafeHandler = () =>
+    usdAllowance &&
+    safeContract &&
+    executeContractHandler(setExecutionInProgress, () =>
+      safeContract.buySafeForExactAmountOfUSD(parseUnits(inputAmount, 6)),
+    );
+  const sellSafeHandler = () =>
+    usdAllowance &&
+    safeContract &&
+    executeContractHandler(setExecutionInProgress, () =>
+      safeContract.sellExactAmountOfSafe(parseUnits(inputAmount, 6)),
+    );
+
+  const approveSpendUsdcForSafeHandler = () =>
+    usdAllowance &&
+    safeContract &&
+    usdcContract &&
+    executeContractHandler(setExecutionInProgress, () =>
+      usdcContract.approve(safeContract.address, MaxUint256),
+    );
 
   return (
     <Box className={classes.wrapper}>
@@ -215,31 +282,37 @@ const SwapWidget = () => {
         </Box>
         <Box className={classes.inputRow}>
           <NumberInput
+            type={'number'}
             className={classes.input}
             value={parseFloat(inputAmount)}
             precision={5}
-            min={0}
+            min={1}
             removeTrailingZeros
             hideControls
+            onChange={(value) => value && setInputAmount(value.toString())}
           />
           <Flex gap='xs' justify='right' align='center' style={{ width: '600px' }}>
             <Text className={classes.maxButton} onClick={() => setInputAmount(tokenInWithUnit)}>
               Max.
             </Text>
-            <SelectToken selectedToken={tokenIn} onChange={handleChangeTokenIn} />
+            <SelectToken
+              selectedTokenAddress={tokenIn}
+              onChange={handleChangeTokenIn}
+              safeList={!directionToSafe}
+            />
           </Flex>
         </Box>
       </Box>
       <Group noWrap position={'apart'} align={'center'}>
         <Group noWrap position={'left'} align={'center'} style={{ margin: '1rem' }}>
           <RefreshBtn
-            loading={loading}
+            loading={loading || executionInProgress}
             onRefresh={() => {
               getRate();
             }}
             trade={trade}
           />
-          <Text className={classes.rate}>
+          <Text className={classes.rate} onClick={() => rate && setInverseRate((prev) => !prev)}>
             {(() => {
               if (!rate) return '--';
               return !inverseRate
@@ -254,12 +327,73 @@ const SwapWidget = () => {
           size={'36px'}
           className={classes.switchButton}
           onClick={() => {
+            setDirectionToSafe(!directionToSafe);
             setTrade(null);
             setTokenIn(tokenOut);
             setTokenOut(tokenIn);
           }}
         />
       </Group>
+      <Box className={classes.inputWrapper}>
+        <Box className={classes.balanceRow}>
+          <Text className={classes.balanceHeader}>To</Text>
+          <Text className={classes.balanceHeader}>
+            Balance: {parseFloat(tokenOutWithUnit).toFixed(5)}
+          </Text>
+        </Box>
+        <Box className={classes.inputRow}>
+          <NumberInput
+            disabled
+            className={classes.input}
+            value={+Number(amountOut).toPrecision(5)}
+            precision={5}
+            min={0}
+            removeTrailingZeros
+            hideControls
+            display={amountOut}
+          />
+          <Flex gap='xs' justify='right' align='center' style={{ width: '600px' }}>
+            <SelectToken
+              selectedTokenAddress={tokenOut}
+              onChange={handleChangeTokenOut}
+              safeList={directionToSafe}
+            />
+          </Flex>
+        </Box>
+      </Box>
+
+      <FancyButton
+        mt={'20px'}
+        fullWidth
+        loading={executionInProgress}
+        disabled={executionInProgress || !enoughBalance}
+        onClick={() =>
+          directionToSafe
+            ? !enoughAllowance
+              ? approveSpendUsdcForSafeHandler()
+              : buySafeHandler()
+            : sellSafeHandler()
+        }
+      >
+        {!contractsLoaded
+          ? 'Swap'
+          : !enoughBalance
+          ? 'No balance'
+          : !enoughAllowance
+          ? 'Approve'
+          : 'Swap'}
+      </FancyButton>
+
+      {/* <Group align={'center'} position={'center'} style={{ fontSize: '12px' }} mt={'20px'}>*/}
+      {/*  Powered By*/}
+      {/*  <Image*/}
+      {/*    src='/assets/kyberswap.svg'*/}
+      {/*    alt='Kyberswap'*/}
+      {/*    m={0}*/}
+      {/*    width={'70px'}*/}
+      {/*    className={classes.kyberLogo}*/}
+      {/*  />*/}
+      {/* </Group>*/}
     </Box>
   );
 };

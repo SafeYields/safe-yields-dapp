@@ -1,13 +1,13 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
 import { Avatar, createStyles, Group, Select, Text, useMantineTheme } from '@mantine/core';
-import { NATIVE_TOKEN, NATIVE_TOKEN_ADDRESS } from '@utils/constants';
+import { SelectProps } from '@mantine/core/lib/Select/Select';
 import { useWeb3React } from '@web3-react/core';
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 import { CaretDown } from 'tabler-icons-react';
 
 import useTokenBalances from '../../hooks/useTokenBalances';
-import { useImportedTokens, useTokens } from '../../hooks/useTokens';
+import { useImportedTokens, useSafeTokens, useTokens } from '../../hooks/useTokens';
 
 const useStyles = createStyles<string>((theme, params, getRef) => {
   return {
@@ -113,36 +113,31 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
   ),
 );
 SelectItem.displayName = 'SelectItem';
+
 const SelectToken = ({
-  selectedToken,
+  selectedTokenAddress,
   onChange,
+  safeList,
+  ...otherProps
 }: {
-  selectedToken: string;
+  selectedTokenAddress: string;
   onChange: (address: string) => void;
-}) => {
+  safeList?: boolean;
+} & Omit<SelectProps, 'data'>) => {
   const { classes, cx } = useStyles();
   const theme = useMantineTheme();
   const { chainId } = useWeb3React();
 
-  const tokens = useTokens();
+  const arbitrumTokens = useTokens();
+  const safeTokens = useSafeTokens();
+  const tokens = safeList ? safeTokens : arbitrumTokens;
   const tokenAddresses = tokens.map((item) => item.address);
   const { balances, loading } = useTokenBalances(tokenAddresses);
   const { removeToken } = useImportedTokens();
 
   // select
-  const [valueTokenIndex, setValueTokenIndex] = useState<number>(
-    tokens.findIndex((d) => d.name === 'USDC'),
-  );
 
   const tokenWithBalances = [
-    {
-      ...NATIVE_TOKEN[chainId || 42161],
-      balance: balances[NATIVE_TOKEN_ADDRESS],
-      formattedBalance: formatUnits(balances[NATIVE_TOKEN_ADDRESS] || BigNumber.from(0), 18),
-      value: NATIVE_TOKEN[chainId || 42161].name,
-      logoURI: NATIVE_TOKEN[chainId || 42161].logoURI,
-      label: NATIVE_TOKEN[chainId || 42161].name,
-    },
     ...tokens
       .map((item) => {
         const balance = balances[item.address];
@@ -159,52 +154,36 @@ const SelectToken = ({
       })
       .sort((a, b) => parseFloat(b.formattedBalance) - parseFloat(a.formattedBalance)),
   ];
-  //   .filter(
-  //   (token) =>
-  //     token.address.toLowerCase() === search.trim().toLowerCase() ||
-  //     token.name.toLowerCase().includes(search.toLowerCase()) ||
-  //     token.symbol.toLowerCase().includes(search.toLowerCase()),
-  // );
+  const selectedToken =
+    tokenWithBalances.find((d) => d.address === selectedTokenAddress) ?? tokenWithBalances[0];
 
-  //
-  // const tokens = [
-  //   {
-  //     image: 'https://img.icons8.com/clouds/256/000000/futurama-mom.png',
-  //     value: 'USDC',
-  //     label: 'USDC',
-  //   },
-  //   {
-  //     image: 'https://img.icons8.com/clouds/256/000000/futurama-bender.png',
-  //     value: 'Eth',
-  //     label: 'Eth',
-  //   },
-  //   {
-  //     image: 'https://img.icons8.com/clouds/256/000000/homer-simpson.png',
-  //     value: 'USDT',
-  //     label: 'USDT',
-  //   },
-  //   {
-  //     image: 'https://img.icons8.com/clouds/256/000000/spongebob-squarepants.png',
-  //     value: 'USDs',
-  //     label: 'USDs',
-  //   },
-  // ];
+  // if (!safeList)
+  //   tokenWithBalances.unshift({
+  //     ...NATIVE_TOKEN[chainId || 42161],
+  //     balance: balances[NATIVE_TOKEN_ADDRESS],
+  //     formattedBalance: formatUnits(balances[NATIVE_TOKEN_ADDRESS] || BigNumber.from(0), 18),
+  //     value: NATIVE_TOKEN[chainId || 42161].name,
+  //     logoURI: NATIVE_TOKEN[chainId || 42161].logoURI,
+  //     label: NATIVE_TOKEN[chainId || 42161].name,
+  //   });
+
   return (
     <Select
       size='lg'
       rightSection={<CaretDown className={classes.chevron} />}
       itemComponent={SelectItem}
-      defaultValue='USDC'
+      // defaultValue={safeList ? 'SAFE' : 'USDC'}
+      value={selectedToken.name}
       searchable
       styles={{ rightSection: { pointerEvents: 'none' } }}
       data={tokenWithBalances}
       onChange={(value) => {
         const token = tokenWithBalances.findIndex((d) => d.name === value);
-        setValueTokenIndex(token);
         value && onChange(tokenWithBalances[token].address);
       }}
-      icon={<Avatar src={tokenWithBalances[valueTokenIndex].logoURI} radius='xl' size='sm' />}
+      icon={<Avatar src={selectedToken.logoURI} radius='xl' size='sm' />}
       filter={(value, item) => item.value.toLowerCase().includes(value.toLowerCase().trim())}
+      {...otherProps}
     />
   );
 };
