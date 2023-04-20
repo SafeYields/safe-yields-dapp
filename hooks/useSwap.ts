@@ -10,10 +10,8 @@ import {
 import { useWeb3React } from '@web3-react/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import useSafeTokenContract from './useSafeTokenContract';
 import useTokenBalances from './useTokenBalances';
-import { useTokens } from './useTokens';
-import useUsdcContract from './useUsdcContract';
+import { useSafeTokens, useTokens } from './useTokens';
 export interface Trade {
   amountInUsd: number;
   amountOutUsd: number;
@@ -41,13 +39,15 @@ const useSwap = ({
   };
 }) => {
   const { provider, chainId: chain } = useWeb3React();
-  const usdc = useUsdcContract();
-  const safe = useSafeTokenContract();
-  const defaultTokenIn = usdc?.address || USDC_TOKEN_ADDRESS;
-  const defaultTokenOut = safe?.address || SAFE_TOKEN_ADDRESS;
+  // const usdc = useUsdcContract();
+  // const safe = useSafeTokenContract();
+  const defaultTokenIn = USDC_TOKEN_ADDRESS;
+  const defaultTokenOut = SAFE_TOKEN_ADDRESS;
   const [tokenIn, setTokenIn] = useState(defaultTokenIn);
   const [tokenOut, setTokenOut] = useState(defaultTokenOut);
-  const tokens = useTokens();
+  const externaTokens = useTokens();
+  const safeTokens = useSafeTokens();
+  const tokens = [...externaTokens, ...safeTokens];
   const chainId = chain || 42161;
 
   const isUnsupported = !SUPPORTED_NETWORKS.includes(chainId.toString());
@@ -77,39 +77,39 @@ const useSwap = ({
           .join(',')
           .replace('kyberswapv1', 'kyberswap,kyberswap-static');
 
-  useEffect(() => {
-    const fetchAllDexes = async () => {
-      if (isUnsupported) return;
-      const res = await fetch(
-        'https://ks-setting.kyberswap.com/api/v1/dexes?chain=arbitrum&isEnabled=true&pageSize=100',
-      ).then((res) => res.json());
-
-      let dexes: Dex[] = res?.data?.dexes || [];
-      const ksClassic = dexes.find((dex) => dex.dexId === 'kyberswap');
-      const ksClassicStatic = dexes.find((dex) => dex.dexId === 'kyberswap-static');
-      if (ksClassic || ksClassicStatic)
-        dexes = [
-          {
-            dexId: 'kyberswapv2',
-            name: 'KyberSwap Elastic',
-            logoURL: 'https://kyberswap.com/favicon.ico',
-          },
-          {
-            dexId: 'kyberswapv1',
-            name: 'KyberSwap Classic',
-            logoURL: 'https://kyberswap.com/favicon.ico',
-          },
-        ].concat(
-          dexes.filter(
-            (dex) => !['kyberswap', 'kyberswap-static', 'kyberswapv2'].includes(dex.dexId),
-          ),
-        );
-
-      setAllDexes(dexes);
-    };
-
-    fetchAllDexes();
-  }, [isUnsupported, chainId]);
+  // useEffect(() => {
+  //   const fetchAllDexes = async () => {
+  //     if (isUnsupported) return;
+  //     const res = await fetch(
+  //       'https://ks-setting.kyberswap.com/api/v1/dexes?chain=arbitrum&isEnabled=true&pageSize=100',
+  //     ).then((res) => res.json());
+  //
+  //     let dexes: Dex[] = res?.data?.dexes || [];
+  //     const ksClassic = dexes.find((dex) => dex.dexId === 'kyberswap');
+  //     const ksClassicStatic = dexes.find((dex) => dex.dexId === 'kyberswap-static');
+  //     if (ksClassic || ksClassicStatic)
+  //       dexes = [
+  //         {
+  //           dexId: 'kyberswapv2',
+  //           name: 'KyberSwap Elastic',
+  //           logoURL: 'https://kyberswap.com/favicon.ico',
+  //         },
+  //         {
+  //           dexId: 'kyberswapv1',
+  //           name: 'KyberSwap Classic',
+  //           logoURL: 'https://kyberswap.com/favicon.ico',
+  //         },
+  //       ].concat(
+  //         dexes.filter(
+  //           (dex) => !['kyberswap', 'kyberswap-static', 'kyberswapv2'].includes(dex.dexId),
+  //         ),
+  //       );
+  //
+  //     setAllDexes(dexes);
+  //   };
+  //
+  //   fetchAllDexes();
+  // }, [isUnsupported, chainId]);
 
   const [inputAmount, setInputAmount] = useState('1');
   const [loading, setLoading] = useState(false);
@@ -185,15 +185,14 @@ const useSwap = ({
 
     setLoading(true);
 
-    if (controllerRef.current) {
-      controllerRef.current.abort();
-    }
+    // if (controllerRef.current) {
+    //   controllerRef.current.abort();
+    // }
 
     const controller = new AbortController();
     controllerRef.current = controller;
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_SAFE_API_URL}/swap/estimate?${search.slice(1)}`,
-      // `https://aggregator-api.kyberswap.com/arbitrum/route/encode?${search.slice(1)}`,
       {
         headers: {
           'accept-version': 'Latest',
@@ -201,13 +200,6 @@ const useSwap = ({
         signal: controllerRef.current?.signal,
       },
     ).then((r) => r.json());
-
-    // const res = await fetch(`${process.env.NEXT_PUBLIC_SAFE_API_URL}/safe/price`, {
-    //   headers: {
-    //     'accept-version': 'Latest',
-    //   },
-    //   signal: controllerRef.current?.signal,
-    // }).then((r) => r.json());
 
     setTrade(res);
     if (Number(res?.outputAmount)) {
