@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { formatUnits } from '@ethersproject/units';
+import { MaxUint256 } from '@ethersproject/constants';
+import { formatUnits, parseUnits } from '@ethersproject/units';
 import {
   Box,
   createStyles,
@@ -17,12 +18,19 @@ import {
   USDC_TOKEN_ADDRESS,
 } from '@utils/constants';
 import { useWeb3React } from '@web3-react/core';
+import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { AdjustmentsHorizontal, SwitchVertical } from 'tabler-icons-react';
 
+import { executeContractHandler } from '../../handlers/executeContractHandler';
+import useSafeTokenContract from '../../hooks/useSafeTokenContract';
 import useSwap from '../../hooks/useSwap';
 import useTokenBalances from '../../hooks/useTokenBalances';
 import { useSafeTokens, useTokens } from '../../hooks/useTokens';
+import useUsdcAllowance from '../../hooks/useUsdcAllowance';
+import useUsdcBalance from '../../hooks/useUsdcBalance';
+import useUsdcContract from '../../hooks/useUsdcContract';
+import { transactionInProgressAtom } from '../Account/Account';
 import { FancyButton } from '../FancyButton';
 import RefreshBtn from '../RefreshBtn';
 import SelectToken from '../SelectToken';
@@ -165,7 +173,9 @@ const SwapWidget = () => {
     setTrade,
   } = useSwap({ feeSetting });
   const [inverseRate, setInverseRate] = useState(false);
-  const { balances, refetch } = useTokenBalances(tokensExternalList.map((item) => item.address));
+  const { balances, refetch } = useTokenBalances(
+    [...tokensExternalList, ...tokensSafeList].map((item) => item.address),
+  );
 
   useEffect(() => {
     // setTokenIn(
@@ -204,8 +214,8 @@ const SwapWidget = () => {
   const tokenInBalance = balances[tokenIn] || BigNumber.from(0);
   const tokenOutBalance = balances[tokenOut] || BigNumber.from(0);
 
-  const tokenInWithUnit = formatUnits(tokenInBalance, tokenInInfo?.decimals || 18);
-  const tokenOutWithUnit = formatUnits(tokenOutBalance, tokenOutInfo?.decimals || 18);
+  const tokenInWithUnit = formatUnits(tokenInBalance, tokenInInfo?.decimals || 6);
+  const tokenOutWithUnit = formatUnits(tokenOutBalance, tokenOutInfo?.decimals || 6);
   const rate =
     trade?.inputAmount &&
     trade?.outputAmount &&
@@ -221,6 +231,38 @@ const SwapWidget = () => {
     setTokenOut(address);
     setShowModal(null);
   };
+
+  const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
+  const safeContract = useSafeTokenContract();
+  const usdcContract = useUsdcContract();
+  const usdAllowance = useUsdcAllowance(safeContract?.address)?.data;
+  const usdcBalance = useUsdcBalance()?.data;
+
+  const contractsLoaded = !!usdcBalance && !!usdAllowance;
+
+  const enoughBalance = contractsLoaded && parseFloat(tokenInWithUnit) >= parseFloat(inputAmount);
+  const enoughAllowance = contractsLoaded && Number(usdAllowance) >= Number(inputAmount);
+
+  const buySafeHandler = () =>
+    usdAllowance &&
+    safeContract &&
+    executeContractHandler(setExecutionInProgress, () =>
+      safeContract.buySafeForExactAmountOfUSD(parseUnits(inputAmount, 6)),
+    );
+  const sellSafeHandler = () =>
+    usdAllowance &&
+    safeContract &&
+    executeContractHandler(setExecutionInProgress, () =>
+      safeContract.sellExactAmountOfSafe(parseUnits(inputAmount, 6)),
+    );
+
+  const approveSpendUsdcForSafeHandler = () =>
+    usdAllowance &&
+    safeContract &&
+    usdcContract &&
+    executeContractHandler(setExecutionInProgress, () =>
+      usdcContract.approve(safeContract.address, MaxUint256),
+    );
 
   return (
     <Box className={classes.wrapper}>
@@ -264,7 +306,7 @@ const SwapWidget = () => {
       <Group noWrap position={'apart'} align={'center'}>
         <Group noWrap position={'left'} align={'center'} style={{ margin: '1rem' }}>
           <RefreshBtn
-            loading={loading}
+            loading={loading || executionInProgress}
             onRefresh={() => {
               getRate();
             }}
@@ -320,8 +362,26 @@ const SwapWidget = () => {
         </Box>
       </Box>
 
-      <FancyButton mt={'20px'} fullWidth>
-        Swap
+      <FancyButton
+        mt={'20px'}
+        fullWidth
+        loading={executionInProgress}
+        disabled={executionInProgress || !enoughBalance}
+        onClick={() =>
+          directionToSafe
+            ? !enoughAllowance
+              ? approveSpendUsdcForSafeHandler()
+              : buySafeHandler()
+            : sellSafeHandler()
+        }
+      >
+        {!contractsLoaded
+          ? 'Swap'
+          : !enoughBalance
+          ? 'No balance'
+          : !enoughAllowance
+          ? 'Approve'
+          : 'Swap'}
       </FancyButton>
 
       {/* <Group align={'center'} position={'center'} style={{ fontSize: '12px' }} mt={'20px'}>*/}
