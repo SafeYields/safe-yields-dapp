@@ -24,7 +24,7 @@ export const TokenListProvider = ({
   tokenList?: TokenInfo[];
   children: ReactNode;
 }) => {
-  const { chainId } = useWeb3React();
+  const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID) || 42161;
 
   const [importedTokens, setImportedTokens] = useState<TokenInfo[]>(() => {
     if (typeof window !== 'undefined') {
@@ -60,8 +60,8 @@ export const TokenListProvider = ({
   return (
     <TokenContext.Provider
       value={{
-        tokenList: tokenList?.length ? tokenList : DEFAULT_TOKENS[chainId || 421613],
-        safeTokensList: SAFE_TOKENS[chainId || 421613],
+        tokenList: tokenList?.length ? tokenList : DEFAULT_TOKENS[chainId],
+        safeTokensList: SAFE_TOKENS[chainId],
         importedTokens,
         addToken,
         removeToken,
@@ -74,7 +74,7 @@ export const TokenListProvider = ({
 
 export const useTokens = () => {
   const { tokenList, importedTokens } = useContext(TokenContext);
-  const { chainId } = useWeb3React();
+  const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID) || 42161;
 
   return useMemo(
     () => [
@@ -90,7 +90,7 @@ export const useTokens = () => {
 export const useSafeTokens = () => {
   const { safeTokensList } = useContext(TokenContext);
   const { chainId } = useWeb3React();
-  return useMemo(() => safeTokensList!, [chainId]);
+  return useMemo(() => safeTokensList || [], [chainId]);
 };
 
 export const useImportedTokens = () => {

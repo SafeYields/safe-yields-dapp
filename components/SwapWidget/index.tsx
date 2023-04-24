@@ -6,12 +6,13 @@ import {
   createStyles,
   Flex,
   Group,
+  Image,
   NumberInput,
   Text,
   Title,
   useMantineTheme,
 } from '@mantine/core';
-import { NATIVE_TOKEN, NATIVE_TOKEN_ADDRESS } from '@utils/constants';
+import { NATIVE_TOKEN, NATIVE_TOKEN_ADDRESS, SUPPORTED_NETWORKS } from '@utils/constants';
 import { useWeb3React } from '@web3-react/core';
 import { useAtom } from 'jotai';
 import { useState } from 'react';
@@ -114,6 +115,9 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       fontWeight: 500,
       color: 'white',
       marginLeft: '4px',
+      '&:hover': {
+        color: 'orange',
+      },
     },
     switchButton: {
       color: 'white',
@@ -121,6 +125,9 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       borderRadius: '50%',
       padding: '0.5rem',
       cursor: 'pointer',
+      '&:hover': {
+        color: 'orange',
+      },
     },
     kyberLogo: {
       color: 'white',
@@ -132,9 +139,7 @@ const SwapWidget = () => {
   const { classes, cx } = useStyles();
   const theme = useMantineTheme();
   const [showModal, setShowModal] = useState<ModalType | null>(null);
-  const { chainId } = useWeb3React();
-  const isUnsupported = false;
-  // const isUnsupported = !chainId || !SUPPORTED_NETWORKS.includes(chainId.toString());
+  const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID) || 42161;
 
   const tokensExternalList = useTokens();
   const tokensSafeList = useSafeTokens();
@@ -184,15 +189,19 @@ const SwapWidget = () => {
 
   const [directionToSafe, setDirectionToSafe] = useState<boolean>(true);
 
+  const { chainId: connectedChainId } = useWeb3React();
+  const isUnsupported =
+    connectedChainId && !SUPPORTED_NETWORKS.includes(connectedChainId.toString());
+
   const trade = isUnsupported ? null : routeTrade;
 
   const tokenInInfo =
-    tokenIn === NATIVE_TOKEN_ADDRESS && chainId
+    tokenIn === NATIVE_TOKEN_ADDRESS
       ? NATIVE_TOKEN[chainId]
       : allTokens.find((item) => item.address === tokenIn);
 
   const tokenOutInfo =
-    tokenOut === NATIVE_TOKEN_ADDRESS && chainId
+    tokenOut === NATIVE_TOKEN_ADDRESS
       ? NATIVE_TOKEN[chainId]
       : allTokens.find((item) => item.address === tokenOut);
 
@@ -233,7 +242,7 @@ const SwapWidget = () => {
   const usdAllowance = useUsdcAllowance(safeContract?.address)?.data;
   const usdcBalance = useUsdcBalance()?.data;
 
-  const contractsLoaded = !!usdcBalance && !!usdAllowance;
+  const contractsLoaded = connectedChainId == chainId && !!usdcBalance && !!usdAllowance;
 
   const enoughBalance = contractsLoaded && parseFloat(tokenInWithUnit) >= parseFloat(inputAmount);
   const enoughAllowance = contractsLoaded && Number(usdAllowance) >= Number(inputAmount);
@@ -359,9 +368,10 @@ const SwapWidget = () => {
 
       <FancyButton
         mt={'20px'}
+        style={{ height: '50px', fontSize: '20px', fontWeight: 700 }}
         fullWidth
         loading={executionInProgress}
-        disabled={executionInProgress || !enoughBalance}
+        disabled={executionInProgress || !enoughBalance || !contractsLoaded}
         onClick={() =>
           directionToSafe
             ? !enoughAllowance
@@ -371,7 +381,7 @@ const SwapWidget = () => {
         }
       >
         {!contractsLoaded
-          ? 'Swap'
+          ? 'Connect Wallet'
           : !enoughBalance
           ? 'No balance'
           : !enoughAllowance
@@ -379,16 +389,16 @@ const SwapWidget = () => {
           : 'Swap'}
       </FancyButton>
 
-      {/* <Group align={'center'} position={'center'} style={{ fontSize: '12px' }} mt={'20px'}>*/}
-      {/*  Powered By*/}
-      {/*  <Image*/}
-      {/*    src='/assets/kyberswap.svg'*/}
-      {/*    alt='Kyberswap'*/}
-      {/*    m={0}*/}
-      {/*    width={'70px'}*/}
-      {/*    className={classes.kyberLogo}*/}
-      {/*  />*/}
-      {/* </Group>*/}
+      <Group align={'center'} position={'center'} style={{ fontSize: '12px' }} mt={'20px'}>
+        Powered By
+        <Image
+          src='/assets/kyberswap.svg'
+          alt='Kyberswap'
+          m={0}
+          width={'70px'}
+          className={classes.kyberLogo}
+        />
+      </Group>
     </Box>
   );
 };

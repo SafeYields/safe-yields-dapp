@@ -154,8 +154,7 @@ const SelectToken = ({
       })
       .sort((a, b) => parseFloat(b.formattedBalance) - parseFloat(a.formattedBalance)),
   ];
-  const selectedToken =
-    tokenWithBalances.find((d) => d.address === selectedTokenAddress) ?? tokenWithBalances[0];
+  const selectedToken = tokenWithBalances.find((d) => d.address === selectedTokenAddress);
 
   // if (!safeList)
   //   tokenWithBalances.unshift({
@@ -173,7 +172,7 @@ const SelectToken = ({
       rightSection={<CaretDown className={classes.chevron} />}
       itemComponent={SelectItem}
       // defaultValue={safeList ? 'SAFE' : 'USDC'}
-      value={selectedToken.name}
+      value={selectedToken?.name}
       searchable
       styles={{ rightSection: { pointerEvents: 'none' } }}
       data={tokenWithBalances}
@@ -181,7 +180,7 @@ const SelectToken = ({
         const token = tokenWithBalances.findIndex((d) => d.name === value);
         value && onChange(tokenWithBalances[token].address);
       }}
-      icon={<Avatar src={selectedToken.logoURI} radius='xl' size='sm' />}
+      icon={<Avatar src={selectedToken?.logoURI} radius='xl' size='sm' />}
       filter={(value, item) => item.value.toLowerCase().includes(value.toLowerCase().trim())}
       {...otherProps}
     />

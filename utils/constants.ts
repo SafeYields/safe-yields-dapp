@@ -8,9 +8,6 @@ export enum ZIndex {
 }
 
 export const NATIVE_TOKEN_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
-export const USDC_TOKEN_ADDRESS = '0x179522635726710Dd7D2035a81d856de4Aa7836c';
-export const SAFE_TOKEN_ADDRESS = '0xeeC181F2008b0f719e572000b1F02F120634326C';
-
 export interface TokenInfo {
   name: string;
   symbol: string;
@@ -61,6 +58,11 @@ export const SAFE_TOKENS: {
 export const MULTICALL_ADDRESS: { [chainId: number]: string } = {
   42161: '0x80C7DD17B01855a6D2347444a0FCC36136a314de',
   421613: '0x108B25170319f38DbED14cA9716C54E5D1FF4623',
+};
+
+export const ROUTER_ADDRESS: { [chainId: number]: string } = {
+  42161: '0x5649B4DD00780e99Bab7Abb4A3d581Ea1aEB23D0',
+  421613: '0x92CbfC3F9466e9d0A65ED63aF277d1eeD69558e7',
 };
 
 export const SCAN_LINK: { [chainId: number]: string } = {
