@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { AdjustmentsHorizontal, SwitchVertical } from 'tabler-icons-react';
 
 import { executeContractHandler } from '../../handlers/executeContractHandler';
+import useFetchFromApi from '../../hooks/useFetchFromApi';
 import useRouterContract from '../../hooks/useRouterContract';
 import useSafeTokenContract from '../../hooks/useSafeTokenContract';
 import useSwap from '../../hooks/useSwap';
@@ -196,7 +197,7 @@ const SwapWidget = () => {
   // useEffect(() => {
   //   refetch();
   // }, []);
-
+  const safeTokenPrice = useFetchFromApi('safe/price')?.data;
   const usdc = useUsdcContract();
   const routerContract = useRouterContract();
   const tokenInContract = useTokenContract(tokenIn);
@@ -235,11 +236,7 @@ const SwapWidget = () => {
 
   const tokenInWithUnit = formatUnits(tokenInBalance, tokenInInfo?.decimals || 6);
   const tokenOutWithUnit = formatUnits(tokenOutBalance, tokenOutInfo?.decimals || 6);
-  const rate =
-    trade?.inputAmount &&
-    trade?.outputAmount &&
-    parseFloat(formatUnits(trade.outputAmount, tokenOutInfo?.decimals || 6)) /
-      parseFloat(inputAmount);
+  const rate = parseFloat(safeTokenPrice);
 
   const handleChangeTokenIn = (address: string) => {
     if (address === tokenOut) setTokenOut(tokenIn);
@@ -256,7 +253,11 @@ const SwapWidget = () => {
   const usdcAllowance = useUsdcAllowance(safeContract?.address)?.data;
   const tokenAllowance = useTokenAllowance(tokenIn, router)?.data;
   const tokenInAllowance =
-    tokenIn.toUpperCase() == usdc?.address.toUpperCase() ? usdcAllowance : tokenAllowance;
+    tokenIn.toUpperCase() == usdc?.address.toUpperCase()
+      ? usdcAllowance
+      : tokenIn.toUpperCase() == safeContract?.address.toUpperCase()
+      ? true
+      : tokenAllowance;
   const usdcBalance = useUsdcBalance()?.data;
 
   const contractsLoaded = connectedChainId == chainId && !!usdcBalance && !!tokenInAllowance;
@@ -367,10 +368,8 @@ const SwapWidget = () => {
             {(() => {
               if (!rate) return '--';
               return !inverseRate
-                ? `1 ${tokenInInfo?.symbol} = ${+rate.toPrecision(10)} ${tokenOutInfo?.symbol}`
-                : `1 ${tokenOutInfo?.symbol} = ${+(1 / rate).toPrecision(10)} ${
-                    tokenInInfo?.symbol
-                  }`;
+                ? `1 SAFE = ${+rate.toPrecision(10)} USDC`
+                : `1 USDC = ${+(1 / rate).toPrecision(10)} SAFE`;
             })()}
           </Text>
         </Group>
@@ -383,6 +382,7 @@ const SwapWidget = () => {
             setTokenIn(tokenOut);
             setTokenOut(tokenIn);
             setInputAmount(amountOut);
+            setInverseRate(!inverseRate);
           }}
         />
       </Group>
