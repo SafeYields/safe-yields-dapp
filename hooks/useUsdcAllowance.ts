@@ -13,8 +13,9 @@ const useUsdcAllowance = (spender?: string, suspense = false) => {
     shouldFetch && account ? ['UsdcAllowance'] : null,
     async () => {
       const address = await usdcContract?.signer?.getAddress();
-      const allowance = address && account && spender ? await usdcContract?.allowance(account, spender) : null;
-      return address && allowance ? fromWeiToString(allowance) : null;
+      const allowance =
+        address && account && spender ? await usdcContract?.allowance(account, spender) : null;
+      return address && allowance ? fromWeiToString(allowance, 6, 6) : null;
     },
     {
       suspense,
