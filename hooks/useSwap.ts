@@ -61,7 +61,7 @@ const useSwap = ({
     }
   }, [isUnsupported, chainId]);
 
-  const { balances } = useTokenBalances(tokens.map((item) => item.address));
+  const { balances } = useTokenBalances();
   const [allDexes, setAllDexes] = useState<Dex[]>([]);
   const [excludedDexes, setExcludedDexes] = useState<Dex[]>([]);
 
@@ -189,15 +189,16 @@ const useSwap = ({
 
     const controller = new AbortController();
     controllerRef.current = controller;
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SAFE_API_URL}/swap/estimate?${search.slice(1)}`,
-      {
-        headers: {
-          'accept-version': 'Latest',
-        },
-        signal: controllerRef.current?.signal,
+    const query = `${process.env.NEXT_PUBLIC_SAFE_API_URL}/swap/estimate?${search.slice(1)}`;
+    console.log('query', query);
+    const res = await fetch(query, {
+      headers: {
+        'accept-version': 'Latest',
       },
-    ).then((r) => r.json());
+      signal: controllerRef.current?.signal,
+    }).then((r) => r.json());
+
+    console.debug('res', res);
 
     setTrade(res);
     if (Number(res?.outputAmount)) {

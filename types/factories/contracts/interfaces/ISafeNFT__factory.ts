@@ -632,7 +632,7 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+] as const;
 
 export class ISafeNFT__factory {
   static readonly abi = _abi;

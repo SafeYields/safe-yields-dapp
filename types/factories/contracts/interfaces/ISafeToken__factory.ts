@@ -270,7 +270,13 @@ const _abi = [
       },
     ],
     name: "sellExactAmountOfSafe",
-    outputs: [],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -379,7 +385,7 @@ const _abi = [
     stateMutability: "view",
     type: "function",
   },
-];
+] as const;
 
 export class ISafeToken__factory {
   static readonly abi = _abi;

@@ -10,7 +10,11 @@ import type {
   OnEvent,
   PromiseOrValue,
 } from "../../common";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   BaseContract,
@@ -28,12 +32,17 @@ import type {
 export interface ISafeVaultInterface extends utils.Interface {
   functions: {
     "deposit(uint256)": FunctionFragment;
+    "remove(address,uint256)": FunctionFragment;
+    "totalDeposited()": FunctionFragment;
     "totalSupply()": FunctionFragment;
-    "withdraw(address,uint256)": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "deposit" | "totalSupply" | "withdraw"
+    nameOrSignatureOrTopic:
+      | "deposit"
+      | "remove"
+      | "totalDeposited"
+      | "totalSupply"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -41,23 +50,56 @@ export interface ISafeVaultInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "totalSupply",
+    functionFragment: "remove",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "totalDeposited",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "withdraw",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    functionFragment: "totalSupply",
+    values?: undefined
   ): string;
 
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "remove", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "totalDeposited",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "Deposit(address,uint256)": EventFragment;
+    "Withdraw(address,uint256)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
 }
+
+export interface DepositEventObject {
+  user: string;
+  amount: BigNumber;
+}
+export type DepositEvent = TypedEvent<[string, BigNumber], DepositEventObject>;
+
+export type DepositEventFilter = TypedEventFilter<DepositEvent>;
+
+export interface WithdrawEventObject {
+  user: string;
+  amount: BigNumber;
+}
+export type WithdrawEvent = TypedEvent<
+  [string, BigNumber],
+  WithdrawEventObject
+>;
+
+export type WithdrawEventFilter = TypedEventFilter<WithdrawEvent>;
 
 export interface ISafeVault extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -91,13 +133,15 @@ export interface ISafeVault extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    withdraw(
+    remove(
       _user: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    totalDeposited(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
 
   deposit(
@@ -105,13 +149,15 @@ export interface ISafeVault extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-  withdraw(
+  remove(
     _user: PromiseOrValue<string>,
     _amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  totalDeposited(overrides?: CallOverrides): Promise<BigNumber>;
+
+  totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
     deposit(
@@ -119,16 +165,36 @@ export interface ISafeVault extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-    withdraw(
+    remove(
       _user: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    totalDeposited(overrides?: CallOverrides): Promise<BigNumber>;
+
+    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
-  filters: {};
+  filters: {
+    "Deposit(address,uint256)"(
+      user?: PromiseOrValue<string> | null,
+      amount?: null
+    ): DepositEventFilter;
+    Deposit(
+      user?: PromiseOrValue<string> | null,
+      amount?: null
+    ): DepositEventFilter;
+
+    "Withdraw(address,uint256)"(
+      user?: PromiseOrValue<string> | null,
+      amount?: null
+    ): WithdrawEventFilter;
+    Withdraw(
+      user?: PromiseOrValue<string> | null,
+      amount?: null
+    ): WithdrawEventFilter;
+  };
 
   estimateGas: {
     deposit(
@@ -136,13 +202,15 @@ export interface ISafeVault extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-    withdraw(
+    remove(
       _user: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    totalDeposited(overrides?: CallOverrides): Promise<BigNumber>;
+
+    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -151,12 +219,14 @@ export interface ISafeVault extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    withdraw(
+    remove(
       _user: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    totalDeposited(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

@@ -15,13 +15,17 @@ import {
 import { NATIVE_TOKEN, NATIVE_TOKEN_ADDRESS, SUPPORTED_NETWORKS } from '@utils/constants';
 import { useWeb3React } from '@web3-react/core';
 import { useAtom } from 'jotai';
+import Link from 'next/link';
 import { useState } from 'react';
 import { AdjustmentsHorizontal, SwitchVertical } from 'tabler-icons-react';
 
 import { executeContractHandler } from '../../handlers/executeContractHandler';
+import useRouterContract from '../../hooks/useRouterContract';
 import useSafeTokenContract from '../../hooks/useSafeTokenContract';
 import useSwap from '../../hooks/useSwap';
+import useTokenAllowance from '../../hooks/useTokenAllowance';
 import useTokenBalances from '../../hooks/useTokenBalances';
+import useTokenContract from '../../hooks/useTokenContract';
 import { useSafeTokens, useTokens } from '../../hooks/useTokens';
 import useUsdcAllowance from '../../hooks/useUsdcAllowance';
 import useUsdcBalance from '../../hooks/useUsdcBalance';
@@ -107,6 +111,9 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
         color: 'orange',
       },
     },
+    selectDropdown: {
+      width: '400px',
+    },
     chevron: {
       color: theme.colors.emeraldGreen[0],
     },
@@ -134,6 +141,15 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
     },
   };
 });
+
+function calculateGasMargin(value: BigNumber): BigNumber {
+  const defaultGasLimitMargin = BigNumber.from(20_000);
+  const gasMargin = value.mul(BigNumber.from(2000)).div(BigNumber.from(10000));
+
+  return gasMargin.gte(defaultGasLimitMargin)
+    ? value.add(gasMargin)
+    : value.add(defaultGasLimitMargin);
+}
 
 const SwapWidget = () => {
   const { classes, cx } = useStyles();
@@ -175,21 +191,20 @@ const SwapWidget = () => {
     setTrade,
   } = useSwap({ feeSetting });
   const [inverseRate, setInverseRate] = useState(false);
-  const { balances, refetch } = useTokenBalances(allTokens.map((item) => item.address));
-
+  const { balances, refetch } = useTokenBalances();
+  //
   // useEffect(() => {
-  //   // setTokenIn(
-  //   //   tokensExternalList.find((item) => item.name === 'USDC')?.address || USDC_TOKEN_ADDRESS,
-  //   // );
-  //   setTokenIn(setTokenIn);
-  //   setTokenOut(tokenOut);
-  //   // setTokenOut(tokensSafeList.find((item) => item.name === 'SAFE')?.address || SAFE_TOKEN_ADDRESS);
-  //   // setInputAmount('1');
-  // }, [balances]);
+  //   refetch();
+  // }, []);
+
+  const usdc = useUsdcContract();
+  const routerContract = useRouterContract();
+  const tokenInContract = useTokenContract(tokenIn);
+  const router = process.env.NEXT_PUBLIC_SAFE_ROUTER_ADDRESS || '';
 
   const [directionToSafe, setDirectionToSafe] = useState<boolean>(true);
 
-  const { chainId: connectedChainId } = useWeb3React();
+  const { chainId: connectedChainId, account, provider } = useWeb3React();
   const isUnsupported =
     connectedChainId && !SUPPORTED_NETWORKS.includes(connectedChainId.toString());
 
@@ -238,34 +253,65 @@ const SwapWidget = () => {
 
   const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
   const safeContract = useSafeTokenContract();
-  const usdcContract = useUsdcContract();
-  const usdAllowance = useUsdcAllowance(safeContract?.address)?.data;
+  const usdcAllowance = useUsdcAllowance(safeContract?.address)?.data;
+  const tokenAllowance = useTokenAllowance(tokenIn, router)?.data;
+  const tokenInAllowance =
+    tokenIn.toUpperCase() == usdc?.address.toUpperCase() ? usdcAllowance : tokenAllowance;
   const usdcBalance = useUsdcBalance()?.data;
 
-  const contractsLoaded = connectedChainId == chainId && !!usdcBalance && !!usdAllowance;
+  const contractsLoaded = connectedChainId == chainId && !!usdcBalance && !!tokenInAllowance;
 
   const enoughBalance = contractsLoaded && parseFloat(tokenInWithUnit) >= parseFloat(inputAmount);
-  const enoughAllowance = contractsLoaded && Number(usdAllowance) >= Number(inputAmount);
+  const enoughAllowance = contractsLoaded && Number(tokenInAllowance) >= Number(inputAmount);
 
   const buySafeHandler = () =>
-    usdAllowance &&
+    tokenInAllowance &&
     safeContract &&
     executeContractHandler(setExecutionInProgress, () =>
       safeContract.buySafeForExactAmountOfUSD(parseUnits(inputAmount, 6)),
     );
   const sellSafeHandler = () =>
-    usdAllowance &&
+    tokenInAllowance &&
     safeContract &&
     executeContractHandler(setExecutionInProgress, () =>
       safeContract.sellExactAmountOfSafe(parseUnits(inputAmount, 6)),
     );
 
-  const approveSpendUsdcForSafeHandler = () =>
-    usdAllowance &&
-    safeContract &&
-    usdcContract &&
+  const buyWithKyberHandler = () =>
+    account &&
+    provider &&
+    tokenInAllowance &&
+    trade &&
+    trade.encodedSwapData &&
+    routerContract &&
+    executeContractHandler(
+      setExecutionInProgress,
+      () =>
+        provider.getSigner().sendTransaction({
+          from: account,
+          to: trade.routerAddress,
+          data: trade.encodedSwapData,
+        }),
+      // routerContract.proxyAndBuy(trade.encodedSwapData),
+    );
+  const sellWithKyberHandler = () =>
+    tokenInAllowance &&
+    trade &&
+    trade.encodedSwapData &&
+    routerContract &&
     executeContractHandler(setExecutionInProgress, () =>
-      usdcContract.approve(safeContract.address, MaxUint256),
+      routerContract.sellAndProxy(trade.encodedSwapData, trade.inputAmount),
+    );
+
+  const approveSpendTokenInForSafeHandler = () =>
+    tokenInAllowance &&
+    safeContract &&
+    tokenInContract &&
+    executeContractHandler(setExecutionInProgress, () =>
+      tokenInContract.approve(
+        tokenIn.toUpperCase() == usdc?.address.toUpperCase() ? safeContract.address : router,
+        MaxUint256,
+      ),
     );
 
   return (
@@ -295,7 +341,7 @@ const SwapWidget = () => {
             hideControls
             onChange={(value) => value && setInputAmount(value.toString())}
           />
-          <Flex gap='xs' justify='right' align='center' style={{ width: '600px' }}>
+          <Flex gap='xs' justify='right' align='center'>
             <Text className={classes.maxButton} onClick={() => setInputAmount(tokenInWithUnit)}>
               Max.
             </Text>
@@ -303,6 +349,7 @@ const SwapWidget = () => {
               selectedTokenAddress={tokenIn}
               onChange={handleChangeTokenIn}
               safeList={!directionToSafe}
+              style={{ width: '220px' }}
             />
           </Flex>
         </Box>
@@ -335,6 +382,7 @@ const SwapWidget = () => {
             setTrade(null);
             setTokenIn(tokenOut);
             setTokenOut(tokenIn);
+            setInputAmount(amountOut);
           }}
         />
       </Group>
@@ -356,11 +404,12 @@ const SwapWidget = () => {
             hideControls
             display={amountOut}
           />
-          <Flex gap='xs' justify='right' align='center' style={{ width: '600px' }}>
+          <Flex gap='xs' justify='right' align='center'>
             <SelectToken
               selectedTokenAddress={tokenOut}
               onChange={handleChangeTokenOut}
               safeList={directionToSafe}
+              style={{ width: '220px' }}
             />
           </Flex>
         </Box>
@@ -375,9 +424,13 @@ const SwapWidget = () => {
         onClick={() =>
           directionToSafe
             ? !enoughAllowance
-              ? approveSpendUsdcForSafeHandler()
-              : buySafeHandler()
-            : sellSafeHandler()
+              ? approveSpendTokenInForSafeHandler()
+              : tokenIn.toUpperCase() === usdc?.address.toUpperCase()
+              ? buySafeHandler()
+              : buyWithKyberHandler()
+            : tokenOut.toUpperCase() === usdc?.address.toUpperCase()
+            ? sellSafeHandler()
+            : sellWithKyberHandler()
         }
       >
         {!contractsLoaded
@@ -388,17 +441,26 @@ const SwapWidget = () => {
           ? 'Approve'
           : 'Swap'}
       </FancyButton>
-
-      <Group align={'center'} position={'center'} style={{ fontSize: '12px' }} mt={'20px'}>
-        Powered By
-        <Image
-          src='/assets/kyberswap.svg'
-          alt='Kyberswap'
-          m={0}
-          width={'70px'}
-          className={classes.kyberLogo}
-        />
-      </Group>
+      <Link href={'https://kyberswap.com/swap/eth-usdc'} target={'_blank'}>
+        <Group
+          align={'center'}
+          position={'center'}
+          style={{
+            fontSize: '12px',
+            cursor: 'pointer',
+          }}
+          mt={'20px'}
+        >
+          Buy USDC with
+          <Image
+            src='/assets/kyberswap.svg'
+            alt='Kyberswap'
+            m={0}
+            width={'70px'}
+            className={classes.kyberLogo}
+          />
+        </Group>
+      </Link>
     </Box>
   );
 };

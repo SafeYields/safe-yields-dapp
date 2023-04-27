@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
 import { DEFAULT_TOKENS, SAFE_TOKENS, TokenInfo } from 'utils/constants';
 
@@ -89,7 +88,7 @@ export const useTokens = () => {
 
 export const useSafeTokens = () => {
   const { safeTokensList } = useContext(TokenContext);
-  const { chainId } = useWeb3React();
+  const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID) || 42161;
   return useMemo(() => safeTokensList || [], [chainId]);
 };
 

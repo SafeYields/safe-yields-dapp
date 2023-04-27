@@ -108,7 +108,7 @@ const _abi = [
     stateMutability: "view",
     type: "function",
   },
-];
+] as const;
 
 export class IERC1155Receiver__factory {
   static readonly abi = _abi;

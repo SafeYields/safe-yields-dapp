@@ -6,7 +6,10 @@
 import type * as interfaces from "./interfaces";
 
 export type { interfaces };
+export type { EERC20 } from "./EERC20";
+export type { Multicall2 } from "./Multicall2";
 export type { SafeNFT } from "./SafeNFT";
+export type { SafeRouter } from "./SafeRouter";
 export type { SafeToken } from "./SafeToken";
 export type { SafeVault } from "./SafeVault";
 export type { Wallets } from "./Wallets";
