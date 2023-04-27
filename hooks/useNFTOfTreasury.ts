@@ -5,9 +5,8 @@ import useNFTContract from './useNFTContract';
 
 const useNFTOfTreasury = () => {
   const safeNFTContract = useNFTContract();
-  return useSWR(
-    'useSafePrice',
-    async () => safeNFTContract ? fromWeiToString(await safeNFTContract.getMyShareOfTreasury()) : null,
+  return useSWR('getMyShareOfTreasury', async () =>
+    safeNFTContract ? fromWeiToString(await safeNFTContract.getMyShareOfTreasury()) : null,
   );
 };
 
