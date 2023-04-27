@@ -228,7 +228,7 @@ const SwapWidget = () => {
   let minAmountOut = '';
 
   if (amountOut) {
-    minAmountOut = (Number(amountOut) * (1 - slippage / 10_000)).toPrecision(10).toString();
+    minAmountOut = (Number(amountOut) * (1 - slippage / 10_000)).toPrecision(6).toString();
   }
 
   const tokenInBalance = balances[tokenIn] || BigNumber.from(0);
@@ -254,19 +254,19 @@ const SwapWidget = () => {
   const tokenAllowance = useTokenAllowance(tokenIn, router)?.data;
 
   const tokenInIsSafe = tokenIn.toUpperCase() == safeContract?.address.toUpperCase();
-  const tokenInAllowance =
-    tokenIn.toUpperCase() == usdc?.address.toUpperCase()
-      ? usdcAllowance
-      : tokenInIsSafe
-      ? true
-      : tokenAllowance;
+  const tokenInIsUsdc = tokenIn.toUpperCase() == usdc?.address.toUpperCase();
+  const tokenInAllowance = tokenInIsUsdc
+    ? usdcAllowance
+    : tokenInIsSafe
+    ? MaxUint256.toString()
+    : tokenAllowance;
   const usdcBalance = useUsdcBalance()?.data;
 
   const contractsLoaded = connectedChainId == chainId && !!usdcBalance && !!tokenInAllowance;
 
   const enoughBalance = contractsLoaded && parseFloat(tokenInWithUnit) >= parseFloat(inputAmount);
   const enoughAllowance =
-    contractsLoaded && (tokenInIsSafe || Number(tokenInAllowance) >= Number(inputAmount));
+    contractsLoaded && parseFloat(tokenInAllowance) >= parseFloat(inputAmount);
 
   const buySafeHandler = () =>
     tokenInAllowance &&
@@ -331,7 +331,7 @@ const SwapWidget = () => {
         <Box className={classes.balanceRow}>
           <Text className={classes.balanceHeader}>From</Text>
           <Text className={classes.balanceHeader}>
-            Balance: {parseFloat(tokenInWithUnit).toFixed(5)}
+            Balance: {parseFloat(tokenInWithUnit).toFixed(6)}
           </Text>
         </Box>
         <Box className={classes.inputRow}>
@@ -339,7 +339,7 @@ const SwapWidget = () => {
             type={'number'}
             className={classes.input}
             value={parseFloat(inputAmount)}
-            precision={5}
+            precision={6}
             min={1}
             removeTrailingZeros
             hideControls
@@ -371,8 +371,8 @@ const SwapWidget = () => {
             {(() => {
               if (!rate) return '--';
               return !inverseRate
-                ? `1 SAFE = ${+rate.toPrecision(10)} USDC`
-                : `1 USDC = ${+(1 / rate).toPrecision(10)} SAFE`;
+                ? `1 SAFE = ${+rate.toPrecision(6)} USDC`
+                : `1 USDC = ${+(1 / rate).toPrecision(6)} SAFE`;
             })()}
           </Text>
         </Group>
@@ -393,15 +393,15 @@ const SwapWidget = () => {
         <Box className={classes.balanceRow}>
           <Text className={classes.balanceHeader}>To</Text>
           <Text className={classes.balanceHeader}>
-            Balance: {parseFloat(tokenOutWithUnit).toPrecision(10)}
+            Balance: {parseFloat(tokenOutWithUnit).toPrecision(6)}
           </Text>
         </Box>
         <Box className={classes.inputRow}>
           <NumberInput
             disabled
             className={classes.input}
-            value={+Number(amountOut).toPrecision(10)}
-            precision={5}
+            value={+Number(amountOut).toPrecision(6)}
+            precision={6}
             min={0}
             removeTrailingZeros
             hideControls
