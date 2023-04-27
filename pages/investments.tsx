@@ -1,10 +1,7 @@
-import { Box, createStyles, Table, Text } from '@mantine/core';
+import { Center, createStyles, Stack, Title } from '@mantine/core';
 import { PageContainer } from 'components/PageContainer';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
-import Link from 'next/link';
-
-import { OulineButton } from '../components/OutlineButton';
 
 type TableData = {
   investments: string;
@@ -198,31 +195,36 @@ const Investments: NextPageWithLayout = () => {
   const { classes } = useStyles();
   return (
     <PageContainer title='Investments'>
-      <Table
-        captionSide='top'
-        horizontalSpacing='sm'
-        verticalSpacing='sm'
-        highlightOnHover
-        withBorder
-        striped
-        withColumnBorders
-        fontSize={'md'}
-        className={classes.investmentTable}
-      >
-        <caption>
-          <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Link href='https://safeyields.medium.com/safeyields-treasury-portfolio-description-april-update-bf4a7937f675'>
-              <OulineButton>Check Treasury Strategy here.</OulineButton>
-            </Link>
-            <Text>
-              Treasury Performance (last 30 days): <span style={{ fontWeight: 800 }}>14%</span>
-            </Text>
-          </Box>
-        </caption>
-        <thead>{ths}</thead>
-        <tbody>{formatRows(tableData)}</tbody>
-        <tfoot>{formatRows(total)}</tfoot>
-      </Table>
+      <Stack justify={'center'} spacing={'md'} style={{ height: '50vh' }}>
+        <Center>
+          <Title order={5}>Coming Soon</Title>
+        </Center>
+      </Stack>
+      {/* <Table*/}
+      {/*  captionSide='top'*/}
+      {/*  horizontalSpacing='sm'*/}
+      {/*  verticalSpacing='sm'*/}
+      {/*  highlightOnHover*/}
+      {/*  withBorder*/}
+      {/*  striped*/}
+      {/*  withColumnBorders*/}
+      {/*  fontSize={'md'}*/}
+      {/*  className={classes.investmentTable}*/}
+      {/* >*/}
+      {/*  <caption>*/}
+      {/*    <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>*/}
+      {/*      <Link href='https://safeyields.medium.com/safeyields-treasury-portfolio-description-april-update-bf4a7937f675'>*/}
+      {/*        <OulineButton>Check Treasury Strategy here.</OulineButton>*/}
+      {/*      </Link>*/}
+      {/*      <Text>*/}
+      {/*        Treasury Performance (last 30 days): <span style={{ fontWeight: 800 }}>14%</span>*/}
+      {/*      </Text>*/}
+      {/*    </Box>*/}
+      {/*  </caption>*/}
+      {/*  <thead>{ths}</thead>*/}
+      {/*  <tbody>{formatRows(tableData)}</tbody>*/}
+      {/*  <tfoot>{formatRows(total)}</tfoot>*/}
+      {/* </Table>*/}
     </PageContainer>
   );
 };
