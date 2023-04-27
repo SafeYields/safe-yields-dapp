@@ -1,26 +1,31 @@
+import { BigNumber } from '@ethersproject/bignumber';
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber } from 'ethers';
 import { erc20Interface } from 'multicall';
 import { useCallback, useEffect, useState } from 'react';
 import { NATIVE_TOKEN_ADDRESS } from 'utils/constants';
 
 import useMulticalContract from './useMulticallContract';
+import { useSafeTokens, useTokens } from './useTokens';
 
-const useTokenBalances = (tokenAddresses: string[]) => {
-  const { provider, chainId } = useWeb3React();
+const useTokenBalances = () => {
+  const tokensExternalList = useTokens();
+  const tokensSafeList = useSafeTokens();
+
+  const allTokens = [...tokensExternalList, ...tokensSafeList];
+
+  const tokenAddresses = allTokens.map((token) => token.address);
+  const { provider, chainId, account } = useWeb3React();
   const multicallContract = useMulticalContract();
   const [balances, setBalances] = useState<{ [address: string]: BigNumber }>({});
   const [loading, setLoading] = useState(false);
 
   const fetchBalances = useCallback(async () => {
-    if (!provider) {
+    if (!provider || !account) {
       setBalances({});
       return;
     }
     try {
       setLoading(true);
-      const listAccounts = await provider.listAccounts();
-      const account = listAccounts[0];
       const nativeBalance = await provider.getBalance(account);
 
       const fragment = erc20Interface.getFunction('balanceOf');
@@ -50,6 +55,7 @@ const useTokenBalances = (tokenAddresses: string[]) => {
         ),
       });
     } catch (e) {
+      console.log(e);
       setLoading(false);
     }
   }, [provider, chainId, JSON.stringify(tokenAddresses)]);

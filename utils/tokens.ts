@@ -1,23 +1,34 @@
 import { TokenInfo } from '@utils/constants';
 
 export const safeTokens: TokenInfo[] = [
+  {
+    chainId: 42161,
+    address: '0x519EfB2bEFBd3f00D335dc9DF42BF721D591604f',
+    _scan: 'https://arbiscan.io/token/0x519EFB2BEFBD3F00D335DC9DF42BF721D591604F',
+    symbol: 'SAFE',
+    name: 'SAFE',
+    decimals: 6,
+    logoURI: 'https://safe-yields.s3.amazonaws.com/SAFE.png',
+  },
   // {
   //   chainId: 42161,
   //   address: '0x519EfB2bEFBd3f00D335dc9DF42BF721D591604f',
   //   _scan: 'https://arbiscan.io/token/0x519EfB2bEFBd3f00D335dc9DF42BF721D591604f',
-  //   symbol: 'SAFE',
-  //   name: 'SAFE',
-  //   decimals: 6,
-  //   logoURI: 'https://safe-yields.s3.amazonaws.com/SAFE.png',
+  //   symbol: 'SAFE+',
+  //   name: 'SAFE+',
+  //   decimals: 18,
+  //   logoURI: 'https://safe-yields.s3.amazonaws.com/SAFE-plus.png',
   // },
+];
+export const safeTokensLocal: TokenInfo[] = [
   {
-    chainId: 42161,
-    address: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
-    _scan: 'https://arbiscan.io/token/0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
+    chainId: 1337,
+    address: '0x9F8AD0Ce33fBc44a086728a109c5bE060eeB5A9A',
+    _scan: 'https://arbiscan.io/token/0x519EFB2BEFBD3F00D335DC9DF42BF721D591604F',
     symbol: 'SAFE',
     name: 'SAFE',
     decimals: 6,
-    logoURI: 'https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png',
+    logoURI: 'https://safe-yields.s3.amazonaws.com/SAFE.png',
   },
   // {
   //   chainId: 42161,
@@ -94,7 +105,7 @@ export const arbitrumTokens: TokenInfo[] = [
   //   address: '0xFEa7a6a0B346362BF88A9e4A88416B77a57D6c2A',
   //   _scan: 'https://arbiscan.io/token/0xFEa7a6a0B346362BF88A9e4A88416B77a57D6c2A',
   //   symbol: 'MIM',
-  //   name: 'Magic Internet Money',
+  //   name: 'MIM',
   //   decimals: 18,
   //   logoURI: 'https://s2.coinmarketcap.com/static/img/coins/64x64/162.png',
   // },
@@ -211,7 +222,7 @@ export const arbitrumTokens: TokenInfo[] = [
 export const arbitrumTokensGoerli = [
   {
     chainId: 421613,
-    address: '0x179522635726710Dd7D2035a81d856de4Aa7836c',
+    address: '0x179522635726710DD7D2035A81D856DE4AA7836C',
     _scan: 'https://goerli.arbiscan.io/token/0x179522635726710Dd7D2035a81d856de4Aa7836c',
     symbol: 'USDC',
     name: 'USDC',

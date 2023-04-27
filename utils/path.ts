@@ -4,11 +4,11 @@ const PATH = {
   NOTIFICATION: '/notification',
   DASHBOARD: '/dashboard',
   YIELD: '/yield',
-  EMMA: '/emma-the-bot',
+  EMMA: '/emma',
   SAFE: '/safe',
   NFT: '/nft',
-  INVESTMENT: '/investment-pool',
-  EXPENSE: '/expense-log',
+  INVESTMENT: '/investments',
+  EXPENSE: '/expense',
   WHITEPAPER: 'https://www.safeyields.io/safeyields_whitepaper.pdf',
 } as const;
 

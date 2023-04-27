@@ -1,10 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { parseUnits } from '@ethersproject/units';
 import {
+  DEFAULT_TOKENS,
   NATIVE_TOKEN_ADDRESS,
-  SAFE_TOKEN_ADDRESS,
+  SAFE_TOKENS,
   SUPPORTED_NETWORKS,
-  USDC_TOKEN_ADDRESS,
   ZERO_ADDRESS,
 } from '@utils/constants';
 import { useWeb3React } from '@web3-react/core';
@@ -38,17 +38,15 @@ const useSwap = ({
     isInBps: boolean;
   };
 }) => {
-  const { provider, chainId: chain } = useWeb3React();
-  // const usdc = useUsdcContract();
-  // const safe = useSafeTokenContract();
-  const defaultTokenIn = USDC_TOKEN_ADDRESS;
-  const defaultTokenOut = SAFE_TOKEN_ADDRESS;
+  const { provider } = useWeb3React();
+  const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID) || 42161;
+  const defaultTokenIn = DEFAULT_TOKENS[chainId][0].address;
+  const defaultTokenOut = SAFE_TOKENS[chainId][0].address;
   const [tokenIn, setTokenIn] = useState(defaultTokenIn);
   const [tokenOut, setTokenOut] = useState(defaultTokenOut);
-  const externaTokens = useTokens();
+  const externalTokens = useTokens();
   const safeTokens = useSafeTokens();
-  const tokens = [...externaTokens, ...safeTokens];
-  const chainId = chain || 42161;
+  const tokens = [...externalTokens, ...safeTokens];
 
   const isUnsupported = !SUPPORTED_NETWORKS.includes(chainId.toString());
   useEffect(() => {
@@ -63,7 +61,7 @@ const useSwap = ({
     }
   }, [isUnsupported, chainId]);
 
-  const { balances } = useTokenBalances(tokens.map((item) => item.address));
+  const { balances } = useTokenBalances();
   const [allDexes, setAllDexes] = useState<Dex[]>([]);
   const [excludedDexes, setExcludedDexes] = useState<Dex[]>([]);
 
@@ -191,15 +189,16 @@ const useSwap = ({
 
     const controller = new AbortController();
     controllerRef.current = controller;
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SAFE_API_URL}/swap/estimate?${search.slice(1)}`,
-      {
-        headers: {
-          'accept-version': 'Latest',
-        },
-        signal: controllerRef.current?.signal,
+    const query = `${process.env.NEXT_PUBLIC_SAFE_API_URL}/swap/estimate?${search.slice(1)}`;
+    console.log('query', query);
+    const res = await fetch(query, {
+      headers: {
+        'accept-version': 'Latest',
       },
-    ).then((r) => r.json());
+      signal: controllerRef.current?.signal,
+    }).then((r) => r.json());
+
+    console.debug('res', res);
 
     setTrade(res);
     if (Number(res?.outputAmount)) {

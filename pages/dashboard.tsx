@@ -84,23 +84,23 @@ const Home: NextPageWithLayout = () => {
     <PageContainer title='Dashboard'>
       <Grid grow gutter={'sm'} align={'center'}>
         <MediaQuery smallerThan='lg' styles={{ display: 'none' }}>
-          <Grid.Col span={1}></Grid.Col>
+          <Grid.Col span={2}></Grid.Col>
         </MediaQuery>
-        <Grid.Col span={3}>
+        <Grid.Col span={4}>
           <InfoCard header={'SAFE Holdings'}>
             <CardContentBox footer={displayValueInUSDC(safeTokenBalance)}>
               {displaySafeValue(safeTokenBalance)}
             </CardContentBox>
           </InfoCard>
         </Grid.Col>
-        <Grid.Col span={3}>
-          <InfoCard header={'SAFE+ Holdings'}>
-            <CardContentBox footer={displayValueInUSDC(safeTokenBalance)}>
-              {displaySafeValue(safeTokenBalance, ' SAFE+')}
-            </CardContentBox>
-          </InfoCard>
-        </Grid.Col>
-        <Grid.Col span={3}>
+        {/* <Grid.Col span={3}>*/}
+        {/*  <InfoCard header={'SAFE+ Holdings'}>*/}
+        {/*    <CardContentBox footer={displayValueInUSDC(safeTokenBalance)}>*/}
+        {/*      {displaySafeValue(safeTokenBalance, ' SAFE+')}*/}
+        {/*    </CardContentBox>*/}
+        {/*  </InfoCard>*/}
+        {/* </Grid.Col>*/}
+        <Grid.Col span={4}>
           <InfoCard header={'NFT Rewards'}>
             <CardContentBox
               footer={
@@ -123,7 +123,7 @@ const Home: NextPageWithLayout = () => {
           </InfoCard>
         </Grid.Col>
         <MediaQuery smallerThan='lg' styles={{ display: 'none' }}>
-          <Grid.Col span={1}></Grid.Col>
+          <Grid.Col span={2}></Grid.Col>
         </MediaQuery>
         {[0, 1, 2, 3].map((tier) => (
           <Grid.Col span={3} key={tier}>
@@ -173,16 +173,16 @@ const Home: NextPageWithLayout = () => {
             </CardContentBox>
           </InfoCard>
         </Grid.Col>
-        <Grid.Col span={2}>
-          <InfoCard header={'SAFE+ Price'} minWidth={'130px'}>
-            <CardContentBox>
-              <h2 style={{ color: '#F5F5F5' }}>
-                {safeTokenPrice ? parseFloat(safeTokenPrice).toFixed(2).concat(' $USDC') : '⸻'}
-              </h2>
-              <br />
-            </CardContentBox>
-          </InfoCard>
-        </Grid.Col>
+        {/* <Grid.Col span={2}>*/}
+        {/*  <InfoCard header={'SAFE+ Price'} minWidth={'130px'}>*/}
+        {/*    <CardContentBox>*/}
+        {/*      <h2 style={{ color: '#F5F5F5' }}>*/}
+        {/*        {safeTokenPrice ? parseFloat(safeTokenPrice).toFixed(2).concat(' $USDC') : '⸻'}*/}
+        {/*      </h2>*/}
+        {/*      <br />*/}
+        {/*    </CardContentBox>*/}
+        {/*  </InfoCard>*/}
+        {/* </Grid.Col>*/}
         <Grid.Col span={2}>
           <InfoCard header={'SAFE APR'} minWidth={'130px'}>
             <CardContentBox footer={'Last 30 days'}>
@@ -196,19 +196,19 @@ const Home: NextPageWithLayout = () => {
             </CardContentBox>
           </InfoCard>
         </Grid.Col>
-        <Grid.Col span={2}>
-          <InfoCard header={'SAFE+ APR'} minWidth={'130px'}>
-            <CardContentBox footer={'Last 30 days'}>
-              <h2 style={{ color: '#F5F5F5' }}>
-                {safeTokenAPR ? (
-                  safeTokenAPR.toFixed(1).concat(' %')
-                ) : (
-                  <Loader size='lg' color='#F5F5F5' />
-                )}
-              </h2>
-            </CardContentBox>
-          </InfoCard>
-        </Grid.Col>
+        {/* <Grid.Col span={2}>*/}
+        {/*  <InfoCard header={'SAFE+ APR'} minWidth={'130px'}>*/}
+        {/*    <CardContentBox footer={'Last 30 days'}>*/}
+        {/*      <h2 style={{ color: '#F5F5F5' }}>*/}
+        {/*        {safeTokenAPR ? (*/}
+        {/*          safeTokenAPR.toFixed(1).concat(' %')*/}
+        {/*        ) : (*/}
+        {/*          <Loader size='lg' color='#F5F5F5' />*/}
+        {/*        )}*/}
+        {/*      </h2>*/}
+        {/*    </CardContentBox>*/}
+        {/*  </InfoCard>*/}
+        {/* </Grid.Col>*/}
         <Grid.Col span={2}>
           <InfoCard header={'NFT APR'} minWidth={'130px'}>
             <CardContentBox footer={'Last 30 days'}>

@@ -446,7 +446,7 @@ export interface ISafeToken extends BaseContract {
     sellExactAmountOfSafe(
       _safeTokensToSell: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<BigNumber>;
 
     sellSafeForExactAmountOfUSD(
       _usdToGet: PromiseOrValue<BigNumberish>,

@@ -2,7 +2,10 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as interfaces from "./interfaces";
+export { EERC20__factory } from "./EERC20__factory";
+export { Multicall2__factory } from "./Multicall2__factory";
 export { SafeNFT__factory } from "./SafeNFT__factory";
+export { SafeRouter__factory } from "./SafeRouter__factory";
 export { SafeToken__factory } from "./SafeToken__factory";
 export { SafeVault__factory } from "./SafeVault__factory";
 export { Wallets__factory } from "./Wallets__factory";

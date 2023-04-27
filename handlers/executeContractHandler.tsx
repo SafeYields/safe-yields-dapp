@@ -1,13 +1,16 @@
 import { ContractTransaction } from '@ethersproject/contracts';
+import { TransactionResponse } from '@ethersproject/providers';
 import { showNotification } from '@mantine/notifications';
 import { Check, X } from 'tabler-icons-react';
-
 
 function isWithReasonType(obj: any): obj is { reason: string } {
   return 'reason' in obj;
 }
 
-export const executeContractHandler = async (setExecutionInProgress: (progress: boolean) => void, smartContractCallback: () => Promise<ContractTransaction>) => {
+export const executeContractHandler = async (
+  setExecutionInProgress: (progress: boolean) => void,
+  smartContractCallback: () => Promise<ContractTransaction> | Promise<TransactionResponse>,
+) => {
   setExecutionInProgress(true);
   showNotification({
     message: 'Follow the Wallet.',
