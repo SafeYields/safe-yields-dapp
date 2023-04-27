@@ -27,7 +27,7 @@ const Home: NextPageWithLayout = () => {
   const nftOfTreasury = useNFTOfTreasury()?.data;
   const displayValueInUSDC = (priceData: string | null | undefined) =>
     injectedWalletConnected && priceData && safeTokenPrice
-      ? (parseInt(priceData) * parseInt(safeTokenPrice))
+      ? (parseInt(priceData) * parseFloat(safeTokenPrice))
           .toFixed(DECIMALS_TO_DISPLAY)
           .concat(' $USDC')
       : undefined;

@@ -47,7 +47,7 @@ const Home: NextPageWithLayout = () => {
 
   const displayValueInUSDC = (priceData: string | null | undefined) =>
     injectedWalletConnected && priceData && safeTokenPrice
-      ? (parseInt(priceData) * parseInt(safeTokenPrice))
+      ? (parseFloat(priceData) * parseFloat(safeTokenPrice))
           .toFixed(DECIMALS_TO_DISPLAY)
           .concat(' $USDC')
       : undefined;
