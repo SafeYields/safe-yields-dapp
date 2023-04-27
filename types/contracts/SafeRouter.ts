@@ -27,33 +27,39 @@ import type {
 
 export interface SafeRouterInterface extends utils.Interface {
   functions: {
-    "allowedFunctionSignature()": FunctionFragment;
+    "approveTokens(address[],address,uint256)": FunctionFragment;
     "initialize(address,address,address)": FunctionFragment;
     "kyberSwapRouterContract()": FunctionFragment;
     "proxyAndBuy(bytes)": FunctionFragment;
     "safeTokenContract()": FunctionFragment;
     "sellAndProxy(bytes,uint256)": FunctionFragment;
+    "swap()": FunctionFragment;
+    "swapSimpleMode()": FunctionFragment;
     "updateAllowedContract(address)": FunctionFragment;
-    "updateAllowedFunctionSignature(bytes4)": FunctionFragment;
     "usd()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "allowedFunctionSignature"
+      | "approveTokens"
       | "initialize"
       | "kyberSwapRouterContract"
       | "proxyAndBuy"
       | "safeTokenContract"
       | "sellAndProxy"
+      | "swap"
+      | "swapSimpleMode"
       | "updateAllowedContract"
-      | "updateAllowedFunctionSignature"
       | "usd"
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "allowedFunctionSignature",
-    values?: undefined
+    functionFragment: "approveTokens",
+    values: [
+      PromiseOrValue<string>[],
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
@@ -79,18 +85,19 @@ export interface SafeRouterInterface extends utils.Interface {
     functionFragment: "sellAndProxy",
     values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(functionFragment: "swap", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "swapSimpleMode",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "updateAllowedContract",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "updateAllowedFunctionSignature",
-    values: [PromiseOrValue<BytesLike>]
-  ): string;
   encodeFunctionData(functionFragment: "usd", values?: undefined): string;
 
   decodeFunctionResult(
-    functionFragment: "allowedFunctionSignature",
+    functionFragment: "approveTokens",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
@@ -110,12 +117,13 @@ export interface SafeRouterInterface extends utils.Interface {
     functionFragment: "sellAndProxy",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "swap", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "updateAllowedContract",
+    functionFragment: "swapSimpleMode",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateAllowedFunctionSignature",
+    functionFragment: "updateAllowedContract",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "usd", data: BytesLike): Result;
@@ -150,10 +158,15 @@ export interface SafeRouter extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    allowedFunctionSignature(overrides?: CallOverrides): Promise<[string]>;
+    approveTokens(
+      tokens: PromiseOrValue<string>[],
+      spender: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     initialize(
-      _allowedContract: PromiseOrValue<string>,
+      _kyberSwapRouter: PromiseOrValue<string>,
       _usd: PromiseOrValue<string>,
       _safeToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -174,23 +187,27 @@ export interface SafeRouter extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    swap(overrides?: CallOverrides): Promise<[string]>;
+
+    swapSimpleMode(overrides?: CallOverrides): Promise<[string]>;
+
     updateAllowedContract(
       _allowedContract: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    updateAllowedFunctionSignature(
-      _allowedFunctionSignature: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     usd(overrides?: CallOverrides): Promise<[string]>;
   };
 
-  allowedFunctionSignature(overrides?: CallOverrides): Promise<string>;
+  approveTokens(
+    tokens: PromiseOrValue<string>[],
+    spender: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   initialize(
-    _allowedContract: PromiseOrValue<string>,
+    _kyberSwapRouter: PromiseOrValue<string>,
     _usd: PromiseOrValue<string>,
     _safeToken: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -211,23 +228,27 @@ export interface SafeRouter extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  swap(overrides?: CallOverrides): Promise<string>;
+
+  swapSimpleMode(overrides?: CallOverrides): Promise<string>;
+
   updateAllowedContract(
     _allowedContract: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  updateAllowedFunctionSignature(
-    _allowedFunctionSignature: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   usd(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
-    allowedFunctionSignature(overrides?: CallOverrides): Promise<string>;
+    approveTokens(
+      tokens: PromiseOrValue<string>[],
+      spender: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     initialize(
-      _allowedContract: PromiseOrValue<string>,
+      _kyberSwapRouter: PromiseOrValue<string>,
       _usd: PromiseOrValue<string>,
       _safeToken: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -248,13 +269,12 @@ export interface SafeRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    swap(overrides?: CallOverrides): Promise<string>;
+
+    swapSimpleMode(overrides?: CallOverrides): Promise<string>;
+
     updateAllowedContract(
       _allowedContract: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    updateAllowedFunctionSignature(
-      _allowedFunctionSignature: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -264,10 +284,15 @@ export interface SafeRouter extends BaseContract {
   filters: {};
 
   estimateGas: {
-    allowedFunctionSignature(overrides?: CallOverrides): Promise<BigNumber>;
+    approveTokens(
+      tokens: PromiseOrValue<string>[],
+      spender: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     initialize(
-      _allowedContract: PromiseOrValue<string>,
+      _kyberSwapRouter: PromiseOrValue<string>,
       _usd: PromiseOrValue<string>,
       _safeToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -288,13 +313,12 @@ export interface SafeRouter extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    swap(overrides?: CallOverrides): Promise<BigNumber>;
+
+    swapSimpleMode(overrides?: CallOverrides): Promise<BigNumber>;
+
     updateAllowedContract(
       _allowedContract: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    updateAllowedFunctionSignature(
-      _allowedFunctionSignature: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -302,12 +326,15 @@ export interface SafeRouter extends BaseContract {
   };
 
   populateTransaction: {
-    allowedFunctionSignature(
-      overrides?: CallOverrides
+    approveTokens(
+      tokens: PromiseOrValue<string>[],
+      spender: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     initialize(
-      _allowedContract: PromiseOrValue<string>,
+      _kyberSwapRouter: PromiseOrValue<string>,
       _usd: PromiseOrValue<string>,
       _safeToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -330,13 +357,12 @@ export interface SafeRouter extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    swap(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    swapSimpleMode(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     updateAllowedContract(
       _allowedContract: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    updateAllowedFunctionSignature(
-      _allowedFunctionSignature: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

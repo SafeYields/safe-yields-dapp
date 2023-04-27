@@ -48,7 +48,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
   return {
     wrapper: {
       position: 'absolute',
-      top: '140px',
+      top: '180px',
       borderRadius: '21px',
       padding: '27px',
       width: '538px',

@@ -7,7 +7,7 @@ const PATH = {
   EMMA: '/emma-the-bot',
   SAFE: '/safe',
   NFT: '/nft',
-  INVESTMENT: '/investment-pool',
+  INVESTMENT: '/investments',
   EXPENSE: '/expense-log',
   WHITEPAPER: 'https://www.safeyields.io/safeyields_whitepaper.pdf',
 } as const;
