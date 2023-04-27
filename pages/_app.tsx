@@ -42,7 +42,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 white: ['#F2ECE4'],
                 greenGray: ['#36676A', '#85A7A8', '#90A4A2'],
                 emeraldGreen: ['#053234'],
-                almostWhite: ['#F5F5F5'],
+                almostWhite: ['#F5F5F5', '#A6A8AD'],
                 veryDarkGreen: ['#0B1B03'],
               },
               fontFamily: '"Space Grotesk", sans-serif',

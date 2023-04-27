@@ -9,6 +9,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
     button: {
       ...theme.fn.focusStyles(),
       // height: '24px',
+      justifyContent: 'center',
       display: 'flex',
       overflow: 'visible',
       margin: 'auto',

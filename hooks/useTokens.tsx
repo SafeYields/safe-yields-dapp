@@ -1,9 +1,9 @@
-import { useWeb3React } from '@web3-react/core';
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
-import { DEFAULT_TOKENS, TokenInfo } from 'utils/constants';
+import { DEFAULT_TOKENS, SAFE_TOKENS, TokenInfo } from 'utils/constants';
 
 const TokenContext = createContext<{
   tokenList?: TokenInfo[];
+  safeTokensList?: TokenInfo[];
   importedTokens: TokenInfo[];
   addToken: (token: TokenInfo) => void;
   removeToken: (token: TokenInfo) => void;
@@ -23,7 +23,7 @@ export const TokenListProvider = ({
   tokenList?: TokenInfo[];
   children: ReactNode;
 }) => {
-  const { chainId } = useWeb3React();
+  const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID) || 42161;
 
   const [importedTokens, setImportedTokens] = useState<TokenInfo[]>(() => {
     if (typeof window !== 'undefined') {
@@ -59,7 +59,8 @@ export const TokenListProvider = ({
   return (
     <TokenContext.Provider
       value={{
-        tokenList: tokenList?.length ? tokenList : DEFAULT_TOKENS[chainId || 42161],
+        tokenList: tokenList?.length ? tokenList : DEFAULT_TOKENS[chainId],
+        safeTokensList: SAFE_TOKENS[chainId],
         importedTokens,
         addToken,
         removeToken,
@@ -72,7 +73,7 @@ export const TokenListProvider = ({
 
 export const useTokens = () => {
   const { tokenList, importedTokens } = useContext(TokenContext);
-  const { chainId } = useWeb3React();
+  const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID) || 42161;
 
   return useMemo(
     () => [
@@ -83,6 +84,12 @@ export const useTokens = () => {
     ],
     [tokenList, importedTokens, chainId],
   );
+};
+
+export const useSafeTokens = () => {
+  const { safeTokensList } = useContext(TokenContext);
+  const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID) || 42161;
+  return useMemo(() => safeTokensList || [], [chainId]);
 };
 
 export const useImportedTokens = () => {

@@ -32,27 +32,24 @@ import type {
 export interface SafeTokenInterface extends utils.Interface {
   functions: {
     "BUY_TAX_PERCENT()": FunctionFragment;
+    "HUNDRED_PERCENT()": FunctionFragment;
     "SELL_TAX_PERCENT()": FunctionFragment;
     "WALLETS()": FunctionFragment;
-    "admin(address)": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "blacklist(address)": FunctionFragment;
     "burn(address,uint256)": FunctionFragment;
     "buyExactAmountOfSafe(uint256)": FunctionFragment;
     "buySafeForExactAmountOfUSD(uint256)": FunctionFragment;
     "decimals()": FunctionFragment;
-    "deny(address)": FunctionFragment;
-    "estimateBuyExactAmountOfSafe(uint256)": FunctionFragment;
     "getUsdReserves()": FunctionFragment;
     "getWallets()": FunctionFragment;
     "initialize(address,address,address[2],uint256[2],uint256,uint256)": FunctionFragment;
     "mint(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
+    "pause()": FunctionFragment;
     "paused()": FunctionFragment;
     "price()": FunctionFragment;
-    "rely(address)": FunctionFragment;
     "safeVault()": FunctionFragment;
     "sellExactAmountOfSafe(uint256)": FunctionFragment;
     "sellSafeForExactAmountOfUSD(uint256)": FunctionFragment;
@@ -61,35 +58,36 @@ export interface SafeTokenInterface extends utils.Interface {
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
+    "unpause()": FunctionFragment;
     "usd()": FunctionFragment;
     "version()": FunctionFragment;
     "wallets(uint256)": FunctionFragment;
+    "whiteListRemove(address)": FunctionFragment;
+    "whitelist(address)": FunctionFragment;
+    "whitelistAdd(address)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "BUY_TAX_PERCENT"
+      | "HUNDRED_PERCENT"
       | "SELL_TAX_PERCENT"
       | "WALLETS"
-      | "admin"
       | "allowance"
       | "approve"
       | "balanceOf"
-      | "blacklist"
       | "burn"
       | "buyExactAmountOfSafe"
       | "buySafeForExactAmountOfUSD"
       | "decimals"
-      | "deny"
-      | "estimateBuyExactAmountOfSafe"
       | "getUsdReserves"
       | "getWallets"
       | "initialize"
       | "mint"
       | "name"
+      | "pause"
       | "paused"
       | "price"
-      | "rely"
       | "safeVault"
       | "sellExactAmountOfSafe"
       | "sellSafeForExactAmountOfUSD"
@@ -98,9 +96,13 @@ export interface SafeTokenInterface extends utils.Interface {
       | "totalSupply"
       | "transfer"
       | "transferFrom"
+      | "unpause"
       | "usd"
       | "version"
       | "wallets"
+      | "whiteListRemove"
+      | "whitelist"
+      | "whitelistAdd"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -108,14 +110,14 @@ export interface SafeTokenInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "HUNDRED_PERCENT",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "SELL_TAX_PERCENT",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "WALLETS", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "admin",
-    values: [PromiseOrValue<string>]
-  ): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
@@ -126,10 +128,6 @@ export interface SafeTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "balanceOf",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "blacklist",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
@@ -145,14 +143,6 @@ export interface SafeTokenInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "deny",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "estimateBuyExactAmountOfSafe",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
   encodeFunctionData(
     functionFragment: "getUsdReserves",
     values?: undefined
@@ -177,12 +167,9 @@ export interface SafeTokenInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(functionFragment: "price", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "rely",
-    values: [PromiseOrValue<string>]
-  ): string;
   encodeFunctionData(functionFragment: "safeVault", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "sellExactAmountOfSafe",
@@ -213,11 +200,24 @@ export interface SafeTokenInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>
     ]
   ): string;
+  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(functionFragment: "usd", values?: undefined): string;
   encodeFunctionData(functionFragment: "version", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "wallets",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "whiteListRemove",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "whitelist",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "whitelistAdd",
+    values: [PromiseOrValue<string>]
   ): string;
 
   decodeFunctionResult(
@@ -225,15 +225,17 @@ export interface SafeTokenInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "HUNDRED_PERCENT",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "SELL_TAX_PERCENT",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "WALLETS", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "admin", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "blacklist", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "buyExactAmountOfSafe",
@@ -244,11 +246,6 @@ export interface SafeTokenInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "deny", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "estimateBuyExactAmountOfSafe",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "getUsdReserves",
     data: BytesLike
@@ -257,9 +254,9 @@ export interface SafeTokenInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "price", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "rely", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "safeVault", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "sellExactAmountOfSafe",
@@ -283,9 +280,19 @@ export interface SafeTokenInterface extends utils.Interface {
     functionFragment: "transferFrom",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "usd", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "wallets", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "whiteListRemove",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "whitelist", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "whitelistAdd",
+    data: BytesLike
+  ): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
@@ -367,14 +374,11 @@ export interface SafeToken extends BaseContract {
   functions: {
     BUY_TAX_PERCENT(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    HUNDRED_PERCENT(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     SELL_TAX_PERCENT(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     WALLETS(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    admin(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
 
     allowance(
       arg0: PromiseOrValue<string>,
@@ -384,7 +388,7 @@ export interface SafeToken extends BaseContract {
 
     approve(
       usr: PromiseOrValue<string>,
-      wad: PromiseOrValue<BigNumberish>,
+      amt: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -392,11 +396,6 @@ export interface SafeToken extends BaseContract {
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
-
-    blacklist(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
 
     burn(
       _user: PromiseOrValue<string>,
@@ -415,16 +414,6 @@ export interface SafeToken extends BaseContract {
     ): Promise<ContractTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
-
-    deny(
-      guy: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    estimateBuyExactAmountOfSafe(
-      _safeTokensToBuy: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     getUsdReserves(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -451,14 +440,13 @@ export interface SafeToken extends BaseContract {
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
+    pause(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     paused(overrides?: CallOverrides): Promise<[boolean]>;
 
     price(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    rely(
-      guy: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     safeVault(overrides?: CallOverrides): Promise<[string]>;
 
@@ -468,7 +456,7 @@ export interface SafeToken extends BaseContract {
     ): Promise<ContractTransaction>;
 
     sellSafeForExactAmountOfUSD(
-      _usdToGet: PromiseOrValue<BigNumberish>,
+      _usdToPayToUser: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -483,14 +471,18 @@ export interface SafeToken extends BaseContract {
 
     transfer(
       dst: PromiseOrValue<string>,
-      wad: PromiseOrValue<BigNumberish>,
+      amt: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     transferFrom(
       src: PromiseOrValue<string>,
       dst: PromiseOrValue<string>,
-      wad: PromiseOrValue<BigNumberish>,
+      amt: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -502,18 +494,30 @@ export interface SafeToken extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[string]>;
+
+    whiteListRemove(
+      guy: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    whitelist(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    whitelistAdd(
+      guy: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   BUY_TAX_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
 
+  HUNDRED_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
+
   SELL_TAX_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
 
   WALLETS(overrides?: CallOverrides): Promise<BigNumber>;
-
-  admin(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
 
   allowance(
     arg0: PromiseOrValue<string>,
@@ -523,7 +527,7 @@ export interface SafeToken extends BaseContract {
 
   approve(
     usr: PromiseOrValue<string>,
-    wad: PromiseOrValue<BigNumberish>,
+    amt: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -531,11 +535,6 @@ export interface SafeToken extends BaseContract {
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
-
-  blacklist(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
 
   burn(
     _user: PromiseOrValue<string>,
@@ -554,16 +553,6 @@ export interface SafeToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   decimals(overrides?: CallOverrides): Promise<number>;
-
-  deny(
-    guy: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  estimateBuyExactAmountOfSafe(
-    _safeTokensToBuy: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   getUsdReserves(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -590,14 +579,13 @@ export interface SafeToken extends BaseContract {
 
   name(overrides?: CallOverrides): Promise<string>;
 
+  pause(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   paused(overrides?: CallOverrides): Promise<boolean>;
 
   price(overrides?: CallOverrides): Promise<BigNumber>;
-
-  rely(
-    guy: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   safeVault(overrides?: CallOverrides): Promise<string>;
 
@@ -607,7 +595,7 @@ export interface SafeToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   sellSafeForExactAmountOfUSD(
-    _usdToGet: PromiseOrValue<BigNumberish>,
+    _usdToPayToUser: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -622,14 +610,18 @@ export interface SafeToken extends BaseContract {
 
   transfer(
     dst: PromiseOrValue<string>,
-    wad: PromiseOrValue<BigNumberish>,
+    amt: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   transferFrom(
     src: PromiseOrValue<string>,
     dst: PromiseOrValue<string>,
-    wad: PromiseOrValue<BigNumberish>,
+    amt: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  unpause(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -642,17 +634,29 @@ export interface SafeToken extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  whiteListRemove(
+    guy: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  whitelist(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  whitelistAdd(
+    guy: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     BUY_TAX_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
+
+    HUNDRED_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
 
     SELL_TAX_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
 
     WALLETS(overrides?: CallOverrides): Promise<BigNumber>;
-
-    admin(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     allowance(
       arg0: PromiseOrValue<string>,
@@ -662,7 +666,7 @@ export interface SafeToken extends BaseContract {
 
     approve(
       usr: PromiseOrValue<string>,
-      wad: PromiseOrValue<BigNumberish>,
+      amt: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -670,11 +674,6 @@ export interface SafeToken extends BaseContract {
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    blacklist(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
 
     burn(
       _user: PromiseOrValue<string>,
@@ -693,13 +692,6 @@ export interface SafeToken extends BaseContract {
     ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<number>;
-
-    deny(guy: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
-
-    estimateBuyExactAmountOfSafe(
-      _safeTokensToBuy: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     getUsdReserves(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -726,21 +718,21 @@ export interface SafeToken extends BaseContract {
 
     name(overrides?: CallOverrides): Promise<string>;
 
+    pause(overrides?: CallOverrides): Promise<void>;
+
     paused(overrides?: CallOverrides): Promise<boolean>;
 
     price(overrides?: CallOverrides): Promise<BigNumber>;
-
-    rely(guy: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
 
     safeVault(overrides?: CallOverrides): Promise<string>;
 
     sellExactAmountOfSafe(
       _safeTokensToSell: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<BigNumber>;
 
     sellSafeForExactAmountOfUSD(
-      _usdToGet: PromiseOrValue<BigNumberish>,
+      _usdToPayToUser: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -755,16 +747,18 @@ export interface SafeToken extends BaseContract {
 
     transfer(
       dst: PromiseOrValue<string>,
-      wad: PromiseOrValue<BigNumberish>,
+      amt: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     transferFrom(
       src: PromiseOrValue<string>,
       dst: PromiseOrValue<string>,
-      wad: PromiseOrValue<BigNumberish>,
+      amt: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    unpause(overrides?: CallOverrides): Promise<void>;
 
     usd(overrides?: CallOverrides): Promise<string>;
 
@@ -774,6 +768,21 @@ export interface SafeToken extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    whiteListRemove(
+      guy: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    whitelist(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    whitelistAdd(
+      guy: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -809,14 +818,11 @@ export interface SafeToken extends BaseContract {
   estimateGas: {
     BUY_TAX_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
 
+    HUNDRED_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
+
     SELL_TAX_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
 
     WALLETS(overrides?: CallOverrides): Promise<BigNumber>;
-
-    admin(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     allowance(
       arg0: PromiseOrValue<string>,
@@ -826,16 +832,11 @@ export interface SafeToken extends BaseContract {
 
     approve(
       usr: PromiseOrValue<string>,
-      wad: PromiseOrValue<BigNumberish>,
+      amt: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     balanceOf(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    blacklist(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -857,16 +858,6 @@ export interface SafeToken extends BaseContract {
     ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
-
-    deny(
-      guy: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    estimateBuyExactAmountOfSafe(
-      _safeTokensToBuy: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
 
     getUsdReserves(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -893,14 +884,13 @@ export interface SafeToken extends BaseContract {
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
+    pause(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     paused(overrides?: CallOverrides): Promise<BigNumber>;
 
     price(overrides?: CallOverrides): Promise<BigNumber>;
-
-    rely(
-      guy: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
 
     safeVault(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -910,7 +900,7 @@ export interface SafeToken extends BaseContract {
     ): Promise<BigNumber>;
 
     sellSafeForExactAmountOfUSD(
-      _usdToGet: PromiseOrValue<BigNumberish>,
+      _usdToPayToUser: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -925,14 +915,18 @@ export interface SafeToken extends BaseContract {
 
     transfer(
       dst: PromiseOrValue<string>,
-      wad: PromiseOrValue<BigNumberish>,
+      amt: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     transferFrom(
       src: PromiseOrValue<string>,
       dst: PromiseOrValue<string>,
-      wad: PromiseOrValue<BigNumberish>,
+      amt: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -944,19 +938,31 @@ export interface SafeToken extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    whiteListRemove(
+      guy: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    whitelist(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    whitelistAdd(
+      guy: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     BUY_TAX_PERCENT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    HUNDRED_PERCENT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     SELL_TAX_PERCENT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     WALLETS(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    admin(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     allowance(
       arg0: PromiseOrValue<string>,
@@ -966,16 +972,11 @@ export interface SafeToken extends BaseContract {
 
     approve(
       usr: PromiseOrValue<string>,
-      wad: PromiseOrValue<BigNumberish>,
+      amt: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     balanceOf(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    blacklist(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -997,16 +998,6 @@ export interface SafeToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    deny(
-      guy: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    estimateBuyExactAmountOfSafe(
-      _safeTokensToBuy: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
 
     getUsdReserves(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1033,14 +1024,13 @@ export interface SafeToken extends BaseContract {
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    pause(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     price(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    rely(
-      guy: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
 
     safeVault(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1050,7 +1040,7 @@ export interface SafeToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     sellSafeForExactAmountOfUSD(
-      _usdToGet: PromiseOrValue<BigNumberish>,
+      _usdToPayToUser: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1065,14 +1055,18 @@ export interface SafeToken extends BaseContract {
 
     transfer(
       dst: PromiseOrValue<string>,
-      wad: PromiseOrValue<BigNumberish>,
+      amt: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     transferFrom(
       src: PromiseOrValue<string>,
       dst: PromiseOrValue<string>,
-      wad: PromiseOrValue<BigNumberish>,
+      amt: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1083,6 +1077,21 @@ export interface SafeToken extends BaseContract {
     wallets(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    whiteListRemove(
+      guy: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    whitelist(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    whitelistAdd(
+      guy: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

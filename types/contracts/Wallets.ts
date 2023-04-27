@@ -25,18 +25,29 @@ import type {
 
 export interface WalletsInterface extends utils.Interface {
   functions: {
+    "HUNDRED_PERCENT()": FunctionFragment;
     "WALLETS()": FunctionFragment;
     "wallets(uint256)": FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: "WALLETS" | "wallets"): FunctionFragment;
+  getFunction(
+    nameOrSignatureOrTopic: "HUNDRED_PERCENT" | "WALLETS" | "wallets"
+  ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "HUNDRED_PERCENT",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "WALLETS", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "wallets",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "HUNDRED_PERCENT",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "WALLETS", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "wallets", data: BytesLike): Result;
 
@@ -70,6 +81,8 @@ export interface Wallets extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    HUNDRED_PERCENT(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     WALLETS(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     wallets(
@@ -77,6 +90,8 @@ export interface Wallets extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
   };
+
+  HUNDRED_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
 
   WALLETS(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -86,6 +101,8 @@ export interface Wallets extends BaseContract {
   ): Promise<string>;
 
   callStatic: {
+    HUNDRED_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
+
     WALLETS(overrides?: CallOverrides): Promise<BigNumber>;
 
     wallets(
@@ -97,6 +114,8 @@ export interface Wallets extends BaseContract {
   filters: {};
 
   estimateGas: {
+    HUNDRED_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
+
     WALLETS(overrides?: CallOverrides): Promise<BigNumber>;
 
     wallets(
@@ -106,6 +125,8 @@ export interface Wallets extends BaseContract {
   };
 
   populateTransaction: {
+    HUNDRED_PERCENT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     WALLETS(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     wallets(

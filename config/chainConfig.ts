@@ -4,9 +4,9 @@ type ChainConfig = {
   chainId: number;
   chainName: string;
   chainShortName: string;
-  nativeCurrency: AddEthereumChainParameter['nativeCurrency'],
+  nativeCurrency: AddEthereumChainParameter['nativeCurrency'];
   rpcUrls: string[];
-  blockExplorerUrls: AddEthereumChainParameter['blockExplorerUrls'],
+  blockExplorerUrls: AddEthereumChainParameter['blockExplorerUrls'];
   addresses: {
     treasury: string;
     management: string;
@@ -14,11 +14,10 @@ type ChainConfig = {
     safe: string;
     vault: string;
     nft: string;
-  }
+  };
 };
 
 type ChainsConfig = Record<number, ChainConfig>;
-
 
 const envChainId = process.env.NEXT_PUBLIC_CHAIN_ID;
 if (envChainId === undefined) {
@@ -47,48 +46,46 @@ const config: ChainsConfig = {
       nft: '0xe2967C90F8cec65Ae12c4bC36c771249C12a2310',
     },
   },
-  421613:
-    {
-      chainName: 'Arbitrum Goerli Testnet',
-      chainId: 421613,
-      chainShortName: 'Goerli',
-      rpcUrls: ['https://goerli-rollup.arbitrum.io/' || process.env.NEXT_PUBLIC_TESTNET_URL],
-      nativeCurrency: {
-        name: 'Ethereum',
-        symbol: 'ETH',
-        decimals: 18,
-      },
-      blockExplorerUrls: ['https://testnet.arbiscan.com/'],
-      addresses: {
-        treasury: '0xb7eCbD7262a9250A44EaA040A2B2a184536F3861',
-        management: '0xca086A28753a0826733D53A7e674011307e027d8',
-        usdc: '0x179522635726710dd7d2035a81d856de4aa7836c',
-        safe: '0xeeC181F2008b0f719e572000b1F02F120634326C',
-        vault: '0x9F8AD0Ce33fBc44a086728a109c5bE060eeB5A9A',
-        nft: '0xAa1D2ca80198470dbCC594CbcA8B7Ea4cBf9a3fE',
-      },
+  421613: {
+    chainName: 'Arbitrum Goerli Testnet',
+    chainId: 421613,
+    chainShortName: 'Goerli',
+    rpcUrls: ['https://goerli-rollup.arbitrum.io/' || process.env.NEXT_PUBLIC_TESTNET_URL],
+    nativeCurrency: {
+      name: 'Ethereum',
+      symbol: 'ETH',
+      decimals: 18,
     },
-  1337:
-    {
-      chainName: 'Localhost',
-      chainId: 1337,
-      chainShortName: 'HH',
-      rpcUrls: ['http://127.0.0.1:8545/'],
-      nativeCurrency: {
-        name: 'Ethereum',
-        symbol: 'ETH',
-        decimals: 18,
-      },
-      blockExplorerUrls: [],
-      addresses: {
-        treasury: '0xBF89e2e63e471cC29Da80bcD661342A9935982A8',
-        management: '0xf2c1FE530d9c1686950F33d1B47d8B9474D92965',
-        usdc: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
-        safe: '0xF3c420B081422C51533150664Fc8F2fb77E39296',
-        vault: '0x3Eca9FeB89C04F5B75bDAf72961f97B4D66fE68e',
-        nft: '0x5735205Db896c63B97F9090b0A852682F4a5635B',
-      },
+    blockExplorerUrls: ['https://testnet.arbiscan.com/'],
+    addresses: {
+      treasury: '0xb7eCbD7262a9250A44EaA040A2B2a184536F3861',
+      management: '0xca086A28753a0826733D53A7e674011307e027d8',
+      usdc: '0x179522635726710dd7d2035a81d856de4aa7836c',
+      safe: '0xeeC181F2008b0f719e572000b1F02F120634326C',
+      vault: '0x9F8AD0Ce33fBc44a086728a109c5bE060eeB5A9A',
+      nft: '0xAa1D2ca80198470dbCC594CbcA8B7Ea4cBf9a3fE',
     },
+  },
+  1337: {
+    chainName: 'Localhost',
+    chainId: 1337,
+    chainShortName: 'HH',
+    rpcUrls: ['http://127.0.0.1:8545/'],
+    nativeCurrency: {
+      name: 'Ethereum',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    blockExplorerUrls: [],
+    addresses: {
+      treasury: '0xBF89e2e63e471cC29Da80bcD661342A9935982A8',
+      management: '0xf2c1FE530d9c1686950F33d1B47d8B9474D92965',
+      usdc: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+      safe: '0x9F8AD0Ce33fBc44a086728a109c5bE060eeB5A9A',
+      vault: '0x3Eca9FeB89C04F5B75bDAf72961f97B4D66fE68e',
+      nft: '0x5735205Db896c63B97F9090b0A852682F4a5635B',
+    },
+  },
 };
 
 export const chainConfig = config[supportedChainId];

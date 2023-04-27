@@ -191,7 +191,7 @@ const ITEMS = [
 export const SideNav: FC<{ className?: string }> = ({ className }) => {
   const [collapsed, handlers] = useDisclosure(false);
   const { classes, cx } = useStyles({ collapsed });
-  if (process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE) {
+  if (process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE?.toLowerCase() === 'true') {
     return (
       <Navbar
         p='md'

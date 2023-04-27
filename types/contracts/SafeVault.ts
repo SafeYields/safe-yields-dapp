@@ -10,7 +10,11 @@ import type {
   OnEvent,
   PromiseOrValue,
 } from "../common";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   BaseContract,
@@ -27,58 +31,124 @@ import type {
 
 export interface SafeVaultInterface extends utils.Interface {
   functions: {
-    "balances(address)": FunctionFragment;
     "deposit(uint256)": FunctionFragment;
-    "deposited()": FunctionFragment;
+    "deposited(address)": FunctionFragment;
     "initialize(address)": FunctionFragment;
+    "recoverERC20(address,uint256)": FunctionFragment;
+    "recoverETH()": FunctionFragment;
+    "remove(address,uint256)": FunctionFragment;
+    "safeToken()": FunctionFragment;
+    "setSafeToken(address)": FunctionFragment;
+    "totalDeposited()": FunctionFragment;
     "totalSupply()": FunctionFragment;
-    "withdraw(address,uint256)": FunctionFragment;
+    "usd()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "balances"
       | "deposit"
       | "deposited"
       | "initialize"
+      | "recoverERC20"
+      | "recoverETH"
+      | "remove"
+      | "safeToken"
+      | "setSafeToken"
+      | "totalDeposited"
       | "totalSupply"
-      | "withdraw"
+      | "usd"
   ): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "balances",
-    values: [PromiseOrValue<string>]
-  ): string;
   encodeFunctionData(
     functionFragment: "deposit",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: "deposited", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "deposited",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "initialize",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "totalSupply",
+    functionFragment: "recoverERC20",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "recoverETH",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "withdraw",
+    functionFragment: "remove",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(functionFragment: "safeToken", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "setSafeToken",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "totalDeposited",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "totalSupply",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "usd", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "balances", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deposited", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "recoverERC20",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "recoverETH", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "remove", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "safeToken", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setSafeToken",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "totalDeposited",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "usd", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "Deposit(address,uint256)": EventFragment;
+    "Withdraw(address,uint256)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
 }
+
+export interface DepositEventObject {
+  user: string;
+  amount: BigNumber;
+}
+export type DepositEvent = TypedEvent<[string, BigNumber], DepositEventObject>;
+
+export type DepositEventFilter = TypedEventFilter<DepositEvent>;
+
+export interface WithdrawEventObject {
+  user: string;
+  amount: BigNumber;
+}
+export type WithdrawEvent = TypedEvent<
+  [string, BigNumber],
+  WithdrawEventObject
+>;
+
+export type WithdrawEventFilter = TypedEventFilter<WithdrawEvent>;
 
 export interface SafeVault extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -107,137 +177,248 @@ export interface SafeVault extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    balances(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     deposit(
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    deposited(overrides?: CallOverrides): Promise<[BigNumber]>;
+    deposited(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     initialize(
-      _stableCoin: PromiseOrValue<string>,
+      _usd: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
+    recoverERC20(
+      tokenAddress: PromiseOrValue<string>,
+      tokenAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
-    withdraw(
+    recoverETH(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    remove(
       _receiver: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-  };
 
-  balances(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+    safeToken(overrides?: CallOverrides): Promise<[string]>;
+
+    setSafeToken(
+      _safeToken: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    totalDeposited(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    usd(overrides?: CallOverrides): Promise<[string]>;
+  };
 
   deposit(
     _amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  deposited(overrides?: CallOverrides): Promise<BigNumber>;
+  deposited(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   initialize(
-    _stableCoin: PromiseOrValue<string>,
+    _usd: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+  recoverERC20(
+    tokenAddress: PromiseOrValue<string>,
+    tokenAmount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
-  withdraw(
+  recoverETH(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  remove(
     _receiver: PromiseOrValue<string>,
     _amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  callStatic: {
-    balances(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+  safeToken(overrides?: CallOverrides): Promise<string>;
 
+  setSafeToken(
+    _safeToken: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  totalDeposited(overrides?: CallOverrides): Promise<BigNumber>;
+
+  totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
+  usd(overrides?: CallOverrides): Promise<string>;
+
+  callStatic: {
     deposit(
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    deposited(overrides?: CallOverrides): Promise<BigNumber>;
+    deposited(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     initialize(
-      _stableCoin: PromiseOrValue<string>,
+      _usd: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+    recoverERC20(
+      tokenAddress: PromiseOrValue<string>,
+      tokenAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    withdraw(
+    recoverETH(overrides?: CallOverrides): Promise<void>;
+
+    remove(
       _receiver: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    safeToken(overrides?: CallOverrides): Promise<string>;
+
+    setSafeToken(
+      _safeToken: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    totalDeposited(overrides?: CallOverrides): Promise<BigNumber>;
+
+    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
+    usd(overrides?: CallOverrides): Promise<string>;
   };
 
-  filters: {};
+  filters: {
+    "Deposit(address,uint256)"(
+      user?: PromiseOrValue<string> | null,
+      amount?: null
+    ): DepositEventFilter;
+    Deposit(
+      user?: PromiseOrValue<string> | null,
+      amount?: null
+    ): DepositEventFilter;
+
+    "Withdraw(address,uint256)"(
+      user?: PromiseOrValue<string> | null,
+      amount?: null
+    ): WithdrawEventFilter;
+    Withdraw(
+      user?: PromiseOrValue<string> | null,
+      amount?: null
+    ): WithdrawEventFilter;
+  };
 
   estimateGas: {
-    balances(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     deposit(
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    deposited(overrides?: CallOverrides): Promise<BigNumber>;
+    deposited(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     initialize(
-      _stableCoin: PromiseOrValue<string>,
+      _usd: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+    recoverERC20(
+      tokenAddress: PromiseOrValue<string>,
+      tokenAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
-    withdraw(
+    recoverETH(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    remove(
       _receiver: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    safeToken(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setSafeToken(
+      _safeToken: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    totalDeposited(overrides?: CallOverrides): Promise<BigNumber>;
+
+    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
+    usd(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    balances(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     deposit(
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    deposited(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    deposited(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     initialize(
-      _stableCoin: PromiseOrValue<string>,
+      _usd: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    recoverERC20(
+      tokenAddress: PromiseOrValue<string>,
+      tokenAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
-    withdraw(
+    recoverETH(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    remove(
       _receiver: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    safeToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    setSafeToken(
+      _safeToken: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    totalDeposited(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    usd(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

@@ -32,6 +32,7 @@ import type {
 export interface SafeNFTInterface extends utils.Interface {
   functions: {
     "DEFAULT_ADMIN_ROLE()": FunctionFragment;
+    "HUNDRED_PERCENT()": FunctionFragment;
     "MINTER_ROLE()": FunctionFragment;
     "PAUSER_ROLE()": FunctionFragment;
     "TIERS()": FunctionFragment;
@@ -39,15 +40,19 @@ export interface SafeNFTInterface extends utils.Interface {
     "WEEKS()": FunctionFragment;
     "alreadyDistributedAmount(uint256,uint256,address)": FunctionFragment;
     "alreadyDistributedAmountByTier(uint256,uint256)": FunctionFragment;
+    "ambassador()": FunctionFragment;
     "balanceOf(address,uint256)": FunctionFragment;
     "balanceOfBatch(address[],uint256[])": FunctionFragment;
     "burn(address,uint256,uint256)": FunctionFragment;
+    "burnAdmin(address,uint256,uint256)": FunctionFragment;
     "burnBatch(address,uint256[],uint256[])": FunctionFragment;
     "buy(uint8,uint256,address)": FunctionFragment;
+    "changePriceDistributionOnMint(uint256[2])": FunctionFragment;
     "claimReward(uint8,uint256)": FunctionFragment;
     "claimRewardsTotal()": FunctionFragment;
     "currentDistributionId()": FunctionFragment;
     "currentlySoldInPresale(uint256)": FunctionFragment;
+    "discountedSale()": FunctionFragment;
     "distributeProfit(uint256)": FunctionFragment;
     "distributionByTier(uint256,uint256)": FunctionFragment;
     "distributionOfProfit(uint256)": FunctionFragment;
@@ -79,6 +84,10 @@ export interface SafeNFTInterface extends utils.Interface {
     "mint(address,uint256,uint256,bytes)": FunctionFragment;
     "mintBatch(address,uint256[],uint256[],bytes)": FunctionFragment;
     "name()": FunctionFragment;
+    "nitroAddress()": FunctionFragment;
+    "nitroPresaleDiscount()": FunctionFragment;
+    "nitroPresaleDuration()": FunctionFragment;
+    "nitroPresaleStartDate()": FunctionFragment;
     "pause()": FunctionFragment;
     "paused()": FunctionFragment;
     "presale()": FunctionFragment;
@@ -95,10 +104,14 @@ export interface SafeNFTInterface extends utils.Interface {
     "safeToken()": FunctionFragment;
     "safeTransferFrom(address,address,uint256,uint256,bytes)": FunctionFragment;
     "safeVault()": FunctionFragment;
+    "setAmbassador(address)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
     "setDiscountedPriceTable(uint256[][])": FunctionFragment;
+    "setNitroPresale(bool,uint256,uint256,uint256,address)": FunctionFragment;
     "setPresaleMaxSupply(uint256[4])": FunctionFragment;
     "setPresaleStartDate(uint256,uint256)": FunctionFragment;
+    "setURI(uint256,string)": FunctionFragment;
+    "soldInDiscountedSale(uint256)": FunctionFragment;
     "soldPerPresaleWeek(address,uint256,uint256)": FunctionFragment;
     "stabilizerWallet()": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
@@ -114,6 +127,7 @@ export interface SafeNFTInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "DEFAULT_ADMIN_ROLE"
+      | "HUNDRED_PERCENT"
       | "MINTER_ROLE"
       | "PAUSER_ROLE"
       | "TIERS"
@@ -121,15 +135,19 @@ export interface SafeNFTInterface extends utils.Interface {
       | "WEEKS"
       | "alreadyDistributedAmount"
       | "alreadyDistributedAmountByTier"
+      | "ambassador"
       | "balanceOf"
       | "balanceOfBatch"
       | "burn"
+      | "burnAdmin"
       | "burnBatch"
       | "buy"
+      | "changePriceDistributionOnMint"
       | "claimReward"
       | "claimRewardsTotal"
       | "currentDistributionId"
       | "currentlySoldInPresale"
+      | "discountedSale"
       | "distributeProfit"
       | "distributionByTier"
       | "distributionOfProfit"
@@ -161,6 +179,10 @@ export interface SafeNFTInterface extends utils.Interface {
       | "mint"
       | "mintBatch"
       | "name"
+      | "nitroAddress"
+      | "nitroPresaleDiscount"
+      | "nitroPresaleDuration"
+      | "nitroPresaleStartDate"
       | "pause"
       | "paused"
       | "presale"
@@ -177,10 +199,14 @@ export interface SafeNFTInterface extends utils.Interface {
       | "safeToken"
       | "safeTransferFrom"
       | "safeVault"
+      | "setAmbassador"
       | "setApprovalForAll"
       | "setDiscountedPriceTable"
+      | "setNitroPresale"
       | "setPresaleMaxSupply"
       | "setPresaleStartDate"
+      | "setURI"
+      | "soldInDiscountedSale"
       | "soldPerPresaleWeek"
       | "stabilizerWallet"
       | "supportsInterface"
@@ -195,6 +221,10 @@ export interface SafeNFTInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "DEFAULT_ADMIN_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "HUNDRED_PERCENT",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -221,6 +251,10 @@ export interface SafeNFTInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "ambassador",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "balanceOf",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
@@ -230,6 +264,14 @@ export interface SafeNFTInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "burn",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "burnAdmin",
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
@@ -253,6 +295,10 @@ export interface SafeNFTInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "changePriceDistributionOnMint",
+    values: [[PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]]
+  ): string;
+  encodeFunctionData(
     functionFragment: "claimReward",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
@@ -267,6 +313,10 @@ export interface SafeNFTInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "currentlySoldInPresale",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "discountedSale",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "distributeProfit",
@@ -422,6 +472,22 @@ export interface SafeNFTInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "nitroAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "nitroPresaleDiscount",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "nitroPresaleDuration",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "nitroPresaleStartDate",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(functionFragment: "presale", values?: undefined): string;
@@ -484,12 +550,26 @@ export interface SafeNFTInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "safeVault", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "setAmbassador",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setApprovalForAll",
     values: [PromiseOrValue<string>, PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "setDiscountedPriceTable",
     values: [PromiseOrValue<BigNumberish>[][]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setNitroPresale",
+    values: [
+      PromiseOrValue<boolean>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "setPresaleMaxSupply",
@@ -505,6 +585,14 @@ export interface SafeNFTInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "setPresaleStartDate",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setURI",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "soldInDiscountedSale",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "soldPerPresaleWeek",
@@ -550,6 +638,10 @@ export interface SafeNFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "HUNDRED_PERCENT",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "MINTER_ROLE",
     data: BytesLike
   ): Result;
@@ -568,14 +660,20 @@ export interface SafeNFTInterface extends utils.Interface {
     functionFragment: "alreadyDistributedAmountByTier",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "ambassador", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "balanceOfBatch",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "burnAdmin", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burnBatch", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "buy", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "changePriceDistributionOnMint",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "claimReward",
     data: BytesLike
@@ -590,6 +688,10 @@ export interface SafeNFTInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "currentlySoldInPresale",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "discountedSale",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -689,6 +791,22 @@ export interface SafeNFTInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "mintBatch", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "nitroAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "nitroPresaleDiscount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "nitroPresaleDuration",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "nitroPresaleStartDate",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "presale", data: BytesLike): Result;
@@ -733,6 +851,10 @@ export interface SafeNFTInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "safeVault", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "setAmbassador",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setApprovalForAll",
     data: BytesLike
   ): Result;
@@ -741,11 +863,20 @@ export interface SafeNFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setNitroPresale",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setPresaleMaxSupply",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "setPresaleStartDate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "setURI", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "soldInDiscountedSale",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -783,6 +914,7 @@ export interface SafeNFTInterface extends utils.Interface {
     "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
     "RoleGranted(bytes32,address,address)": EventFragment;
     "RoleRevoked(bytes32,address,address)": EventFragment;
+    "Sale(address,uint256,uint256,uint256)": EventFragment;
     "TogglePresale(bool)": EventFragment;
     "TransferBatch(address,address,address,uint256[],uint256[])": EventFragment;
     "TransferSingle(address,address,address,uint256,uint256)": EventFragment;
@@ -795,6 +927,7 @@ export interface SafeNFTInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "RoleAdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleGranted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleRevoked"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Sale"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TogglePresale"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TransferBatch"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TransferSingle"): EventFragment;
@@ -857,6 +990,19 @@ export type RoleRevokedEvent = TypedEvent<
 >;
 
 export type RoleRevokedEventFilter = TypedEventFilter<RoleRevokedEvent>;
+
+export interface SaleEventObject {
+  to: string;
+  id: BigNumber;
+  amount: BigNumber;
+  price: BigNumber;
+}
+export type SaleEvent = TypedEvent<
+  [string, BigNumber, BigNumber, BigNumber],
+  SaleEventObject
+>;
+
+export type SaleEventFilter = TypedEventFilter<SaleEvent>;
 
 export interface TogglePresaleEventObject {
   _status: boolean;
@@ -940,6 +1086,8 @@ export interface SafeNFT extends BaseContract {
   functions: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
+    HUNDRED_PERCENT(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     MINTER_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
     PAUSER_ROLE(overrides?: CallOverrides): Promise<[string]>;
@@ -963,6 +1111,8 @@ export interface SafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    ambassador(overrides?: CallOverrides): Promise<[string]>;
+
     balanceOf(
       account: PromiseOrValue<string>,
       id: PromiseOrValue<BigNumberish>,
@@ -976,6 +1126,13 @@ export interface SafeNFT extends BaseContract {
     ): Promise<[BigNumber[]]>;
 
     burn(
+      account: PromiseOrValue<string>,
+      id: PromiseOrValue<BigNumberish>,
+      value: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    burnAdmin(
       account: PromiseOrValue<string>,
       id: PromiseOrValue<BigNumberish>,
       value: PromiseOrValue<BigNumberish>,
@@ -996,6 +1153,14 @@ export interface SafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    changePriceDistributionOnMint(
+      _priceDistributionOnMint: [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     claimReward(
       _tier: PromiseOrValue<BigNumberish>,
       _distributionId: PromiseOrValue<BigNumberish>,
@@ -1012,6 +1177,8 @@ export interface SafeNFT extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    discountedSale(overrides?: CallOverrides): Promise<[boolean]>;
 
     distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
@@ -1169,6 +1336,14 @@ export interface SafeNFT extends BaseContract {
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
+    nitroAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    nitroPresaleDiscount(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    nitroPresaleDuration(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    nitroPresaleStartDate(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     pause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -1243,6 +1418,11 @@ export interface SafeNFT extends BaseContract {
 
     safeVault(overrides?: CallOverrides): Promise<[string]>;
 
+    setAmbassador(
+      _ambassador: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
@@ -1251,6 +1431,15 @@ export interface SafeNFT extends BaseContract {
 
     setDiscountedPriceTable(
       _presalePrice: PromiseOrValue<BigNumberish>[][],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setNitroPresale(
+      _nitroPresale: PromiseOrValue<boolean>,
+      _nitroPresaleStartDate: PromiseOrValue<BigNumberish>,
+      _nitroPresaleDuration: PromiseOrValue<BigNumberish>,
+      _nitroPresaleDiscount: PromiseOrValue<BigNumberish>,
+      _nitroAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -1269,6 +1458,17 @@ export interface SafeNFT extends BaseContract {
       _weekDuration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    setURI(
+      tokenId: PromiseOrValue<BigNumberish>,
+      tokenURI: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    soldInDiscountedSale(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     soldPerPresaleWeek(
       arg0: PromiseOrValue<string>,
@@ -1298,7 +1498,7 @@ export interface SafeNFT extends BaseContract {
     ): Promise<ContractTransaction>;
 
     uri(
-      arg0: PromiseOrValue<BigNumberish>,
+      tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
@@ -1313,6 +1513,8 @@ export interface SafeNFT extends BaseContract {
   };
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  HUNDRED_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
 
   MINTER_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -1337,6 +1539,8 @@ export interface SafeNFT extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  ambassador(overrides?: CallOverrides): Promise<string>;
+
   balanceOf(
     account: PromiseOrValue<string>,
     id: PromiseOrValue<BigNumberish>,
@@ -1350,6 +1554,13 @@ export interface SafeNFT extends BaseContract {
   ): Promise<BigNumber[]>;
 
   burn(
+    account: PromiseOrValue<string>,
+    id: PromiseOrValue<BigNumberish>,
+    value: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  burnAdmin(
     account: PromiseOrValue<string>,
     id: PromiseOrValue<BigNumberish>,
     value: PromiseOrValue<BigNumberish>,
@@ -1370,6 +1581,14 @@ export interface SafeNFT extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  changePriceDistributionOnMint(
+    _priceDistributionOnMint: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   claimReward(
     _tier: PromiseOrValue<BigNumberish>,
     _distributionId: PromiseOrValue<BigNumberish>,
@@ -1386,6 +1605,8 @@ export interface SafeNFT extends BaseContract {
     arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  discountedSale(overrides?: CallOverrides): Promise<boolean>;
 
   distributeProfit(
     _amountUSD: PromiseOrValue<BigNumberish>,
@@ -1543,6 +1764,14 @@ export interface SafeNFT extends BaseContract {
 
   name(overrides?: CallOverrides): Promise<string>;
 
+  nitroAddress(overrides?: CallOverrides): Promise<string>;
+
+  nitroPresaleDiscount(overrides?: CallOverrides): Promise<BigNumber>;
+
+  nitroPresaleDuration(overrides?: CallOverrides): Promise<BigNumber>;
+
+  nitroPresaleStartDate(overrides?: CallOverrides): Promise<BigNumber>;
+
   pause(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -1615,6 +1844,11 @@ export interface SafeNFT extends BaseContract {
 
   safeVault(overrides?: CallOverrides): Promise<string>;
 
+  setAmbassador(
+    _ambassador: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   setApprovalForAll(
     operator: PromiseOrValue<string>,
     approved: PromiseOrValue<boolean>,
@@ -1623,6 +1857,15 @@ export interface SafeNFT extends BaseContract {
 
   setDiscountedPriceTable(
     _presalePrice: PromiseOrValue<BigNumberish>[][],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setNitroPresale(
+    _nitroPresale: PromiseOrValue<boolean>,
+    _nitroPresaleStartDate: PromiseOrValue<BigNumberish>,
+    _nitroPresaleDuration: PromiseOrValue<BigNumberish>,
+    _nitroPresaleDiscount: PromiseOrValue<BigNumberish>,
+    _nitroAddress: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -1641,6 +1884,17 @@ export interface SafeNFT extends BaseContract {
     _weekDuration: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  setURI(
+    tokenId: PromiseOrValue<BigNumberish>,
+    tokenURI: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  soldInDiscountedSale(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   soldPerPresaleWeek(
     arg0: PromiseOrValue<string>,
@@ -1670,7 +1924,7 @@ export interface SafeNFT extends BaseContract {
   ): Promise<ContractTransaction>;
 
   uri(
-    arg0: PromiseOrValue<BigNumberish>,
+    tokenId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<string>;
 
@@ -1685,6 +1939,8 @@ export interface SafeNFT extends BaseContract {
 
   callStatic: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    HUNDRED_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
 
     MINTER_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -1709,6 +1965,8 @@ export interface SafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    ambassador(overrides?: CallOverrides): Promise<string>;
+
     balanceOf(
       account: PromiseOrValue<string>,
       id: PromiseOrValue<BigNumberish>,
@@ -1722,6 +1980,13 @@ export interface SafeNFT extends BaseContract {
     ): Promise<BigNumber[]>;
 
     burn(
+      account: PromiseOrValue<string>,
+      id: PromiseOrValue<BigNumberish>,
+      value: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    burnAdmin(
       account: PromiseOrValue<string>,
       id: PromiseOrValue<BigNumberish>,
       value: PromiseOrValue<BigNumberish>,
@@ -1742,6 +2007,14 @@ export interface SafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    changePriceDistributionOnMint(
+      _priceDistributionOnMint: [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     claimReward(
       _tier: PromiseOrValue<BigNumberish>,
       _distributionId: PromiseOrValue<BigNumberish>,
@@ -1756,6 +2029,8 @@ export interface SafeNFT extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    discountedSale(overrides?: CallOverrides): Promise<boolean>;
 
     distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
@@ -1913,6 +2188,14 @@ export interface SafeNFT extends BaseContract {
 
     name(overrides?: CallOverrides): Promise<string>;
 
+    nitroAddress(overrides?: CallOverrides): Promise<string>;
+
+    nitroPresaleDiscount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    nitroPresaleDuration(overrides?: CallOverrides): Promise<BigNumber>;
+
+    nitroPresaleStartDate(overrides?: CallOverrides): Promise<BigNumber>;
+
     pause(overrides?: CallOverrides): Promise<void>;
 
     paused(overrides?: CallOverrides): Promise<boolean>;
@@ -1983,6 +2266,11 @@ export interface SafeNFT extends BaseContract {
 
     safeVault(overrides?: CallOverrides): Promise<string>;
 
+    setAmbassador(
+      _ambassador: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
@@ -1991,6 +2279,15 @@ export interface SafeNFT extends BaseContract {
 
     setDiscountedPriceTable(
       _presalePrice: PromiseOrValue<BigNumberish>[][],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setNitroPresale(
+      _nitroPresale: PromiseOrValue<boolean>,
+      _nitroPresaleStartDate: PromiseOrValue<BigNumberish>,
+      _nitroPresaleDuration: PromiseOrValue<BigNumberish>,
+      _nitroPresaleDiscount: PromiseOrValue<BigNumberish>,
+      _nitroAddress: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -2009,6 +2306,17 @@ export interface SafeNFT extends BaseContract {
       _weekDuration: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    setURI(
+      tokenId: PromiseOrValue<BigNumberish>,
+      tokenURI: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    soldInDiscountedSale(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     soldPerPresaleWeek(
       arg0: PromiseOrValue<string>,
@@ -2034,7 +2342,7 @@ export interface SafeNFT extends BaseContract {
     unpause(overrides?: CallOverrides): Promise<void>;
 
     uri(
-      arg0: PromiseOrValue<BigNumberish>,
+      tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<string>;
 
@@ -2096,6 +2404,19 @@ export interface SafeNFT extends BaseContract {
       sender?: PromiseOrValue<string> | null
     ): RoleRevokedEventFilter;
 
+    "Sale(address,uint256,uint256,uint256)"(
+      to?: PromiseOrValue<string> | null,
+      id?: PromiseOrValue<BigNumberish> | null,
+      amount?: PromiseOrValue<BigNumberish> | null,
+      price?: null
+    ): SaleEventFilter;
+    Sale(
+      to?: PromiseOrValue<string> | null,
+      id?: PromiseOrValue<BigNumberish> | null,
+      amount?: PromiseOrValue<BigNumberish> | null,
+      price?: null
+    ): SaleEventFilter;
+
     "TogglePresale(bool)"(_status?: null): TogglePresaleEventFilter;
     TogglePresale(_status?: null): TogglePresaleEventFilter;
 
@@ -2142,6 +2463,8 @@ export interface SafeNFT extends BaseContract {
   estimateGas: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
+    HUNDRED_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
+
     MINTER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
     PAUSER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
@@ -2165,6 +2488,8 @@ export interface SafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    ambassador(overrides?: CallOverrides): Promise<BigNumber>;
+
     balanceOf(
       account: PromiseOrValue<string>,
       id: PromiseOrValue<BigNumberish>,
@@ -2178,6 +2503,13 @@ export interface SafeNFT extends BaseContract {
     ): Promise<BigNumber>;
 
     burn(
+      account: PromiseOrValue<string>,
+      id: PromiseOrValue<BigNumberish>,
+      value: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    burnAdmin(
       account: PromiseOrValue<string>,
       id: PromiseOrValue<BigNumberish>,
       value: PromiseOrValue<BigNumberish>,
@@ -2198,6 +2530,14 @@ export interface SafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    changePriceDistributionOnMint(
+      _priceDistributionOnMint: [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     claimReward(
       _tier: PromiseOrValue<BigNumberish>,
       _distributionId: PromiseOrValue<BigNumberish>,
@@ -2214,6 +2554,8 @@ export interface SafeNFT extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    discountedSale(overrides?: CallOverrides): Promise<BigNumber>;
 
     distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
@@ -2371,6 +2713,14 @@ export interface SafeNFT extends BaseContract {
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
+    nitroAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    nitroPresaleDiscount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    nitroPresaleDuration(overrides?: CallOverrides): Promise<BigNumber>;
+
+    nitroPresaleStartDate(overrides?: CallOverrides): Promise<BigNumber>;
+
     pause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -2443,6 +2793,11 @@ export interface SafeNFT extends BaseContract {
 
     safeVault(overrides?: CallOverrides): Promise<BigNumber>;
 
+    setAmbassador(
+      _ambassador: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
@@ -2451,6 +2806,15 @@ export interface SafeNFT extends BaseContract {
 
     setDiscountedPriceTable(
       _presalePrice: PromiseOrValue<BigNumberish>[][],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setNitroPresale(
+      _nitroPresale: PromiseOrValue<boolean>,
+      _nitroPresaleStartDate: PromiseOrValue<BigNumberish>,
+      _nitroPresaleDuration: PromiseOrValue<BigNumberish>,
+      _nitroPresaleDiscount: PromiseOrValue<BigNumberish>,
+      _nitroAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -2468,6 +2832,17 @@ export interface SafeNFT extends BaseContract {
       _launchDate: PromiseOrValue<BigNumberish>,
       _weekDuration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setURI(
+      tokenId: PromiseOrValue<BigNumberish>,
+      tokenURI: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    soldInDiscountedSale(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     soldPerPresaleWeek(
@@ -2498,7 +2873,7 @@ export interface SafeNFT extends BaseContract {
     ): Promise<BigNumber>;
 
     uri(
-      arg0: PromiseOrValue<BigNumberish>,
+      tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -2516,6 +2891,8 @@ export interface SafeNFT extends BaseContract {
     DEFAULT_ADMIN_ROLE(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    HUNDRED_PERCENT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     MINTER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -2540,6 +2917,8 @@ export interface SafeNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    ambassador(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     balanceOf(
       account: PromiseOrValue<string>,
       id: PromiseOrValue<BigNumberish>,
@@ -2559,6 +2938,13 @@ export interface SafeNFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    burnAdmin(
+      account: PromiseOrValue<string>,
+      id: PromiseOrValue<BigNumberish>,
+      value: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     burnBatch(
       account: PromiseOrValue<string>,
       ids: PromiseOrValue<BigNumberish>[],
@@ -2570,6 +2956,14 @@ export interface SafeNFT extends BaseContract {
       _tier: PromiseOrValue<BigNumberish>,
       _amount: PromiseOrValue<BigNumberish>,
       _referral: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    changePriceDistributionOnMint(
+      _priceDistributionOnMint: [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -2591,6 +2985,8 @@ export interface SafeNFT extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    discountedSale(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     distributeProfit(
       _amountUSD: PromiseOrValue<BigNumberish>,
@@ -2762,6 +3158,20 @@ export interface SafeNFT extends BaseContract {
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    nitroAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    nitroPresaleDiscount(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    nitroPresaleDuration(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    nitroPresaleStartDate(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     pause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -2836,6 +3246,11 @@ export interface SafeNFT extends BaseContract {
 
     safeVault(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    setAmbassador(
+      _ambassador: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
@@ -2844,6 +3259,15 @@ export interface SafeNFT extends BaseContract {
 
     setDiscountedPriceTable(
       _presalePrice: PromiseOrValue<BigNumberish>[][],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setNitroPresale(
+      _nitroPresale: PromiseOrValue<boolean>,
+      _nitroPresaleStartDate: PromiseOrValue<BigNumberish>,
+      _nitroPresaleDuration: PromiseOrValue<BigNumberish>,
+      _nitroPresaleDiscount: PromiseOrValue<BigNumberish>,
+      _nitroAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -2861,6 +3285,17 @@ export interface SafeNFT extends BaseContract {
       _launchDate: PromiseOrValue<BigNumberish>,
       _weekDuration: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setURI(
+      tokenId: PromiseOrValue<BigNumberish>,
+      tokenURI: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    soldInDiscountedSale(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     soldPerPresaleWeek(
@@ -2891,7 +3326,7 @@ export interface SafeNFT extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     uri(
-      arg0: PromiseOrValue<BigNumberish>,
+      tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

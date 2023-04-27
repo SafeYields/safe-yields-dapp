@@ -1,18 +1,17 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { parseUnits } from '@ethersproject/units';
 import {
-  AGGREGATOR_PATH,
+  DEFAULT_TOKENS,
   NATIVE_TOKEN_ADDRESS,
+  SAFE_TOKENS,
   SUPPORTED_NETWORKS,
   ZERO_ADDRESS,
 } from '@utils/constants';
 import { useWeb3React } from '@web3-react/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import useSafeTokenContract from './useSafeTokenContract';
 import useTokenBalances from './useTokenBalances';
-import { useTokens } from './useTokens';
-import useUsdcContract from './useUsdcContract';
+import { useSafeTokens, useTokens } from './useTokens';
 export interface Trade {
   amountInUsd: number;
   amountOutUsd: number;
@@ -39,15 +38,15 @@ const useSwap = ({
     isInBps: boolean;
   };
 }) => {
-  const { provider, chainId: chain } = useWeb3React();
-  const usdc = useUsdcContract();
-  const safe = useSafeTokenContract();
-  const defaultTokenIn = usdc?.address;
-  const defaultTokenOut = safe?.address;
-  const [tokenIn, setTokenIn] = useState(defaultTokenIn || NATIVE_TOKEN_ADDRESS);
-  const [tokenOut, setTokenOut] = useState(defaultTokenOut || '');
-  const tokens = useTokens();
-  const chainId = chain || 42161;
+  const { provider } = useWeb3React();
+  const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID) || 42161;
+  const defaultTokenIn = DEFAULT_TOKENS[chainId][0].address;
+  const defaultTokenOut = SAFE_TOKENS[chainId][0].address;
+  const [tokenIn, setTokenIn] = useState(defaultTokenIn);
+  const [tokenOut, setTokenOut] = useState(defaultTokenOut);
+  const externalTokens = useTokens();
+  const safeTokens = useSafeTokens();
+  const tokens = [...externalTokens, ...safeTokens];
 
   const isUnsupported = !SUPPORTED_NETWORKS.includes(chainId.toString());
   useEffect(() => {
@@ -57,12 +56,12 @@ const useSwap = ({
       setTrade(null);
     } else {
       setTrade(null);
-      setTokenIn(defaultTokenIn || NATIVE_TOKEN_ADDRESS);
-      setTokenOut(defaultTokenOut || '');
+      setTokenIn(defaultTokenIn);
+      setTokenOut(defaultTokenOut);
     }
   }, [isUnsupported, chainId]);
 
-  const { balances } = useTokenBalances(tokens.map((item) => item.address));
+  const { balances } = useTokenBalances();
   const [allDexes, setAllDexes] = useState<Dex[]>([]);
   const [excludedDexes, setExcludedDexes] = useState<Dex[]>([]);
 
@@ -76,39 +75,39 @@ const useSwap = ({
           .join(',')
           .replace('kyberswapv1', 'kyberswap,kyberswap-static');
 
-  useEffect(() => {
-    const fetchAllDexes = async () => {
-      if (isUnsupported) return;
-      const res = await fetch(
-        `https://ks-setting.kyberswap.com/api/v1/dexes?chain=${AGGREGATOR_PATH[chainId]}&isEnabled=true&pageSize=100`,
-      ).then((res) => res.json());
-
-      let dexes: Dex[] = res?.data?.dexes || [];
-      const ksClassic = dexes.find((dex) => dex.dexId === 'kyberswap');
-      const ksClassicStatic = dexes.find((dex) => dex.dexId === 'kyberswap-static');
-      if (ksClassic || ksClassicStatic)
-        dexes = [
-          {
-            dexId: 'kyberswapv2',
-            name: 'KyberSwap Elastic',
-            logoURL: 'https://kyberswap.com/favicon.ico',
-          },
-          {
-            dexId: 'kyberswapv1',
-            name: 'KyberSwap Classic',
-            logoURL: 'https://kyberswap.com/favicon.ico',
-          },
-        ].concat(
-          dexes.filter(
-            (dex) => !['kyberswap', 'kyberswap-static', 'kyberswapv2'].includes(dex.dexId),
-          ),
-        );
-
-      setAllDexes(dexes);
-    };
-
-    fetchAllDexes();
-  }, [isUnsupported, chainId]);
+  // useEffect(() => {
+  //   const fetchAllDexes = async () => {
+  //     if (isUnsupported) return;
+  //     const res = await fetch(
+  //       'https://ks-setting.kyberswap.com/api/v1/dexes?chain=arbitrum&isEnabled=true&pageSize=100',
+  //     ).then((res) => res.json());
+  //
+  //     let dexes: Dex[] = res?.data?.dexes || [];
+  //     const ksClassic = dexes.find((dex) => dex.dexId === 'kyberswap');
+  //     const ksClassicStatic = dexes.find((dex) => dex.dexId === 'kyberswap-static');
+  //     if (ksClassic || ksClassicStatic)
+  //       dexes = [
+  //         {
+  //           dexId: 'kyberswapv2',
+  //           name: 'KyberSwap Elastic',
+  //           logoURL: 'https://kyberswap.com/favicon.ico',
+  //         },
+  //         {
+  //           dexId: 'kyberswapv1',
+  //           name: 'KyberSwap Classic',
+  //           logoURL: 'https://kyberswap.com/favicon.ico',
+  //         },
+  //       ].concat(
+  //         dexes.filter(
+  //           (dex) => !['kyberswap', 'kyberswap-static', 'kyberswapv2'].includes(dex.dexId),
+  //         ),
+  //       );
+  //
+  //     setAllDexes(dexes);
+  //   };
+  //
+  //   fetchAllDexes();
+  // }, [isUnsupported, chainId]);
 
   const [inputAmount, setInputAmount] = useState('1');
   const [loading, setLoading] = useState(false);
@@ -184,23 +183,22 @@ const useSwap = ({
 
     setLoading(true);
 
-    if (controllerRef.current) {
-      controllerRef.current.abort();
-    }
+    // if (controllerRef.current) {
+    //   controllerRef.current.abort();
+    // }
 
     const controller = new AbortController();
     controllerRef.current = controller;
-    const res = await fetch(
-      `https://aggregator-api.kyberswap.com/${AGGREGATOR_PATH[chainId]}/route/encode?${search.slice(
-        1,
-      )}`,
-      {
-        headers: {
-          'accept-version': 'Latest',
-        },
-        signal: controllerRef.current?.signal,
+    const query = `${process.env.NEXT_PUBLIC_SAFE_API_URL}/swap/estimate?${search.slice(1)}`;
+    console.log('query', query);
+    const res = await fetch(query, {
+      headers: {
+        'accept-version': 'Latest',
       },
-    ).then((r) => r.json());
+      signal: controllerRef.current?.signal,
+    }).then((r) => r.json());
+
+    console.debug('res', res);
 
     setTrade(res);
     if (Number(res?.outputAmount)) {
