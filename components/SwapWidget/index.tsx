@@ -252,10 +252,12 @@ const SwapWidget = () => {
   const safeContract = useSafeTokenContract();
   const usdcAllowance = useUsdcAllowance(safeContract?.address)?.data;
   const tokenAllowance = useTokenAllowance(tokenIn, router)?.data;
+
+  const tokenInIsSafe = tokenIn.toUpperCase() == safeContract?.address.toUpperCase();
   const tokenInAllowance =
     tokenIn.toUpperCase() == usdc?.address.toUpperCase()
       ? usdcAllowance
-      : tokenIn.toUpperCase() == safeContract?.address.toUpperCase()
+      : tokenInIsSafe
       ? true
       : tokenAllowance;
   const usdcBalance = useUsdcBalance()?.data;
@@ -263,7 +265,8 @@ const SwapWidget = () => {
   const contractsLoaded = connectedChainId == chainId && !!usdcBalance && !!tokenInAllowance;
 
   const enoughBalance = contractsLoaded && parseFloat(tokenInWithUnit) >= parseFloat(inputAmount);
-  const enoughAllowance = contractsLoaded && Number(tokenInAllowance) >= Number(inputAmount);
+  const enoughAllowance =
+    contractsLoaded && (tokenInIsSafe || Number(tokenInAllowance) >= Number(inputAmount));
 
   const buySafeHandler = () =>
     tokenInAllowance &&
