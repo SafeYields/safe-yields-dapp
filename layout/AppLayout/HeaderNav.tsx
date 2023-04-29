@@ -7,7 +7,6 @@ import {
   Header,
   Indicator,
 } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { Account } from 'components/Account';
 import Link from 'next/link';
 import { FC, ReactNode, useState } from 'react';
@@ -58,9 +57,11 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
-  const [opened, { toggle }] = useDisclosure(false);
-
+export const HeaderNav: FC<{ left: ReactNode; opened: boolean; toggle: () => void }> = ({
+  left,
+  opened,
+  toggle,
+}) => {
   const links = [
     { link: getPath('WHITEPAPER'), label: 'Whitepaper', Icon: Home },
     { link: getPath('SAFE'), label: 'Buy Safe', Icon: Moneybag },
