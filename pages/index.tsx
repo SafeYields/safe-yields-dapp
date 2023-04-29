@@ -51,7 +51,7 @@ const Home: NextPageWithLayout = () => {
   }
   return (
     <PageContainer title='Welcome'>
-      <Stack justify={'center'} spacing={'md'} style={{ height: '50vh' }}>
+      <Stack justify={'center'} spacing={'md'} style={{ height: '50vh', textAlign: 'center' }}>
         <Center>
           <Title order={5}>Welcome to</Title>
         </Center>
