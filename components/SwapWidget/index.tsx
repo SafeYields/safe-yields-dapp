@@ -12,6 +12,7 @@ import {
   Title,
   useMantineTheme,
 } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { NATIVE_TOKEN, NATIVE_TOKEN_ADDRESS, SUPPORTED_NETWORKS } from '@utils/constants';
 import { useWeb3React } from '@web3-react/core';
 import { useAtom } from 'jotai';
@@ -52,8 +53,12 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       top: '180px',
       borderRadius: '21px',
       padding: '27px',
-      width: '538px',
-      height: '515px',
+      [theme.fn.largerThan('sm')]: {
+        width: '538px',
+      },
+      [theme.fn.smallerThan('sm')]: {
+        width: '90%',
+      },
       background:
         'linear-gradient(180deg, rgba(217, 217, 217, 0.32) 0%, rgba(217, 217, 217, 0.13) 100%)',
       boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
@@ -90,11 +95,13 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
     },
     inputRow: {
       display: 'flex',
-      alignItems: 'center',
+      alignItems: 'right',
       marginTop: '0.75rem',
     },
     input: {
       input: {
+        marginBottom: '0.3rem',
+        alignItems: 'center',
         background: 'transparent',
         border: 'none',
         color: theme.colors.limeGreen[1],
@@ -318,6 +325,8 @@ const SwapWidget = () => {
       ),
     );
 
+  const mobileScreen = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
+
   return (
     <Box className={classes.wrapper}>
       <Box className={classes.titleRow}>
@@ -334,7 +343,7 @@ const SwapWidget = () => {
             Balance: {parseFloat(tokenInWithUnit).toFixed(6)}
           </Text>
         </Box>
-        <Box className={classes.inputRow}>
+        <Flex className={classes.inputRow} direction={mobileScreen ? 'column' : 'row'}>
           <NumberInput
             type={'number'}
             className={classes.input}
@@ -356,7 +365,7 @@ const SwapWidget = () => {
               style={{ width: '220px' }}
             />
           </Flex>
-        </Box>
+        </Flex>
       </Box>
       <Group noWrap position={'apart'} align={'center'}>
         <Group noWrap position={'left'} align={'center'} style={{ margin: '1rem' }}>
@@ -384,7 +393,7 @@ const SwapWidget = () => {
             setTrade(null);
             setTokenIn(tokenOut);
             setTokenOut(tokenIn);
-            setInputAmount(amountOut);
+            setInputAmount(amountOut || '1');
             setInverseRate(!inverseRate);
           }}
         />
@@ -396,7 +405,7 @@ const SwapWidget = () => {
             Balance: {parseFloat(tokenOutWithUnit).toPrecision(6)}
           </Text>
         </Box>
-        <Box className={classes.inputRow}>
+        <Flex className={classes.inputRow} direction={mobileScreen ? 'column' : 'row'}>
           <NumberInput
             disabled
             className={classes.input}
@@ -415,7 +424,7 @@ const SwapWidget = () => {
               style={{ width: '220px' }}
             />
           </Flex>
-        </Box>
+        </Flex>
       </Box>
 
       <FancyButton

@@ -1,5 +1,12 @@
-import { ActionIcon, Container, createStyles, Group, Header, Indicator } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import {
+  ActionIcon,
+  Burger,
+  Container,
+  createStyles,
+  Group,
+  Header,
+  Indicator,
+} from '@mantine/core';
 import { Account } from 'components/Account';
 import Link from 'next/link';
 import { FC, ReactNode, useState } from 'react';
@@ -50,9 +57,11 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
-  const [opened, { toggle }] = useDisclosure(false);
-
+export const HeaderNav: FC<{ left: ReactNode; opened: boolean; toggle: () => void }> = ({
+  left,
+  opened,
+  toggle,
+}) => {
   const links = [
     { link: getPath('WHITEPAPER'), label: 'Whitepaper', Icon: Home },
     { link: getPath('SAFE'), label: 'Buy Safe', Icon: Moneybag },
@@ -92,7 +101,7 @@ export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
           {!injectedWalletConnected && items}
           <Account />
         </Group>
-        {/* <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />*/}
+        <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />
       </Container>
     </Header>
   );

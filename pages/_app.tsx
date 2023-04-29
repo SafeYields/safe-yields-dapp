@@ -255,6 +255,13 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                     },
                   }),
                 },
+                Paper: {
+                  styles: (theme) => ({
+                    root: {
+                      background: 'transparent',
+                    },
+                  }),
+                },
               },
             }}
           >
