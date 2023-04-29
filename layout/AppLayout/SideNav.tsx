@@ -1,8 +1,6 @@
 import { keyframes } from '@emotion/react';
 import {
   createStyles,
-  Group,
-  Image,
   MediaQuery,
   Navbar,
   Stack,
@@ -11,7 +9,6 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import Link from 'next/link';
 import { FC } from 'react';
 import {
   ArrowLeft,
@@ -29,18 +26,7 @@ import { getPath } from 'utils';
 // eslint-disable-next-line no-duplicate-imports
 import { ActiveLink } from 'utils';
 
-const glowing = keyframes`
-  0% {
-    filter: drop-shadow(0 0 5px #062C2D) drop-shadow(0 0 15px #062C2D) drop-shadow(0 0 20px #062C2D);
-  }
-  90% {
-    filter: drop-shadow(0 0 5px #062C2D) drop-shadow(0 0 15px #062C2D) drop-shadow(0 0 20px #062C2D);
-  }
-
-  100% {
-    filter: drop-shadow(0 0 20px #D1DE5D) drop-shadow(0 0 25px #D9E022) drop-shadow(0 0 40px #E89B17);
-  }
-`;
+import { SafeYieldsLogo } from '../../components/SafeYieldsLogo';
 
 const slide = keyframes`
   100% {
@@ -54,31 +40,19 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
   return {
     navbar: {
       position: 'sticky',
-      backgroundColor: 'transparent',
+      [theme.fn.smallerThan('sm')]: {
+        height: '100vh',
+        backgroundColor: theme.colors.emeraldGreen[0],
+        opacity: 0.9,
+      },
+      [theme.fn.largerThan('sm')]: {
+        backgroundColor: 'transparent',
+      },
       top: 0,
       borderColor: theme.colors.greenGray[0],
       borderWidth: '1px',
       width: params?.collapsed ? 120 : 315,
       transition: params?.collapsed ? 'width 0.1s linear' : 'none',
-    },
-
-    safeYieldsLogo: {
-      paddingRight: theme.spacing.xs,
-      paddingTop: 35,
-      paddingBottom: 35,
-      margin: 'auto',
-      width: params?.collapsed ? 90 : 205,
-      height: 170,
-    },
-
-    glowingLogo: {
-      cursor: 'pointer',
-      animationDelay: '10s',
-      borderRadius: '100%',
-      background: 'transparent',
-      webkitAnimation: `${glowing} 30s ease-in-out infinite alternate`,
-      animation: `${glowing} 30s ease-in-out infinite alternate`,
-      mozAnimation: `${glowing} 30s ease-in-out infinite alternate`,
     },
 
     footer: {
@@ -191,82 +165,55 @@ const ITEMS = [
 export const SideNav: FC<{ className?: string }> = ({ className }) => {
   const [collapsed, handlers] = useDisclosure(false);
   const { classes, cx } = useStyles({ collapsed });
-  if (process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE?.toLowerCase() === 'true') {
-    return (
-      <Navbar
-        p='md'
-        className={cx(classes.navbar, className)}
-        style={{ borderWidth: '0px', position: 'absolute' }}
-      >
-        <Navbar.Section grow>
-          <Group className={cx(classes.safeYieldsLogo)} position='apart'>
-            <Link href={getPath('NFT')}>
-              <Image
-                src='/assets/safe-yields-logo.svg'
-                alt='Safe Yields Logo'
-                className={classes.glowingLogo}
-              />
-            </Link>
-          </Group>
-        </Navbar.Section>
-      </Navbar>
-    );
-  } else
-    return (
-      <Navbar p='md' className={cx(classes.navbar, className)}>
-        <Navbar.Section grow>
-          <Group className={classes.safeYieldsLogo} position='apart'>
-            <Link href={getPath('HOME')}>
-              <Image
-                src='/assets/safe-yields-logo.svg'
-                alt='Safe Yields Logo'
-                className={classes.glowingLogo}
-              />
-            </Link>
-          </Group>
-          {ITEMS.map(({ label, href, Icon, comingSoon }) => (
-            <Tooltip
-              key={label}
-              label={label}
-              disabled={!collapsed}
-              position='right'
-              withArrow
-              sx={{ width: '100%' }}
-            >
-              <ActiveLink href={href} passHref>
-                {(isActive) => {
-                  return (
-                    <a
-                      className={cx(classes.link, {
-                        [classes.linkActive]: isActive,
-                      })}
-                    >
-                      <Icon className={classes.linkIcon} />
-                      <Stack spacing={3} className={classes.linkLabel}>
-                        <span className={classes.linkLabel}>{label}</span>
-                        {comingSoon && <Text size={'xs'}>(Coming Soon)</Text>}
-                      </Stack>
-                    </a>
-                  );
-                }}
-              </ActiveLink>
-            </Tooltip>
-          ))}
-        </Navbar.Section>
+  return (
+    <Navbar p='md' className={cx(classes.navbar, className)}>
+      <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
+        <SafeYieldsLogo collapsed={collapsed} />
+      </MediaQuery>
+      <Navbar.Section grow>
+        {ITEMS.map(({ label, href, Icon, comingSoon }) => (
+          <Tooltip
+            key={label}
+            label={label}
+            disabled={!collapsed}
+            position='right'
+            withArrow
+            sx={{ width: '100%' }}
+          >
+            <ActiveLink href={href} passHref>
+              {(isActive) => {
+                return (
+                  <a
+                    className={cx(classes.link, {
+                      [classes.linkActive]: isActive,
+                    })}
+                  >
+                    <Icon className={classes.linkIcon} />
+                    <Stack spacing={3} className={classes.linkLabel}>
+                      <span className={classes.linkLabel}>{label}</span>
+                      {comingSoon && <Text size={'xs'}>(Coming Soon)</Text>}
+                    </Stack>
+                  </a>
+                );
+              }}
+            </ActiveLink>
+          </Tooltip>
+        ))}
+      </Navbar.Section>
 
-        <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-          <Navbar.Section className={classes.footer}>
-            <UnstyledButton className={classes.collapse} onClick={handlers.toggle}>
-              {collapsed ? (
-                <ArrowRight className={classes.collapseIcon} />
-              ) : (
-                <>
-                  <ArrowLeft className={classes.collapseIcon} />
-                </>
-              )}
-            </UnstyledButton>
-          </Navbar.Section>
-        </MediaQuery>
-      </Navbar>
-    );
+      <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
+        <Navbar.Section className={classes.footer}>
+          <UnstyledButton className={classes.collapse} onClick={handlers.toggle}>
+            {collapsed ? (
+              <ArrowRight className={classes.collapseIcon} />
+            ) : (
+              <>
+                <ArrowLeft className={classes.collapseIcon} />
+              </>
+            )}
+          </UnstyledButton>
+        </Navbar.Section>
+      </MediaQuery>
+    </Navbar>
+  );
 };

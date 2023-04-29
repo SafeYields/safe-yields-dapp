@@ -81,9 +81,9 @@ const config: ChainsConfig = {
       treasury: '0xBF89e2e63e471cC29Da80bcD661342A9935982A8',
       management: '0xf2c1FE530d9c1686950F33d1B47d8B9474D92965',
       usdc: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
-      safe: '0x9F8AD0Ce33fBc44a086728a109c5bE060eeB5A9A',
-      vault: '0x3Eca9FeB89C04F5B75bDAf72961f97B4D66fE68e',
-      nft: '0x5735205Db896c63B97F9090b0A852682F4a5635B',
+      safe: '0xc15D5033Bd20B450066Ac5C38a2c4c300181A72D',
+      vault: '0x1Ef9ed587DCBa8722B05E6071607999aE806D712',
+      nft: '0xEB018F4afFdfA2CC2D64352Aff4bCC35e2AFdc1f',
     },
   },
 };
