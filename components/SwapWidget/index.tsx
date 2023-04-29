@@ -384,7 +384,7 @@ const SwapWidget = () => {
             setTrade(null);
             setTokenIn(tokenOut);
             setTokenOut(tokenIn);
-            setInputAmount(amountOut);
+            setInputAmount(amountOut || '1');
             setInverseRate(!inverseRate);
           }}
         />

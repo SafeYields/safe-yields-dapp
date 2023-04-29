@@ -18,8 +18,6 @@ const Home: NextPageWithLayout = () => {
   // const safeTokenPrice = useSafeTokenPrice()?.data;
   const safeTokenBalance = useSafeTokenBalance()?.data;
   const NFTRewards = useNFTRewards()?.data;
-  const safeNFTFairPrice = useFetchFromApi('nft/fairprice')?.data;
-  // const safeNFTFairPrice = useSafeNFTFairPrice()?.data;
   const safeNFTBalance = useSafeNFTBalance()?.data;
   // const safeTokenAPR = useSafeTokenAPR()?.data;
   const safeTokenAPR = useFetchFromApi('safe/apr')?.data;

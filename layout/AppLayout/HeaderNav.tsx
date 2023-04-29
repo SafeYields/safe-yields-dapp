@@ -1,4 +1,12 @@
-import { ActionIcon, Container, createStyles, Group, Header, Indicator } from '@mantine/core';
+import {
+  ActionIcon,
+  Burger,
+  Container,
+  createStyles,
+  Group,
+  Header,
+  Indicator,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Account } from 'components/Account';
 import Link from 'next/link';
@@ -92,7 +100,7 @@ export const HeaderNav: FC<{ left: ReactNode }> = ({ left }) => {
           {!injectedWalletConnected && items}
           <Account />
         </Group>
-        {/* <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />*/}
+        <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />
       </Container>
     </Header>
   );

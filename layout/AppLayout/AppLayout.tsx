@@ -11,16 +11,6 @@ import { LayoutErrorBoundary } from '../LayoutErrorBoundary';
 import { HeaderNav } from './HeaderNav';
 import { SideNav } from './SideNav';
 
-// const HeaderNav = dynamic(async () => {
-//   const { HeaderNav } = await import('./HeaderNav');
-//   return HeaderNav;
-// });
-
-// const SideNav = dynamic(async () => {
-//   const { SideNav } = await import('./SideNav');
-//   return SideNav;
-// });
-
 export const AppLayout: CustomLayout = (page) => {
   const [opened, handlers] = useDisclosure(false);
   return (
@@ -30,7 +20,6 @@ export const AppLayout: CustomLayout = (page) => {
         styles={(theme) => ({
           body: {
             height: '100%',
-            // minHeight: '100vh',
             maxWidth: '100vw',
             overflowX: 'hidden',
             backgroundImage: 'url(/assets/background.png)',
@@ -83,28 +72,30 @@ const DrawerNav: FC<{ opened: boolean; handleClose: () => void }> = ({ opened, h
   }, [handleClose, router.events]);
 
   return (
-    <Drawer
-      opened={opened}
-      onClose={handleClose}
-      size='auto'
-      withCloseButton={false}
-      sx={{ position: 'relative' }}
-    >
-      <CloseButton
-        size='xl'
-        radius='xl'
-        variant='transparent'
-        onClick={handleClose}
-        sx={{
-          position: 'absolute',
-          zIndex: 999,
-          top: 8,
-          right: -56,
-          color: 'white',
-          '&:not(:disabled):active': { transform: 'none' },
-        }}
-      />
-      <SideNav />
-    </Drawer>
+    <>
+      <Drawer
+        opened={opened}
+        onClose={handleClose}
+        size='auto'
+        withCloseButton={false}
+        sx={{ position: 'relative' }}
+      >
+        <CloseButton
+          size='xl'
+          radius='xl'
+          variant='transparent'
+          onClick={handleClose}
+          sx={{
+            position: 'absolute',
+            zIndex: 999,
+            top: 8,
+            right: -56,
+            color: 'white',
+            '&:not(:disabled):active': { transform: 'none' },
+          }}
+        />
+        <SideNav />
+      </Drawer>
+    </>
   );
 };
