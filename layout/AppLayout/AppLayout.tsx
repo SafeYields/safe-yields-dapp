@@ -80,18 +80,20 @@ const DrawerNav: FC<{ opened: boolean; handleClose: () => void }> = ({ opened, h
   }, [handleClose, router.events]);
 
   return (
-    <>
-      <Drawer
-        opened={opened}
-        onClose={handleClose}
-        size='auto'
-        withCloseButton={false}
-        sx={{ position: 'relative' }}
-        overlayBlur={10}
-        overlayColor={useMantineTheme().colors.emeraldGreen[0]}
-      >
-        <SideNav />
-      </Drawer>
-    </>
+    <Drawer
+      withOverlay
+      opened={opened}
+      onClose={handleClose}
+      size='auto'
+      withCloseButton={false}
+      overlayBlur={3}
+      overlayOpacity={0.3}
+      overlayColor={useMantineTheme().colors.emeraldGreen[0]}
+      transitionDuration={300}
+      transition={opened ? 'slide-right' : 'slide-left'}
+      transitionTimingFunction={opened ? 'ease-in' : 'ease-out'}
+    >
+      <SideNav />
+    </Drawer>
   );
 };

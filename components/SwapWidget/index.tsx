@@ -52,7 +52,12 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       top: '180px',
       borderRadius: '21px',
       padding: '27px',
-      width: '538px',
+      [theme.fn.largerThan('sm')]: {
+        width: '538px',
+      },
+      [theme.fn.smallerThan('sm')]: {
+        width: '90%',
+      },
       height: '515px',
       background:
         'linear-gradient(180deg, rgba(217, 217, 217, 0.32) 0%, rgba(217, 217, 217, 0.13) 100%)',
