@@ -90,7 +90,7 @@ const DrawerNav: FC<{ opened: boolean; handleClose: () => void }> = ({ opened, h
       overlayOpacity={0.3}
       overlayColor={useMantineTheme().colors.emeraldGreen[0]}
       transitionDuration={300}
-      transition={opened ? 'slide-right' : 'slide-left'}
+      transition={'slide-right'}
       transitionTimingFunction={opened ? 'ease-in' : 'ease-out'}
     >
       <SideNav />
