@@ -49,7 +49,7 @@ enum ModalType {
 const useStyles = createStyles<string>((theme, params, getRef) => {
   return {
     wrapper: {
-      position: 'absolute',
+      // position: 'absolute',
       borderRadius: '21px',
       padding: '27px',
       [theme.fn.largerThan('sm')]: {
