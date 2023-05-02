@@ -1,4 +1,12 @@
-import { ActionIcon, AppShell, Box, Drawer, MediaQuery, useMantineTheme } from '@mantine/core';
+import {
+  ActionIcon,
+  AppShell,
+  Box,
+  Drawer,
+  MediaQuery,
+  Stack,
+  useMantineTheme,
+} from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { FancyBackground } from 'components/FancyBackground';
 import type { CustomLayout } from 'next';
@@ -7,6 +15,7 @@ import { FC, useEffect } from 'react';
 // @ts-ignore
 import { Menu2 } from 'tabler-icons-react';
 
+import { Account } from '../../components/Account';
 import { SafeYieldsLogo } from '../../components/SafeYieldsLogo';
 import { LayoutErrorBoundary } from '../LayoutErrorBoundary';
 import { HeaderNav } from './HeaderNav';
@@ -60,7 +69,10 @@ export const AppLayout: CustomLayout = (page) => {
       >
         <Box py='xs' px='md' sx={{ marginTop: mobileScreen ? 0 : '170px' }}>
           <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
-            <SafeYieldsLogo />
+            <Stack spacing={'xs'}>
+              <Account />
+              <SafeYieldsLogo />
+            </Stack>
           </MediaQuery>
           <LayoutErrorBoundary>{page}</LayoutErrorBoundary>
         </Box>

@@ -24,7 +24,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   links: {
-    [theme.fn.smallerThan('md')]: {
+    [theme.fn.smallerThan('sm')]: {
       display: 'none',
     },
   },
@@ -88,6 +88,7 @@ export const HeaderNav: FC<{ left: ReactNode; opened: boolean; toggle: () => voi
       p='sm'
       mb={120}
       mt={45}
+      ml={300}
       sx={(theme) => ({
         position: 'absolute',
         padding: `${theme.spacing.xs}px 0px`,

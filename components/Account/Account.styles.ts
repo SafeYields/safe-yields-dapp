@@ -19,7 +19,13 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       fontWeight: 325,
       border: 'none',
       backgroundSize: '300% 100%',
-      backgroundImage: theme.fn.linearGradient(90, theme.colors.mustardGreen[0], theme.colors.orange[0], theme.colors.mustardGreen[0], theme.colors.orange[0]),
+      backgroundImage: theme.fn.linearGradient(
+        90,
+        theme.colors.mustardGreen[0],
+        theme.colors.orange[0],
+        theme.colors.mustardGreen[0],
+        theme.colors.orange[0],
+      ),
 
       borderRadius: '50px',
       mozTransition: 'all 0.4s ease-in-out',
@@ -66,7 +72,6 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
         transition: 'all 0.4s ease-in-out',
       },
     },
-
   };
 });
 

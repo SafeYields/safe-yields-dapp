@@ -128,33 +128,30 @@ export const Account = () => {
     );
   }
 
-  const RefferalButton: FC<{ styles?: Styles<string> }> = ({ styles }) =>
-    !router.asPath.includes('nitro') ? (
-      <Button
-        className={cx(classes.outline)}
-        variant='light'
-        radius='xl'
-        size='md'
-        styles={{
-          root: { paddingRight: 14, height: 48, marginLeft: 'auto' },
-          ...styles,
-        }}
-        onClick={() => {
-          const url = window.location.href;
-          navigator.clipboard.writeText(url.substring(0, url.indexOf('nft')) + 'nft/' + account);
-          showNotification({
-            message: 'You referral link copied to clipboard. Feel free to share!',
-          });
-        }}
-      >
-        Create referral link
-      </Button>
-    ) : (
-      <></>
-    );
+  const RefferalButton: FC<{ styles?: Styles<string> }> = ({ styles }) => (
+    <Button
+      className={cx(classes.outline)}
+      variant='light'
+      radius='xl'
+      size='md'
+      styles={{
+        root: { paddingRight: 14, height: 48, marginLeft: 'auto' },
+        ...styles,
+      }}
+      onClick={() => {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url.substring(0, url.indexOf('nft')) + 'nft/' + account);
+        showNotification({
+          message: 'You referral link copied to clipboard. Feel free to share!',
+        });
+      }}
+    >
+      Create referral link
+    </Button>
+  );
 
   return (
-    <Flex align='top' justify='center' gap='sm' mt={mobile ? '20px' : '0px'}>
+    <Flex align='top' justify='center' gap='sm'>
       {!mobile && <RefferalButton />}
       <Stack spacing='xs' justify='center' align='center' style={{ textAlign: 'center' }}>
         <Button
