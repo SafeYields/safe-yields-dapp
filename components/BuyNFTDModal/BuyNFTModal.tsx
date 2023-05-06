@@ -61,17 +61,17 @@ export const BuyNFTModal: FC<{
   const safeNFTOwnership = useSafeNFTOwnership();
   const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
   const [quantity, setQuantity] = useState(1);
-  const presaleNFTAvailable = useFetchFromApi('nft/available')?.data;
+  const supplyNFTAvailable = useFetchFromApi('nft/available')?.data;
 
   // const presaleInProgress = week && week > 0 && week <= 4;
   const nftPrice = ['124.6875', '249.375', '498.75', '997.5'];
 
-  const maxQuantity = presaleNFTAvailable ? Math.min(10, parseInt(presaleNFTAvailable[tier])) : 1;
+  const maxQuantity = supplyNFTAvailable ? Math.min(10, parseInt(supplyNFTAvailable[tier])) : 1;
   const handleIncrease = () => setQuantity(quantity < maxQuantity ? quantity + 1 : maxQuantity);
   const handleDecrease = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
 
   const presaleNFTAvailableForTier = (tier: number) =>
-    contractsLoaded && presaleNFTAvailable && parseInt(presaleNFTAvailable[tier]) > 0;
+    contractsLoaded && supplyNFTAvailable && parseInt(supplyNFTAvailable[tier]) > 0;
 
   const totalPrice = (parseFloat(nftPrice[tier]) * quantity).toFixed(2);
   // const balanceIfPurchased = safeNFTBalance ? (parseInt(safeNFTBalance[tier]) + quantity) : 0;
