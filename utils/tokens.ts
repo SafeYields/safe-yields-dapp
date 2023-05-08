@@ -23,7 +23,7 @@ export const safeTokens: TokenInfo[] = [
 export const safeTokensLocal: TokenInfo[] = [
   {
     chainId: 1337,
-    address: '0xc15D5033Bd20B450066Ac5C38a2c4c300181A72D',
+    address: '0x5A0028531B35a9B2Ce725B42d3ff52455421f607',
     _scan: 'https://arbiscan.io/token/0x519EFB2BEFBD3F00D335DC9DF42BF721D591604F',
     symbol: 'SAFE',
     name: 'SAFE',
