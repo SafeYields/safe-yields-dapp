@@ -1,4 +1,3 @@
-import { fromWeiToString } from '@utils/web3utils';
 import useSWR from 'swr';
 
 import useNFTContract from './useNFTContract';
@@ -6,7 +5,9 @@ import useNFTContract from './useNFTContract';
 const useNFTOfTreasury = () => {
   const safeNFTContract = useNFTContract();
   return useSWR('getMyShareOfTreasury', async () =>
-    safeNFTContract ? fromWeiToString(await safeNFTContract.getMyShareOfTreasury()) : null,
+    safeNFTContract
+      ? ((await safeNFTContract.getMyShareOfTreasury()).toNumber() / (100 * 1_000_000)).toFixed(6)
+      : null,
   );
 };
 
