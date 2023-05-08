@@ -9,7 +9,8 @@ const useNFTRewards = (suspense = false) => {
   const shouldFetch = !!safeNFTContract;
   const result = useSWR(
     shouldFetch ? ['useNFTRewards'] : null,
-    async () => safeNFTContract ? fromWeiToString(await safeNFTContract.getMyPendingRewardsTotal()) : null,
+    async () =>
+      safeNFTContract ? fromWeiToString(await safeNFTContract.getMyPendingRewards()) : null,
     {
       suspense,
     },

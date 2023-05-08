@@ -43,7 +43,7 @@ const Home: NextPageWithLayout = () => {
   const claimRewardsHandler = () =>
     Number(NFTRewards) >= 0 &&
     nftContract &&
-    executeContractHandler(setExecutionInProgress, () => nftContract.claimReward(0, 0));
+    executeContractHandler(setExecutionInProgress, () => nftContract.claimReward());
 
   const displayValueInUSDC = (priceData: string | null | undefined) =>
     injectedWalletConnected && priceData && safeTokenPrice
