@@ -32,14 +32,13 @@ import type {
 export interface SafeVaultInterface extends utils.Interface {
   functions: {
     "deposit(uint256)": FunctionFragment;
-    "deposited(address)": FunctionFragment;
+    "deposited()": FunctionFragment;
     "initialize(address)": FunctionFragment;
     "recoverERC20(address,uint256)": FunctionFragment;
     "recoverETH()": FunctionFragment;
     "remove(address,uint256)": FunctionFragment;
     "safeToken()": FunctionFragment;
     "setSafeToken(address)": FunctionFragment;
-    "totalDeposited()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "usd()": FunctionFragment;
   };
@@ -54,7 +53,6 @@ export interface SafeVaultInterface extends utils.Interface {
       | "remove"
       | "safeToken"
       | "setSafeToken"
-      | "totalDeposited"
       | "totalSupply"
       | "usd"
   ): FunctionFragment;
@@ -63,10 +61,7 @@ export interface SafeVaultInterface extends utils.Interface {
     functionFragment: "deposit",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "deposited",
-    values: [PromiseOrValue<string>]
-  ): string;
+  encodeFunctionData(functionFragment: "deposited", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "initialize",
     values: [PromiseOrValue<string>]
@@ -89,10 +84,6 @@ export interface SafeVaultInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "totalDeposited",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "totalSupply",
     values?: undefined
   ): string;
@@ -110,10 +101,6 @@ export interface SafeVaultInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "safeToken", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setSafeToken",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "totalDeposited",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -182,10 +169,7 @@ export interface SafeVault extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    deposited(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    deposited(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     initialize(
       _usd: PromiseOrValue<string>,
@@ -215,8 +199,6 @@ export interface SafeVault extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    totalDeposited(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     usd(overrides?: CallOverrides): Promise<[string]>;
@@ -227,10 +209,7 @@ export interface SafeVault extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  deposited(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  deposited(overrides?: CallOverrides): Promise<BigNumber>;
 
   initialize(
     _usd: PromiseOrValue<string>,
@@ -260,8 +239,6 @@ export interface SafeVault extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  totalDeposited(overrides?: CallOverrides): Promise<BigNumber>;
-
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   usd(overrides?: CallOverrides): Promise<string>;
@@ -272,10 +249,7 @@ export interface SafeVault extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    deposited(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    deposited(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
       _usd: PromiseOrValue<string>,
@@ -302,8 +276,6 @@ export interface SafeVault extends BaseContract {
       _safeToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    totalDeposited(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -336,10 +308,7 @@ export interface SafeVault extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    deposited(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    deposited(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
       _usd: PromiseOrValue<string>,
@@ -369,8 +338,6 @@ export interface SafeVault extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    totalDeposited(overrides?: CallOverrides): Promise<BigNumber>;
-
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     usd(overrides?: CallOverrides): Promise<BigNumber>;
@@ -382,10 +349,7 @@ export interface SafeVault extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    deposited(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    deposited(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
       _usd: PromiseOrValue<string>,
@@ -414,8 +378,6 @@ export interface SafeVault extends BaseContract {
       _safeToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
-
-    totalDeposited(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
