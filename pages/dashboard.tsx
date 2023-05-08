@@ -118,7 +118,7 @@ const Home: NextPageWithLayout = () => {
                 </FancyButton>
               }
             >
-              {displayDollarValue(NFTRewards)}
+              {displaySafeValue(NFTRewards)}
             </CardContentBox>
           </InfoCard>
         </Grid.Col>
