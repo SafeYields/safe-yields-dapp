@@ -214,18 +214,7 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "enum ISafeNFT.Tiers",
-        name: "_tier",
-        type: "uint8",
-      },
-      {
-        internalType: "uint256",
-        name: "_distributionId",
-        type: "uint256",
-      },
-    ],
+    inputs: [],
     name: "claimReward",
     outputs: [],
     stateMutability: "nonpayable",
@@ -233,14 +222,20 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "claimRewardsTotal",
-    outputs: [],
-    stateMutability: "nonpayable",
+    name: "currentDistributionId",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
-    name: "currentDistributionId",
+    name: "discountedPrice",
     outputs: [
       {
         internalType: "uint256",
@@ -273,32 +268,6 @@ const _abi = [
       },
     ],
     name: "getBalanceTable",
-    outputs: [
-      {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getCurrentPresaleWeek",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getDiscountedPriceTable",
     outputs: [
       {
         internalType: "uint256[]",
@@ -356,19 +325,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "getMyPendingRewardsTotal",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "getMyShareOfTreasury",
     outputs: [
       {
@@ -386,11 +342,6 @@ const _abi = [
         internalType: "address",
         name: "_user",
         type: "address",
-      },
-      {
-        internalType: "enum ISafeNFT.Tiers",
-        name: "_tier",
-        type: "uint8",
       },
       {
         internalType: "uint256",
@@ -436,19 +387,6 @@ const _abi = [
         internalType: "uint256[]",
         name: "",
         type: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getTreasuryCost",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -578,30 +516,12 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint256[][]",
+        internalType: "uint256",
         name: "_presalePrice",
-        type: "uint256[][]",
-      },
-    ],
-    name: "setDiscountedPriceTable",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "launchDate",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_weekDuration",
         type: "uint256",
       },
     ],
-    name: "setPresaleStartDate",
+    name: "setDiscountedPrice",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
