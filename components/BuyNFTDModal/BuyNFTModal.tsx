@@ -64,7 +64,8 @@ export const BuyNFTModal: FC<{
   const supplyNFTAvailable = useFetchFromApi('nft/available')?.data;
 
   // const presaleInProgress = week && week > 0 && week <= 4;
-  const nftPrice = ['124.6875', '249.375', '498.75', '997.5'];
+  const nftPrice = ['131.25', '262.5', '525', '1050'];
+  // const nftPrice = ['124.6875', '249.375', '498.75', '997.5'];
 
   const maxQuantity = supplyNFTAvailable ? Math.min(10, parseInt(supplyNFTAvailable[tier])) : 1;
   const handleIncrease = () => setQuantity(quantity < maxQuantity ? quantity + 1 : maxQuantity);

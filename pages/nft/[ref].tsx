@@ -37,7 +37,7 @@ const Nft: NextPageWithLayout = () => {
   const [executionInProgress, setExecutionInProgress] = useAtom(transactionInProgressAtom);
   const contractsLoaded = !!nftRegularPostPresalePrice && !!usdcBalance && !!usdAllowance;
 
-  const presaleInProgress = true;
+  const presaleInProgress = false;
 
   const { ref: whoReferred } = router.query;
   console.log('whoReferred', whoReferred);
