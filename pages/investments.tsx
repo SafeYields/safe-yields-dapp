@@ -1,4 +1,5 @@
 import { Box, createStyles, Table, Text } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { PageContainer } from 'components/PageContainer';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
@@ -147,18 +148,18 @@ const total = [
   },
 ];
 
-const ths = (
+const ths = (mobile?: boolean) => (
   <tr>
     <th>Investments</th>
     <th>Deposit</th>
-    <th>Project APR</th>
-    <th>Portfolio Weight</th>
-    <th>Weighted APR</th>
+    {!mobile && <th>Project APR</th>}
+    {!mobile && <th>Portfolio Weight</th>}
+    {!mobile && <th>Weighted APR</th>}
     <th>Withdrawn</th>
     <th>PnL</th>
   </tr>
 );
-const formatRows = (data: TableData[]) =>
+const formatRows = (data: TableData[], mobile?: boolean) =>
   data.map((investment) => (
     <tr
       key={investment.investments}
@@ -166,9 +167,9 @@ const formatRows = (data: TableData[]) =>
     >
       <td>{investment.investments}</td>
       <td>{investment.deposit}</td>
-      <td>{investment.projectedApr}</td>
-      <td>{investment.weight}</td>
-      <td>{investment.weightedApr}</td>
+      {!mobile && <td>{investment.projectedApr}</td>}
+      {!mobile && <td>{investment.weight}</td>}
+      {!mobile && <td>{investment.weightedApr}</td>}
       <td>{investment.withdrawn}</td>
       <td>{investment.pnl}</td>
     </tr>
@@ -219,20 +220,27 @@ const useStyles = createStyles<string>((theme) => {
 });
 const Investments: NextPageWithLayout = () => {
   const { classes } = useStyles();
+  const mobile = useMediaQuery('(max-width: 576px)');
   return (
     <PageContainer title='Investments'>
       <Table
         captionSide='top'
         horizontalSpacing='sm'
         verticalSpacing='sm'
-        highlightOnHover
         withBorder
         withColumnBorders
         fontSize={'md'}
         className={classes.investmentTable}
       >
         <caption>
-          <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: mobile ? 'column' : 'row',
+            }}
+          >
             <Link href='https://safeyields.medium.com/safeyields-treasury-portfolio-description-april-update-bf4a7937f675'>
               <OulineButton>Check Treasury Strategy here.</OulineButton>
             </Link>
@@ -241,9 +249,9 @@ const Investments: NextPageWithLayout = () => {
             </Text>
           </Box>
         </caption>
-        <thead>{ths}</thead>
-        <tbody>{formatRows(tableData)}</tbody>
-        <tfoot>{formatRows(total)}</tfoot>
+        <thead>{ths(mobile)}</thead>
+        <tbody>{formatRows(tableData, mobile)}</tbody>
+        <tfoot>{formatRows(total, mobile)}</tfoot>
       </Table>
     </PageContainer>
   );
