@@ -1,11 +1,8 @@
-import { Box, createStyles, Table, Text } from '@mantine/core';
+import { Center, createStyles, Stack, Title } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { PageContainer } from 'components/PageContainer';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
-import Link from 'next/link';
-
-import { OulineButton } from '../components/OutlineButton';
 
 type TableData = {
   investments: string;
@@ -19,22 +16,22 @@ type TableData = {
 
 const tableData: TableData[] = [
   {
-    investments: 'UniV3 BTC/ETH (Arb)',
-    deposit: '$4,850.74',
-    projectedApr: '21.00%',
-    weight: '15.36%',
-    weightedApr: '3.22%',
-    withdrawn: '$2,534.57',
-    pnl: '-$2,316.17',
+    investments: 'USD/EUR',
+    deposit: '$0.00',
+    projectedApr: '-',
+    weight: '0%',
+    weightedApr: '0%',
+    withdrawn: '$0.00',
+    pnl: '$0.00',
   },
   {
-    investments: 'UniV3 ARB/ETH (Arb)',
-    deposit: '$3,287.70',
-    projectedApr: '47.00%',
-    weight: '10.41%',
-    weightedApr: '4.89%',
-    withdrawn: '$49.35',
-    pnl: '-$3,238.35',
+    investments: 'USD/GOLD',
+    deposit: '$3,007.00',
+    projectedApr: '110%',
+    weight: '11.73%',
+    weightedApr: '12.90%',
+    withdrawn: '$0.00',
+    pnl: '-$2,881.00',
   },
   {
     investments: 'UniV3 GMX/ETH (Arb)',
@@ -223,36 +220,42 @@ const Investments: NextPageWithLayout = () => {
   const mobile = useMediaQuery('(max-width: 576px)');
   return (
     <PageContainer title='Investments'>
-      <Table
-        captionSide='top'
-        horizontalSpacing='sm'
-        verticalSpacing='sm'
-        withBorder
-        withColumnBorders
-        fontSize={'md'}
-        className={classes.investmentTable}
-      >
-        <caption>
-          <Box
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexDirection: mobile ? 'column' : 'row',
-            }}
-          >
-            <Link href='https://safeyields.medium.com/safeyields-treasury-portfolio-description-april-update-bf4a7937f675'>
-              <OulineButton>Check Treasury Strategy here.</OulineButton>
-            </Link>
-            <Text>
-              Treasury Performance (last 30 days): <span style={{ fontWeight: 800 }}>14%</span>
-            </Text>
-          </Box>
-        </caption>
-        <thead>{ths(mobile)}</thead>
-        <tbody>{formatRows(tableData, mobile)}</tbody>
-        <tfoot>{formatRows(total, mobile)}</tfoot>
-      </Table>
+      <Stack justify={'center'} spacing={'md'} style={{ height: '50vh' }}>
+        <Center>
+          <Title order={5}>Coming Soon</Title>
+        </Center>
+      </Stack>
+
+      {/* <Table*/}
+      {/*  captionSide='top'*/}
+      {/*  horizontalSpacing='sm'*/}
+      {/*  verticalSpacing='sm'*/}
+      {/*  withBorder*/}
+      {/*  withColumnBorders*/}
+      {/*  fontSize={'md'}*/}
+      {/*  className={classes.investmentTable}*/}
+      {/* >*/}
+      {/*  <caption>*/}
+      {/*    <Box*/}
+      {/*      style={{*/}
+      {/*        display: 'flex',*/}
+      {/*        justifyContent: 'space-between',*/}
+      {/*        alignItems: 'center',*/}
+      {/*        flexDirection: mobile ? 'column' : 'row',*/}
+      {/*      }}*/}
+      {/*    >*/}
+      {/*      <Link href='https://safeyields.medium.com/safeyields-treasury-portfolio-description-april-update-bf4a7937f675'>*/}
+      {/*        <OulineButton>Check Treasury Strategy here.</OulineButton>*/}
+      {/*      </Link>*/}
+      {/*      <Text>*/}
+      {/*        Treasury Performance (last 30 days): <span style={{ fontWeight: 800 }}>14%</span>*/}
+      {/*      </Text>*/}
+      {/*    </Box>*/}
+      {/*  </caption>*/}
+      {/*  <thead>{ths(mobile)}</thead>*/}
+      {/*  <tbody>{formatRows(tableData, mobile)}</tbody>*/}
+      {/*  <tfoot>{formatRows(total, mobile)}</tfoot>*/}
+      {/* </Table>*/}
     </PageContainer>
   );
 };
