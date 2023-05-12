@@ -37,7 +37,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                 mustardGreen: ['#CEDB3F'],
                 limeGreen: ['#D9E022', '#CBDA49'],
                 orange: ['#E89B17', '#F28705'],
-                gray: ['#F2ECE42D'],
+                gray: ['#F2ECE42D', '#396668', '#396668', 'rgba(5, 50, 52, 0.18)'],
                 transparentGray: ['rgba(255, 255, 255, 0.29)'],
                 white: ['#F2ECE4'],
                 greenGray: ['#36676A', '#85A7A8', '#90A4A2'],

@@ -1,7 +1,11 @@
-import { Center, createStyles, Stack, Title } from '@mantine/core';
+import { Box, createStyles, Table, Text } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { PageContainer } from 'components/PageContainer';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
+import Link from 'next/link';
+
+import { OulineButton } from '../components/OutlineButton';
 
 type TableData = {
   investments: string;
@@ -144,25 +148,28 @@ const total = [
   },
 ];
 
-const ths = (
+const ths = (mobile?: boolean) => (
   <tr>
     <th>Investments</th>
     <th>Deposit</th>
-    <th>Project APR</th>
-    <th>Portfolio Weight</th>
-    <th>Weighted APR</th>
+    {!mobile && <th>Project APR</th>}
+    {!mobile && <th>Portfolio Weight</th>}
+    {!mobile && <th>Weighted APR</th>}
     <th>Withdrawn</th>
     <th>PnL</th>
   </tr>
 );
-const formatRows = (data: TableData[]) =>
+const formatRows = (data: TableData[], mobile?: boolean) =>
   data.map((investment) => (
-    <tr key={investment.investments}>
+    <tr
+      key={investment.investments}
+      style={{ backgroundColor: investment.investments == 'Costs' ? '#9BAD98' : undefined }}
+    >
       <td>{investment.investments}</td>
       <td>{investment.deposit}</td>
-      <td>{investment.projectedApr}</td>
-      <td>{investment.weight}</td>
-      <td>{investment.weightedApr}</td>
+      {!mobile && <td>{investment.projectedApr}</td>}
+      {!mobile && <td>{investment.weight}</td>}
+      {!mobile && <td>{investment.weightedApr}</td>}
       <td>{investment.withdrawn}</td>
       <td>{investment.pnl}</td>
     </tr>
@@ -173,18 +180,38 @@ const useStyles = createStyles<string>((theme) => {
     investmentTable: {
       '& caption': {
         color: 'white',
-        fontSize: '1rem',
       },
       '& thead': {
-        '& th': {
-          backgroundColor: theme.colors.mustardGreen[0],
-          color: theme.colors.veryDarkGreen[0],
+        '& tr': {
+          '& th': {
+            width: '120px',
+            fontSize: '12px',
+            textAlign: 'center',
+            backgroundColor: theme.colors.mustardGreen[0],
+            color: theme.colors.veryDarkGreen[0],
+            padding: '10px 8px',
+          },
+        },
+      },
+      '& tfoot': {
+        '& tr': {
+          '& td': {
+            fontSize: '12px',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            backgroundColor: theme.colors.mustardGreen[0],
+            color: theme.colors.veryDarkGreen[0],
+            padding: '10px 0px',
+          },
         },
       },
       '& tbody': {
         '& tr': {
           '& td': {
+            textAlign: 'center',
+            fontSize: '12px',
             backgroundColor: 'rgba(255, 255, 255, 0.24)',
+            padding: '5px 8px',
           },
         },
       },
@@ -193,38 +220,39 @@ const useStyles = createStyles<string>((theme) => {
 });
 const Investments: NextPageWithLayout = () => {
   const { classes } = useStyles();
+  const mobile = useMediaQuery('(max-width: 576px)');
   return (
     <PageContainer title='Investments'>
-      <Stack justify={'center'} spacing={'md'} style={{ height: '50vh' }}>
-        <Center>
-          <Title order={5}>Coming Soon</Title>
-        </Center>
-      </Stack>
-      {/* <Table*/}
-      {/*  captionSide='top'*/}
-      {/*  horizontalSpacing='sm'*/}
-      {/*  verticalSpacing='sm'*/}
-      {/*  highlightOnHover*/}
-      {/*  withBorder*/}
-      {/*  striped*/}
-      {/*  withColumnBorders*/}
-      {/*  fontSize={'md'}*/}
-      {/*  className={classes.investmentTable}*/}
-      {/* >*/}
-      {/*  <caption>*/}
-      {/*    <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>*/}
-      {/*      <Link href='https://safeyields.medium.com/safeyields-treasury-portfolio-description-april-update-bf4a7937f675'>*/}
-      {/*        <OulineButton>Check Treasury Strategy here.</OulineButton>*/}
-      {/*      </Link>*/}
-      {/*      <Text>*/}
-      {/*        Treasury Performance (last 30 days): <span style={{ fontWeight: 800 }}>14%</span>*/}
-      {/*      </Text>*/}
-      {/*    </Box>*/}
-      {/*  </caption>*/}
-      {/*  <thead>{ths}</thead>*/}
-      {/*  <tbody>{formatRows(tableData)}</tbody>*/}
-      {/*  <tfoot>{formatRows(total)}</tfoot>*/}
-      {/* </Table>*/}
+      <Table
+        captionSide='top'
+        horizontalSpacing='sm'
+        verticalSpacing='sm'
+        withBorder
+        withColumnBorders
+        fontSize={'md'}
+        className={classes.investmentTable}
+      >
+        <caption>
+          <Box
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: mobile ? 'column' : 'row',
+            }}
+          >
+            <Link href='https://safeyields.medium.com/safeyields-treasury-portfolio-description-april-update-bf4a7937f675'>
+              <OulineButton>Check Treasury Strategy here.</OulineButton>
+            </Link>
+            <Text>
+              Treasury Performance (last 30 days): <span style={{ fontWeight: 800 }}>14%</span>
+            </Text>
+          </Box>
+        </caption>
+        <thead>{ths(mobile)}</thead>
+        <tbody>{formatRows(tableData, mobile)}</tbody>
+        <tfoot>{formatRows(total, mobile)}</tfoot>
+      </Table>
     </PageContainer>
   );
 };
