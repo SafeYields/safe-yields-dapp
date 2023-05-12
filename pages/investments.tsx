@@ -1,7 +1,10 @@
-import { Center, createStyles, Stack, Title } from '@mantine/core';
+import { Box, createStyles, Table, Text } from '@mantine/core';
 import { PageContainer } from 'components/PageContainer';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
+import Link from 'next/link';
+
+import { OulineButton } from '../components/OutlineButton';
 
 type TableData = {
   investments: string;
@@ -157,7 +160,10 @@ const ths = (
 );
 const formatRows = (data: TableData[]) =>
   data.map((investment) => (
-    <tr key={investment.investments}>
+    <tr
+      key={investment.investments}
+      style={{ backgroundColor: investment.investments == 'Costs' ? '#9BAD98' : undefined }}
+    >
       <td>{investment.investments}</td>
       <td>{investment.deposit}</td>
       <td>{investment.projectedApr}</td>
@@ -173,18 +179,38 @@ const useStyles = createStyles<string>((theme) => {
     investmentTable: {
       '& caption': {
         color: 'white',
-        fontSize: '1rem',
       },
       '& thead': {
-        '& th': {
-          backgroundColor: theme.colors.mustardGreen[0],
-          color: theme.colors.veryDarkGreen[0],
+        '& tr': {
+          '& th': {
+            width: '120px',
+            fontSize: '12px',
+            textAlign: 'center',
+            backgroundColor: theme.colors.mustardGreen[0],
+            color: theme.colors.veryDarkGreen[0],
+            padding: '10px 8px',
+          },
+        },
+      },
+      '& tfoot': {
+        '& tr': {
+          '& td': {
+            fontSize: '12px',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            backgroundColor: theme.colors.mustardGreen[0],
+            color: theme.colors.veryDarkGreen[0],
+            padding: '10px 0px',
+          },
         },
       },
       '& tbody': {
         '& tr': {
           '& td': {
+            textAlign: 'center',
+            fontSize: '12px',
             backgroundColor: 'rgba(255, 255, 255, 0.24)',
+            padding: '5px 8px',
           },
         },
       },
@@ -195,36 +221,30 @@ const Investments: NextPageWithLayout = () => {
   const { classes } = useStyles();
   return (
     <PageContainer title='Investments'>
-      <Stack justify={'center'} spacing={'md'} style={{ height: '50vh' }}>
-        <Center>
-          <Title order={5}>Coming Soon</Title>
-        </Center>
-      </Stack>
-      {/* <Table*/}
-      {/*  captionSide='top'*/}
-      {/*  horizontalSpacing='sm'*/}
-      {/*  verticalSpacing='sm'*/}
-      {/*  highlightOnHover*/}
-      {/*  withBorder*/}
-      {/*  striped*/}
-      {/*  withColumnBorders*/}
-      {/*  fontSize={'md'}*/}
-      {/*  className={classes.investmentTable}*/}
-      {/* >*/}
-      {/*  <caption>*/}
-      {/*    <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>*/}
-      {/*      <Link href='https://safeyields.medium.com/safeyields-treasury-portfolio-description-april-update-bf4a7937f675'>*/}
-      {/*        <OulineButton>Check Treasury Strategy here.</OulineButton>*/}
-      {/*      </Link>*/}
-      {/*      <Text>*/}
-      {/*        Treasury Performance (last 30 days): <span style={{ fontWeight: 800 }}>14%</span>*/}
-      {/*      </Text>*/}
-      {/*    </Box>*/}
-      {/*  </caption>*/}
-      {/*  <thead>{ths}</thead>*/}
-      {/*  <tbody>{formatRows(tableData)}</tbody>*/}
-      {/*  <tfoot>{formatRows(total)}</tfoot>*/}
-      {/* </Table>*/}
+      <Table
+        captionSide='top'
+        horizontalSpacing='sm'
+        verticalSpacing='sm'
+        highlightOnHover
+        withBorder
+        withColumnBorders
+        fontSize={'md'}
+        className={classes.investmentTable}
+      >
+        <caption>
+          <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Link href='https://safeyields.medium.com/safeyields-treasury-portfolio-description-april-update-bf4a7937f675'>
+              <OulineButton>Check Treasury Strategy here.</OulineButton>
+            </Link>
+            <Text>
+              Treasury Performance (last 30 days): <span style={{ fontWeight: 800 }}>14%</span>
+            </Text>
+          </Box>
+        </caption>
+        <thead>{ths}</thead>
+        <tbody>{formatRows(tableData)}</tbody>
+        <tfoot>{formatRows(total)}</tfoot>
+      </Table>
     </PageContainer>
   );
 };
