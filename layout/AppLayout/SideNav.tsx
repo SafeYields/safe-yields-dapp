@@ -157,7 +157,6 @@ const ITEMS = [
     href: getPath('INVESTMENT'),
     label: 'Investment Pool Portfolio',
     Icon: CornerRightUp,
-    comingSoon: false,
   },
   { href: getPath('EXPENSE'), label: 'Expense Log', Icon: FileReport, comingSoon: true },
 ];
