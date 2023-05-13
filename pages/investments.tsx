@@ -14,6 +14,8 @@ type TableData = {
   weight: string;
   weightedApr: string;
   withdrawn: string;
+  profits: string;
+  roi: string;
   pnl: string;
 };
 
@@ -25,6 +27,8 @@ const tableData: TableData[] = [
     weight: '11.73%',
     weightedApr: '12.90%',
     withdrawn: '$0.00',
+    profits: '$126.00',
+    roi: '4.19%',
     pnl: '-$2,881.00',
   },
   {
@@ -34,6 +38,8 @@ const tableData: TableData[] = [
     weight: '',
     weightedApr: '',
     withdrawn: '',
+    profits: '',
+    roi: '',
     pnl: '',
   },
   {
@@ -43,6 +49,8 @@ const tableData: TableData[] = [
     weight: '12.63%',
     weightedApr: '5.18%',
     withdrawn: '$0.00',
+    profits: '$146.14',
+    roi: '4.51%',
     pnl: '-$3,092.21',
   },
   {
@@ -52,6 +60,8 @@ const tableData: TableData[] = [
     weight: '7.45%',
     weightedApr: '4.62%',
     withdrawn: '$1,804.20',
+    profits: '$128.58',
+    roi: '6.73%',
     pnl: '-$1,782.94',
   },
   {
@@ -61,6 +71,8 @@ const tableData: TableData[] = [
     weight: '3.89%',
     weightedApr: '10.69%',
     withdrawn: '$0.00',
+    profits: '$10.73',
+    roi: '1.08%',
     pnl: '-$986.19',
   },
   {
@@ -70,6 +82,8 @@ const tableData: TableData[] = [
     weight: '9.74%',
     weightedApr: '5.46%',
     withdrawn: '$0.00',
+    profits: '$20.00',
+    roi: '0.80%',
     pnl: '-$2,478.10',
   },
   {
@@ -79,6 +93,8 @@ const tableData: TableData[] = [
     weight: '39.00%',
     weightedApr: '4.68%',
     withdrawn: '$0.00',
+    profits: '$0.00',
+    roi: '0.00',
     pnl: '-$10,000.00',
   },
   {
@@ -88,6 +104,8 @@ const tableData: TableData[] = [
     weight: '',
     weightedApr: '',
     withdrawn: '',
+    profits: '',
+    roi: '',
     pnl: '',
   },
   {
@@ -97,6 +115,8 @@ const tableData: TableData[] = [
     weight: '12.45%',
     weightedApr: '3.73%',
     withdrawn: '$0.00',
+    profits: '$0.00',
+    roi: '0.00%',
     pnl: '-$3,192.00',
   },
   {
@@ -106,6 +126,8 @@ const tableData: TableData[] = [
     weight: '',
     weightedApr: '',
     withdrawn: '',
+    profits: '',
+    roi: '',
     pnl: '',
   },
   {
@@ -115,6 +137,8 @@ const tableData: TableData[] = [
     weight: '',
     weightedApr: '',
     withdrawn: '',
+    profits: '',
+    roi: '',
     pnl: '-$440.00',
   },
   {
@@ -124,6 +148,8 @@ const tableData: TableData[] = [
     weight: '',
     weightedApr: '',
     withdrawn: '',
+    profits: '',
+    roi: '',
     pnl: '-$179.00',
   },
   {
@@ -133,6 +159,8 @@ const tableData: TableData[] = [
     weight: '',
     weightedApr: '',
     withdrawn: '',
+    profits: '',
+    roi: '',
     pnl: '-$195.52',
   },
   {
@@ -142,6 +170,8 @@ const tableData: TableData[] = [
     weight: '',
     weightedApr: '',
     withdrawn: '',
+    profits: '',
+    roi: '',
     pnl: '',
   },
   {
@@ -151,6 +181,8 @@ const tableData: TableData[] = [
     weight: '0.20%',
     weightedApr: '0%',
     withdrawn: '$4,769.63',
+    profits: '$46.04',
+    roi: '-0.09%',
     pnl: '-$4.10',
   },
   {
@@ -160,6 +192,8 @@ const tableData: TableData[] = [
     weight: '-0.01%',
     weightedApr: '0%',
     withdrawn: '$2,502.84',
+    profits: '$24.00',
+    roi: '1.07%',
     pnl: '$26.84',
   },
   {
@@ -169,6 +203,8 @@ const tableData: TableData[] = [
     weight: '-0.02%',
     weightedApr: '0%',
     withdrawn: '$2,404.33',
+    profits: '$17.00',
+    roi: '0.89%',
     pnl: '$21.33',
   },
   {
@@ -178,6 +214,8 @@ const tableData: TableData[] = [
     weight: '-0.39%',
     weightedApr: '0%',
     withdrawn: '$17,371.53',
+    profits: '$79.06',
+    roi: '1.03%',
     pnl: '$178.67',
   },
   {
@@ -187,6 +225,8 @@ const tableData: TableData[] = [
     weight: '0.16%',
     weightedApr: '0%',
     withdrawn: '$4,649.18',
+    profits: '$61.50',
+    roi: '0.43%',
     pnl: '$20.07',
   },
 ];
@@ -198,6 +238,8 @@ const total = [
     weight: '-',
     weightedApr: '47.26%',
     withdrawn: '-',
+    profits: '$659.05',
+    roi: '2.57%',
     pnl: '-$24,984.15',
   },
 ];
@@ -210,6 +252,8 @@ const ths = (mobile?: boolean) => (
     {!mobile && <th>Portfolio Weight</th>}
     {!mobile && <th>Weighted APR</th>}
     <th>Withdrawn</th>
+    {!mobile && <th>Realized Profits</th>}
+    {!mobile && <th>ROI</th>}
     <th>PnL</th>
   </tr>
 );
@@ -234,6 +278,8 @@ const formatRows = (data: TableData[], mobile?: boolean) =>
       {!mobile && <td>{investment.weight}</td>}
       {!mobile && <td>{investment.weightedApr}</td>}
       <td>{investment.withdrawn}</td>
+      {!mobile && <td>{investment.profits}</td>}
+      {!mobile && <td>{investment.roi}</td>}
       <td>{investment.pnl}</td>
     </tr>
   ));
@@ -286,12 +332,6 @@ const Investments: NextPageWithLayout = () => {
   const mobile = useMediaQuery('(max-width: 576px)');
   return (
     <PageContainer title='Investments'>
-      {/* <Stack justify={'center'} spacing={'md'} style={{ height: '50vh' }}>*/}
-      {/*  <Center>*/}
-      {/*    <Title order={5}>Coming Soon</Title>*/}
-      {/*  </Center>*/}
-      {/* </Stack>*/}
-
       <Table
         captionSide='top'
         horizontalSpacing='sm'
