@@ -1,12 +1,15 @@
-import { Center, createStyles, Stack, Title } from '@mantine/core';
+import { Box, createStyles, Table, Text } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { PageContainer } from 'components/PageContainer';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
+import Link from 'next/link';
+
+import { OulineButton } from '../components/OutlineButton';
 
 type TableData = {
   investments: string;
-  deposit: string;
+  deposited: string;
   projectedApr: string;
   weight: string;
   weightedApr: string;
@@ -16,17 +19,8 @@ type TableData = {
 
 const tableData: TableData[] = [
   {
-    investments: 'USD/EUR',
-    deposit: '$0.00',
-    projectedApr: '-',
-    weight: '0%',
-    weightedApr: '0%',
-    withdrawn: '$0.00',
-    pnl: '$0.00',
-  },
-  {
     investments: 'USD/GOLD',
-    deposit: '$3,007.00',
+    deposited: '$3,007.00',
     projectedApr: '110%',
     weight: '11.73%',
     weightedApr: '12.90%',
@@ -34,71 +28,8 @@ const tableData: TableData[] = [
     pnl: '-$2,881.00',
   },
   {
-    investments: 'UniV3 GMX/ETH (Arb)',
-    deposit: '$2,026.17',
-    projectedApr: '53.00%',
-    weight: '6.41%',
-    weightedApr: '3.40%',
-    withdrawn: '$50.50',
-    pnl: '-$1,975.67',
-  },
-  {
-    investments: 'Ramses MAI/USDC (Arb)',
-    deposit: '$2,500.00',
-    projectedApr: '14.00%',
-    weight: '7.91%',
-    weightedApr: '1.11%',
-    withdrawn: '',
-    pnl: '-$2,500.00',
-  },
-  {
-    investments: 'Ramses FRAX/USDC (Arb)',
-    deposit: '$2,400.00',
-    projectedApr: '12.00%',
-    weight: '7.60%',
-    weightedApr: '0.91%',
-    withdrawn: '',
-    pnl: '-$2,400.00',
-  },
-  {
-    investments: 'Granary ETH/wstETH Loop (Arb)',
-    deposit: '$4,984.14',
-    projectedApr: '34.00%',
-    weight: '15.78%',
-    weightedApr: '5.36%',
-    withdrawn: '',
-    pnl: '-$4,984.14',
-  },
-  {
-    investments: 'UniV3 BTC/ETH (OP)',
-    deposit: '$4,705.69',
-    projectedApr: '19.00%',
-    weight: '14.90%',
-    weightedApr: '2.83%',
-    withdrawn: '$2,399.93',
-    pnl: '-$2,305.76',
-  },
-  {
-    investments: 'Forex Gold/USD bot',
-    deposit: '$1,970.00',
-    projectedApr: '90.00%',
-    weight: '6.24%',
-    weightedApr: '5.61%',
-    withdrawn: '',
-    pnl: '-$1,970.00',
-  },
-  {
-    investments: 'Puto.Studio - SafeYields Ecosystem',
-    deposit: '$3,192.00',
-    projectedApr: '30.00%',
-    weight: '10.11%',
-    weightedApr: '3.03%',
-    withdrawn: '',
-    pnl: '-$3,192.00',
-  },
-  {
-    investments: 'Costs',
-    deposit: '',
+    investments: 'Yield Farming',
+    deposited: '',
     projectedApr: '',
     weight: '',
     weightedApr: '',
@@ -106,42 +37,168 @@ const tableData: TableData[] = [
     pnl: '',
   },
   {
-    investments: 'Forex Bots',
-    deposit: '$1,446.00',
-    projectedApr: '-',
-    weight: '-',
-    weightedApr: '-',
+    investments: 'ARB/ETH UniV3 (Arb)',
+    deposited: '$3,238.35',
+    projectedApr: '41%',
+    weight: '12.63%',
+    weightedApr: '5.18%',
     withdrawn: '$0.00',
-    pnl: '-$1,446.00',
+    pnl: '-$3,092.21',
+  },
+  {
+    investments: 'GMX/ETH UniV3 (Arb)',
+    deposited: '$1,911.52',
+    projectedApr: '62%',
+    weight: '7.45%',
+    weightedApr: '4.62%',
+    withdrawn: '$1,804.20',
+    pnl: '-$1,782.94',
+  },
+  {
+    investments: 'GRAIN/ETH Chronos (Arb)',
+    deposited: '$996.92',
+    projectedApr: '275.00%',
+    weight: '3.89%',
+    weightedApr: '10.69%',
+    withdrawn: '$0.00',
+    pnl: '-$986.19',
+  },
+  {
+    investments: 'wstETH Loop Granary (OP)',
+    deposited: '$2,498.10',
+    projectedApr: '56.00%',
+    weight: '9.74%',
+    weightedApr: '5.46%',
+    withdrawn: '$0.00',
+    pnl: '-$2,478.10',
+  },
+  {
+    investments: 'SafeYields Management Loan',
+    deposited: '$10,000.00',
+    projectedApr: '12%',
+    weight: '39.00%',
+    weightedApr: '4.68%',
+    withdrawn: '$0.00',
+    pnl: '-$10,000.00',
+  },
+  {
+    investments: 'Real Business',
+    deposited: '',
+    projectedApr: '',
+    weight: '',
+    weightedApr: '',
+    withdrawn: '',
+    pnl: '',
+  },
+  {
+    investments: 'Puto Studio - SY Ecosystem',
+    deposited: '$3,192.00',
+    projectedApr: '30%',
+    weight: '12.45%',
+    weightedApr: '3.73%',
+    withdrawn: '$0.00',
+    pnl: '-$3,192.00',
+  },
+  {
+    investments: 'Costs',
+    deposited: '',
+    projectedApr: '',
+    weight: '',
+    weightedApr: '',
+    withdrawn: '',
+    pnl: '',
+  },
+  {
+    investments: 'Bots',
+    deposited: '$440.00',
+    projectedApr: '',
+    weight: '',
+    weightedApr: '',
+    withdrawn: '',
+    pnl: '-$440.00',
   },
   {
     investments: 'VPS (Forex Bots)',
-    deposit: '$179.00',
-    projectedApr: '-',
-    weight: '-',
-    weightedApr: '-',
-    withdrawn: '$0.00',
+    deposited: '$179.00',
+    projectedApr: '',
+    weight: '',
+    weightedApr: '',
+    withdrawn: '',
     pnl: '-$179.00',
   },
   {
-    investments: 'Gas fees 29/03/2023',
-    deposit: '$46.87',
-    projectedApr: '-',
-    weight: '-',
-    weightedApr: '-',
-    withdrawn: '$0.00',
-    pnl: '-$46.87',
+    investments: 'Gas Fees',
+    deposited: '$195.52',
+    projectedApr: '',
+    weight: '',
+    weightedApr: '',
+    withdrawn: '',
+    pnl: '-$195.52',
+  },
+  {
+    investments: 'Exited Positions',
+    deposited: '',
+    projectedApr: '',
+    weight: '',
+    weightedApr: '',
+    withdrawn: '',
+    pnl: '',
+  },
+  {
+    investments: 'WBTC/ETH UniV3 (Arb)',
+    deposited: '$50.14',
+    projectedApr: '0%',
+    weight: '0.20%',
+    weightedApr: '0%',
+    withdrawn: '$4,769.63',
+    pnl: '-$4.10',
+  },
+  {
+    investments: 'MAI/USDC Beefy (Arb)',
+    deposited: '-$2.84',
+    projectedApr: '0%',
+    weight: '-0.01%',
+    weightedApr: '0%',
+    withdrawn: '$2,502.84',
+    pnl: '$26.84',
+  },
+  {
+    investments: 'FRAX/USDC Beefy (Arb)',
+    deposited: '-$4.33',
+    projectedApr: '0%',
+    weight: '-0.02%',
+    weightedApr: '0%',
+    withdrawn: '$2,404.33',
+    pnl: '$21.33',
+  },
+  {
+    investments: 'ETH/wstETH Loop Granary (OP)',
+    deposited: '-$99.61',
+    projectedApr: '0%',
+    weight: '-0.39%',
+    weightedApr: '0%',
+    withdrawn: '$17,371.53',
+    pnl: '$178.67',
+  },
+  {
+    investments: 'BTC/ETH UniV3 (OP)',
+    deposited: '$41.43',
+    projectedApr: '0%',
+    weight: '0.16%',
+    weightedApr: '0%',
+    withdrawn: '$4,649.18',
+    pnl: '$20.07',
   },
 ];
 const total = [
   {
     investments: 'Total',
-    deposit: '$31,588.31',
+    deposited: '$25,643.20',
     projectedApr: '-',
     weight: '-',
-    weightedApr: '30.38%',
-    withdrawn: '$5,034.35',
-    pnl: '-$26,553.96',
+    weightedApr: '47.26%',
+    withdrawn: '-',
+    pnl: '-$24,984.15',
   },
 ];
 
@@ -160,10 +217,19 @@ const formatRows = (data: TableData[], mobile?: boolean) =>
   data.map((investment) => (
     <tr
       key={investment.investments}
-      style={{ backgroundColor: investment.investments == 'Costs' ? '#9BAD98' : undefined }}
+      style={{
+        backgroundColor:
+          !investment.deposited &&
+          !investment.projectedApr &&
+          !investment.pnl &&
+          !investment.weight &&
+          !investment.weightedApr
+            ? '#9BAD98'
+            : undefined,
+      }}
     >
       <td>{investment.investments}</td>
-      <td>{investment.deposit}</td>
+      <td>{investment.deposited}</td>
       {!mobile && <td>{investment.projectedApr}</td>}
       {!mobile && <td>{investment.weight}</td>}
       {!mobile && <td>{investment.weightedApr}</td>}
@@ -220,42 +286,42 @@ const Investments: NextPageWithLayout = () => {
   const mobile = useMediaQuery('(max-width: 576px)');
   return (
     <PageContainer title='Investments'>
-      <Stack justify={'center'} spacing={'md'} style={{ height: '50vh' }}>
-        <Center>
-          <Title order={5}>Coming Soon</Title>
-        </Center>
-      </Stack>
+      {/* <Stack justify={'center'} spacing={'md'} style={{ height: '50vh' }}>*/}
+      {/*  <Center>*/}
+      {/*    <Title order={5}>Coming Soon</Title>*/}
+      {/*  </Center>*/}
+      {/* </Stack>*/}
 
-      {/* <Table*/}
-      {/*  captionSide='top'*/}
-      {/*  horizontalSpacing='sm'*/}
-      {/*  verticalSpacing='sm'*/}
-      {/*  withBorder*/}
-      {/*  withColumnBorders*/}
-      {/*  fontSize={'md'}*/}
-      {/*  className={classes.investmentTable}*/}
-      {/* >*/}
-      {/*  <caption>*/}
-      {/*    <Box*/}
-      {/*      style={{*/}
-      {/*        display: 'flex',*/}
-      {/*        justifyContent: 'space-between',*/}
-      {/*        alignItems: 'center',*/}
-      {/*        flexDirection: mobile ? 'column' : 'row',*/}
-      {/*      }}*/}
-      {/*    >*/}
-      {/*      <Link href='https://safeyields.medium.com/safeyields-treasury-portfolio-description-april-update-bf4a7937f675'>*/}
-      {/*        <OulineButton>Check Treasury Strategy here.</OulineButton>*/}
-      {/*      </Link>*/}
-      {/*      <Text>*/}
-      {/*        Treasury Performance (last 30 days): <span style={{ fontWeight: 800 }}>14%</span>*/}
-      {/*      </Text>*/}
-      {/*    </Box>*/}
-      {/*  </caption>*/}
-      {/*  <thead>{ths(mobile)}</thead>*/}
-      {/*  <tbody>{formatRows(tableData, mobile)}</tbody>*/}
-      {/*  <tfoot>{formatRows(total, mobile)}</tfoot>*/}
-      {/* </Table>*/}
+      <Table
+        captionSide='top'
+        horizontalSpacing='sm'
+        verticalSpacing='sm'
+        withBorder
+        withColumnBorders
+        fontSize={'md'}
+        className={classes.investmentTable}
+      >
+        <caption>
+          <Box
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: mobile ? 'column' : 'row',
+            }}
+          >
+            <Link href='https://safeyields.medium.com/safeyields-treasury-portfolio-description-april-update-bf4a7937f675'>
+              <OulineButton>Check Treasury Strategy here.</OulineButton>
+            </Link>
+            <Text style={{ marginTop: mobile ? '10px' : undefined }}>
+              Treasury Performance (last 30 days): <span style={{ fontWeight: 800 }}>14%</span>
+            </Text>
+          </Box>
+        </caption>
+        <thead>{ths(mobile)}</thead>
+        <tbody>{formatRows(tableData, mobile)}</tbody>
+        <tfoot>{formatRows(total, mobile)}</tfoot>
+      </Table>
     </PageContainer>
   );
 };

@@ -38,7 +38,6 @@ const Safe = () => {
         <TokenListProvider tokenList={[]}>
           <SwapWidget />
         </TokenListProvider>
-        »
       </Flex>
     </PageContainer>
   );
