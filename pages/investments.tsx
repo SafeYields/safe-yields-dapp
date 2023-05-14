@@ -21,6 +21,17 @@ type TableData = {
 
 const tableData: TableData[] = [
   {
+    investments: 'Forex Bots',
+    deposited: '',
+    projectedApr: '',
+    weight: '',
+    weightedApr: '',
+    withdrawn: '',
+    profits: '',
+    roi: '',
+    pnl: '',
+  },
+  {
     investments: 'USD/GOLD',
     deposited: '$3,007.00',
     projectedApr: '110%',
@@ -306,6 +317,9 @@ const useStyles = createStyles<string>((theme) => {
         '& tr': {
           '& td': {
             fontSize: '12px',
+            [theme.fn.smallerThan('sm')]: {
+              fontSize: '10px',
+            },
             fontWeight: 'bold',
             textAlign: 'center',
             backgroundColor: theme.colors.mustardGreen[0],
@@ -319,6 +333,9 @@ const useStyles = createStyles<string>((theme) => {
           '& td': {
             textAlign: 'center',
             fontSize: '12px',
+            [theme.fn.smallerThan('sm')]: {
+              fontSize: '10px',
+            },
             backgroundColor: 'rgba(255, 255, 255, 0.24)',
             padding: '5px 8px',
           },
