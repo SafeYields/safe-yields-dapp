@@ -210,7 +210,7 @@ const Home: NextPageWithLayout = () => {
         {/*  </InfoCard>*/}
         {/* </Grid.Col>*/}
         <Grid.Col span={2}>
-          <InfoCard header={'NFT APR'} minWidth={'130px'}>
+          <InfoCard header={'Treasury Performance'} minWidth={'130px'}>
             <CardContentBox footer={'Last 30 days'}>
               <h2 style={{ color: '#F5F5F5' }}>
                 {nftAPR ? nftAPR.toFixed(1).concat('%') : <Loader size='lg' color='#F5F5F5' />}
