@@ -371,7 +371,7 @@ const Investments: NextPageWithLayout = () => {
               <OulineButton>Check Treasury Strategy here.</OulineButton>
             </Link>
             <Text style={{ marginTop: mobile ? '10px' : undefined }}>
-              Treasury Performance (last 30 days): <span style={{ fontWeight: 800 }}>14%</span>
+              Treasury Performance (last 30 days): <span style={{ fontWeight: 800 }}>32%</span>
             </Text>
           </Box>
         </caption>
