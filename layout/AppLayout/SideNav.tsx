@@ -1,4 +1,3 @@
-import { keyframes } from '@emotion/react';
 import {
   createStyles,
   MediaQuery,
@@ -8,7 +7,6 @@ import {
   Tooltip,
   UnstyledButton,
 } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { FC } from 'react';
 import {
   ArrowLeft,
@@ -28,27 +26,17 @@ import { ActiveLink } from 'utils';
 
 import { SafeYieldsLogo } from '../../components/SafeYieldsLogo';
 
-const slide = keyframes`
-  100% {
-    left: 0;
-  }
-`;
-
 const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, getRef) => {
   const icon: string = getRef('icon');
 
   return {
     navbar: {
       position: 'sticky',
-      [theme.fn.smallerThan('sm')]: {
-        height: '100vh',
-        backgroundColor: theme.colors.emeraldGreen[0],
-        opacity: 0.9,
-      },
-      [theme.fn.largerThan('sm')]: {
-        backgroundColor: 'transparent',
-      },
+      height: '100vh',
+      backgroundColor: 'transparent',
+      overflowY: 'auto',
       top: 0,
+      left: 0,
       borderColor: theme.colors.greenGray[0],
       borderWidth: '1px',
       width: params?.collapsed ? 120 : 315,
@@ -102,7 +90,8 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       width: '100%',
       display: 'flex',
       margin: 'auto',
-      marginBottom: 15,
+      marginBottom: 8,
+      height: 50,
       alignItems: 'center',
       columnGap: theme.spacing.sm,
       textDecoration: 'none',
@@ -161,8 +150,11 @@ const ITEMS = [
   { href: getPath('EXPENSE'), label: 'Expense Log', Icon: FileReport, comingSoon: true },
 ];
 
-export const SideNav: FC<{ className?: string }> = ({ className }) => {
-  const [collapsed, handlers] = useDisclosure(false);
+export const SideNav: FC<{ className?: string; collapsed?: boolean; toggle?: () => any }> = ({
+  className,
+  collapsed,
+  toggle,
+}) => {
   const { classes, cx } = useStyles({ collapsed });
   return (
     <Navbar p='md' className={cx(classes.navbar, className)}>
@@ -202,7 +194,7 @@ export const SideNav: FC<{ className?: string }> = ({ className }) => {
 
       <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
         <Navbar.Section className={classes.footer}>
-          <UnstyledButton className={classes.collapse} onClick={handlers.toggle}>
+          <UnstyledButton className={classes.collapse} onClick={toggle}>
             {collapsed ? (
               <ArrowRight className={classes.collapseIcon} />
             ) : (
