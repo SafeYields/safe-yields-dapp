@@ -1,13 +1,5 @@
-import {
-  ActionIcon,
-  AppShell,
-  Box,
-  Drawer,
-  MediaQuery,
-  Stack,
-  useMantineTheme,
-} from '@mantine/core';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { ActionIcon, AppShell, Box, Drawer, MediaQuery, useMantineTheme } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { FancyBackground } from 'components/FancyBackground';
 import type { CustomLayout } from 'next';
 import { useRouter } from 'next/router';
@@ -15,29 +7,26 @@ import { FC, useEffect } from 'react';
 // @ts-ignore
 import { Menu2 } from 'tabler-icons-react';
 
-import { Account } from '../../components/Account';
-import { SafeYieldsLogo } from '../../components/SafeYieldsLogo';
 import { LayoutErrorBoundary } from '../LayoutErrorBoundary';
 import { HeaderNav } from './HeaderNav';
 import { SideNav } from './SideNav';
 
 export const AppLayout: CustomLayout = (page) => {
   const [opened, handlers] = useDisclosure(false);
-  const theme = useMantineTheme();
-  const mobileScreen = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
+  const [sideNavCollapsed, sideNavHandlers] = useDisclosure(false);
+
   return (
     <FancyBackground>
       <AppShell
         padding='md'
-        styles={(theme) => ({
+        styles={() => ({
           body: {
             height: '100%',
-            maxWidth: '100vw',
-            overflowX: 'hidden',
             backgroundImage: 'url(/assets/background.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundSize: '100% 100vh',
             backgroundRepeat: 'no-repeat',
+            backgroundAttachment: 'fixed',
+            WebkitMaskAttachment: 'fixed',
           },
           main: {
             padding: 0,
@@ -46,7 +35,7 @@ export const AppLayout: CustomLayout = (page) => {
         navbar={
           <>
             <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-              <SideNav />
+              <SideNav collapsed={sideNavCollapsed} toggle={sideNavHandlers.toggle} />
             </MediaQuery>
             <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
               <DrawerNav opened={opened} handleClose={handlers.close} />
@@ -55,8 +44,12 @@ export const AppLayout: CustomLayout = (page) => {
         }
         header={
           <HeaderNav
+            sideNavCollapsed={sideNavCollapsed}
             left={
-              <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
+              <MediaQuery
+                largerThan='sm'
+                styles={{ display: 'none', position: 'sticky', top: 0, left: 0 }}
+              >
                 <ActionIcon variant='default' radius='xl' size={40} onClick={handlers.open}>
                   <Menu2 />
                 </ActionIcon>
@@ -67,13 +60,7 @@ export const AppLayout: CustomLayout = (page) => {
           />
         }
       >
-        <Box py='xs' px='md' sx={{ marginTop: mobileScreen ? 0 : '170px' }}>
-          <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
-            <Stack spacing={'xs'}>
-              <Account />
-              <SafeYieldsLogo />
-            </Stack>
-          </MediaQuery>
+        <Box py='xs' px='md'>
           <LayoutErrorBoundary>{page}</LayoutErrorBoundary>
         </Box>
       </AppShell>

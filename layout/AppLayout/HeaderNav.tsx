@@ -6,8 +6,10 @@ import {
   Group,
   Header,
   Indicator,
+  Stack,
 } from '@mantine/core';
 import { Account } from 'components/Account';
+import { SafeYieldsLogo } from 'components/SafeYieldsLogo';
 import Link from 'next/link';
 import { FC, ReactNode, useState } from 'react';
 import { Bell, Home, Moneybag, UserCircle } from 'tabler-icons-react';
@@ -18,19 +20,38 @@ import useWalletConnected from '../../hooks/useWalletConnected';
 const useStyles = createStyles((theme) => ({
   header: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
+    width: '100%',
   },
 
   links: {
     [theme.fn.smallerThan('sm')]: {
       display: 'none',
     },
+    justifyContent: 'center',
+    gap: '16px 40px',
   },
 
   burger: {
-    [theme.fn.largerThan('xs')]: {
+    [theme.fn.largerThan('sm')]: {
+      display: 'none',
+    },
+    position: 'fixed',
+    [theme.fn.largerThan(360)]: {
+      top: 33,
+    },
+    [theme.fn.smallerThan(360)]: {
+      top: 73,
+    },
+    right: 10,
+    marginTop: -14, // Magic number to actually center align the burger menu
+    zIndex: 1000,
+  },
+
+  mobileHeader: {
+    [theme.fn.largerThan('sm')]: {
       display: 'none',
     },
   },
@@ -55,13 +76,18 @@ const useStyles = createStyles((theme) => ({
   linkActive: {
     color: theme.colors.highlightGreen[0],
   },
+
+  linkBackground: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
 }));
 
-export const HeaderNav: FC<{ left: ReactNode; opened: boolean; toggle: () => void }> = ({
-  left,
-  opened,
-  toggle,
-}) => {
+export const HeaderNav: FC<{
+  left: ReactNode;
+  opened: boolean;
+  toggle: () => void;
+  sideNavCollapsed?: boolean;
+}> = ({ left, opened, toggle, sideNavCollapsed }) => {
   const links = [
     { link: getPath('WHITEPAPER'), label: 'Whitepaper', Icon: Home },
     { link: getPath('SAFE'), label: 'Buy Safe', Icon: Moneybag },
@@ -83,28 +109,41 @@ export const HeaderNav: FC<{ left: ReactNode; opened: boolean; toggle: () => voi
   ));
 
   return (
-    <Header
-      height={{ base: 50, md: 70 }}
-      p='sm'
-      mb={120}
-      mt={45}
-      ml={300}
-      sx={(theme) => ({
-        position: 'absolute',
-        padding: `${theme.spacing.xs}px 0px`,
-        borderBottom: `1px solid ${'transparent'}`,
-        backgroundColor: 'transparent',
-      })}
-    >
-      <Container className={classes.header}>
-        <Group spacing={50} className={classes.links}>
-          {left}
-          {!injectedWalletConnected && items}
-          <Account />
-        </Group>
-        <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />
-      </Container>
-    </Header>
+    <>
+      <Header
+        height={{ base: 50, md: 70 }}
+        px='sm'
+        pb={15}
+        sx={(theme) => ({
+          position: 'fixed',
+          padding: `${theme.spacing.xs}px 0px`,
+          borderBottom: `1px solid ${'transparent'}`,
+          backgroundColor: 'transparent',
+          top: 0,
+          right: 0,
+          [theme.fn.largerThan('sm')]: {
+            paddingTop: 70,
+            marginLeft: sideNavCollapsed ? 120 : 315,
+          },
+          [theme.fn.smallerThan('sm')]: {
+            paddingTop: 0,
+          },
+        })}
+      >
+        <Container className={classes.header}>
+          <Group className={classes.links}>
+            {left}
+            {!injectedWalletConnected && items}
+            <Account />
+          </Group>
+          <Stack spacing={'xs'} className={classes.mobileHeader} pt={115}>
+            <Account />
+            <SafeYieldsLogo />
+          </Stack>
+        </Container>
+      </Header>
+      <Burger opened={opened} onClick={toggle} className={classes.burger} size='sm' />
+    </>
   );
 };
 
