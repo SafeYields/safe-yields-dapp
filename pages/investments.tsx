@@ -5,7 +5,7 @@ import spreadsheetReader from 'g-sheets-api';
 import { AppLayout } from 'layout';
 import type { GetServerSideProps, InferGetServerSidePropsType, NextPageWithLayout } from 'next';
 import Link from 'next/link';
-import { DetailedHTMLProps, HTMLAttributes } from 'react';
+import { DetailedHTMLProps, Fragment, HTMLAttributes } from 'react';
 import { ChevronDown, ChevronRight } from 'tabler-icons-react';
 
 import { OulineButton } from '../components/OutlineButton';
@@ -86,10 +86,13 @@ const TableRow = ({
   </tr>
 );
 
-const Rows = ({ data, mobile }: { data: TableData[]; mobile?: boolean }) =>
-  data.map((investment) => (
-    <TableRow rowData={investment} mobile={mobile} key={investment.investments} />
-  ));
+const Rows = ({ data, mobile }: { data: TableData[]; mobile?: boolean }) => (
+  <Fragment>
+    {data.map((investment, index) => (
+      <TableRow rowData={investment} mobile={mobile} key={investment.investments} />
+    ))}
+  </Fragment>
+);
 
 const CollapsedRows = ({ data, mobile }: { data: TableData[]; mobile?: boolean }) => {
   const [open, { toggle }] = useDisclosure();
