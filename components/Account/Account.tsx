@@ -79,7 +79,7 @@ export const Account = () => {
             radius='xl'
             size='md'
             styles={{
-              root: { paddingRight: 14, height: 48 },
+              root: { paddingRight: 14, height: 48, maxWidth: '100vw' },
               leftIcon: { marginLeft: 0 },
             }}
             onClick={() => {
