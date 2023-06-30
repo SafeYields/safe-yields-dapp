@@ -59,7 +59,7 @@ const Home: NextPageWithLayout = () => {
           <Title order={1}>SAFE YIELDS</Title>
         </Center>
         <Center>
-          <Title order={5}>Safe Investments in DeFi</Title>
+          <Title order={5}>Safe is a Hedge with an Edge</Title>
         </Center>
       </Stack>
     </PageContainer>

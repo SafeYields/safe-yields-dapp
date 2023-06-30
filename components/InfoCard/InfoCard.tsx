@@ -26,7 +26,7 @@ export const InfoCard: FC<InfoCardProps> = ({
         ...theme.fn.focusStyles(),
         maxWidth,
         minHeight,
-        zIndex: 100,
+
         margin: 'auto',
         marginBottom: '13px',
         textAlign: 'center',

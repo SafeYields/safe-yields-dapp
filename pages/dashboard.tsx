@@ -102,8 +102,9 @@ const Home: NextPageWithLayout = () => {
         {/* </Grid.Col>*/}
         <Grid.Col span={4}>
           <InfoCard header={'NFT Rewards'}>
-            <CardContentBox
-              footer={
+            <CardContentBox footer={displayValueInUSDC(NFTRewards)}>
+              <Flex gap={16}>
+                {displayDollarValue(NFTRewards)}
                 <FancyButton
                   style={{ height: '24px' }}
                   onClick={claimRewardsHandler}
@@ -116,9 +117,7 @@ const Home: NextPageWithLayout = () => {
                 >
                   Сlaim
                 </FancyButton>
-              }
-            >
-              {displaySafeValue(NFTRewards)}
+              </Flex>
             </CardContentBox>
           </InfoCard>
         </Grid.Col>

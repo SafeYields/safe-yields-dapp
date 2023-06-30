@@ -24,11 +24,13 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
   return {
     safeYieldsLogo: {
       paddingRight: theme.spacing.xs,
-      paddingTop: 35,
-      paddingBottom: 35,
+      [theme.fn.largerThan('sm')]: {
+        paddingTop: 15,
+        paddingBottom: 15,
+      },
       margin: 'auto',
-      width: params?.collapsed ? 90 : 205,
-      height: 170,
+      width: params?.collapsed ? 90 : 170,
+      height: 'auto',
     },
 
     glowingLogo: {

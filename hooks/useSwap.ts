@@ -190,7 +190,6 @@ const useSwap = ({
     const controller = new AbortController();
     controllerRef.current = controller;
     const query = `${process.env.NEXT_PUBLIC_SAFE_API_URL}/swap/estimate?${search.slice(1)}`;
-    console.log('query', query);
     const res = await fetch(query, {
       headers: {
         'accept-version': 'Latest',
