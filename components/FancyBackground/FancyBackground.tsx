@@ -2,9 +2,9 @@ import { keyframes } from '@emotion/react';
 import { createStyles, Image } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { FC, ReactNode } from 'react';
-// @ts-ignore
-import GalaxyBackground from 'react-animated-stars';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
+
+import { StarryBackground } from './StarryBackground';
 
 const fading = keyframes`
   0% {
@@ -54,9 +54,9 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       borderRadius: '100%',
       background: 'transparent',
       pointerEvents: 'none',
-      webkitAnimation: `${unfading} 20s ease-in-out  infinite alternate`,
-      animation: `${unfading} 20s ease-in-out  infinite alternate`,
-      mozAnimation: `${unfading} 20s ease-in-out  infinite alternate`,
+      webkitAnimation: `${unfading} 7s ease-in-out  infinite alternate`,
+      animation: `${unfading} 7s ease-in-out  infinite alternate`,
+      mozAnimation: `${unfading} 7s ease-in-out  infinite alternate`,
     },
     app: {
       pointerEvents: 'none',
@@ -136,14 +136,7 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
           exit: 500,
         }}
       >
-        <GalaxyBackground
-          starCount={100}
-          rotationSpeed={0.05}
-          bgColor={'transparent'}
-          minSize={0.3}
-          maxSize={2}
-          innerRadius={150}
-        >
+        <StarryBackground>
           <>
             <Image
               src='/assets/boreal1.svg'
@@ -169,7 +162,7 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
             </div>
             {children}
           </>
-        </GalaxyBackground>
+        </StarryBackground>
       </CSSTransition>
     </SwitchTransition>
   );
