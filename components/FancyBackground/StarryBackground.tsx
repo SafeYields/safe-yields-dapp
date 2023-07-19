@@ -14,11 +14,8 @@ interface Star {
   size: number;
   angle: number;
   color: string;
+  speed: number;
 }
-
-const getRandomInteger = (min: number, max: number) => {
-  return Math.round(Math.random() * (max - min) + min);
-};
 
 interface CreateStarProps {
   minSize: number;
@@ -26,6 +23,9 @@ interface CreateStarProps {
   color: string;
   canvasWidth: number;
   canvasHeight: number;
+  speed?: number;
+  minSpeed?: number;
+  maxSpeed?: number;
 }
 const createStar = ({
   minSize,
@@ -33,11 +33,18 @@ const createStar = ({
   color,
   canvasWidth,
   canvasHeight,
+  speed = 2e-5,
+  minSpeed,
+  maxSpeed,
 }: CreateStarProps): Star => {
   const startPosition: { x: number; y: number } = {
     x: Math.random() * canvasWidth,
     y: Math.random() * canvasHeight,
   };
+
+  const size = Math.random() * (maxSize - minSize) + minSize;
+  const averageSize = 0.5 * (maxSize - minSize) + minSize;
+  const _speed = minSpeed && maxSpeed ? Math.random() * maxSpeed - minSpeed + minSpeed : speed;
 
   return {
     startPosition,
@@ -46,9 +53,10 @@ const createStar = ({
       Math.pow(startPosition.x - canvasWidth / 2, 2) +
         Math.pow(startPosition.y - (canvasHeight / 2 + 100), 2),
     ),
-    size: Math.random() * (maxSize - minSize) + minSize,
+    size,
     angle: (Math.atan2(startPosition.y, startPosition.x) * 180) / Math.PI,
     color,
+    speed: _speed * (size / averageSize),
   };
 };
 
@@ -79,7 +87,13 @@ export const StarryBackground: FC<{
   starMinSize?: number;
   starMaxSize?: number;
   children: ReactNode;
-}> = ({ starColor = '#fff', starsAmount = 1000, starMinSize = 0.5, starMaxSize = 2, children }) => {
+}> = ({
+  starColor = '#fff',
+  starsAmount = Math.min(Math.ceil(window.innerWidth / 3), 1000),
+  starMinSize = 0.5,
+  starMaxSize = 1.2,
+  children,
+}) => {
   const { classes } = useStyles();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const requestIdRef = useRef<number | null>(null);
@@ -87,44 +101,58 @@ export const StarryBackground: FC<{
   const update = useCallback(
     ({
       stars,
-      starsAmount,
       canvas,
       ctx,
       skyX,
       skyY,
+      startingCanvasHeight,
+      startingCanvasWidth,
     }: {
       time: number;
       stars: Star[];
-      starsAmount: number;
       canvas: HTMLCanvasElement;
       ctx: CanvasRenderingContext2D;
       skyX: number;
       skyY: number;
+      startingCanvasHeight: number;
+      startingCanvasWidth: number;
     }) => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.beginPath();
-      ctx.fillStyle = 'transparent';
-      ctx.rect(0, 0, canvas.width, canvas.height);
-      ctx.fill();
+      ctx.canvas.width = canvas.offsetWidth;
+      ctx.canvas.height = canvas.offsetHeight;
 
-      ctx.beginPath();
-      ctx.fillStyle = '#fff';
-      for (let i = 0; i < starsAmount; i++) {
-        stars[i].position.x = skyX + stars[i].distance * Math.sin(stars[i].angle);
-        stars[i].position.y = skyY + stars[i].distance * Math.cos(stars[i].angle);
-        stars[i].angle += 0.00002;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < stars.length; i++) {
+        const xScale = canvas.offsetWidth / startingCanvasWidth;
+
+        const yScale = canvas.offsetHeight / startingCanvasHeight;
+
+        stars[i].position.x = (skyX + stars[i].distance * Math.sin(stars[i].angle)) * xScale;
+        stars[i].position.y = (skyY + stars[i].distance * Math.cos(stars[i].angle)) * yScale;
+        stars[i].angle += stars[i].speed;
         if (
           stars[i].position.x > 0 &&
           stars[i].position.x <= canvas.width &&
           stars[i].position.y > 0 &&
           stars[i].position.y <= canvas.height
         ) {
-          ctx.rect(stars[i].position.x, stars[i].position.y, stars[i].size, stars[i].size);
+          ctx.beginPath();
+          ctx.fillStyle = stars[i].color;
+          ctx.arc(stars[i].position.x, stars[i].position.y, stars[i].size, 0, 2 * Math.PI, false);
+          ctx.fill();
         }
       }
-      ctx.fill();
       requestIdRef.current = requestAnimationFrame((time) =>
-        update({ time, stars, starsAmount, canvas, ctx, skyX, skyY }),
+        update({
+          time,
+          stars,
+          canvas,
+          ctx,
+          skyX,
+          skyY,
+          startingCanvasHeight,
+          startingCanvasWidth,
+        }),
       );
     },
     [],
@@ -136,8 +164,9 @@ export const StarryBackground: FC<{
       const getHeight = () => canvas.offsetHeight ?? 0;
       const getWidth = () => canvas.offsetWidth ?? 0;
 
-      const skyX = canvas.offsetWidth / 2;
-      const skyY = canvas.offsetHeight / 2;
+      // These numbers make the 'gravity center' as the center o SAFE logo.
+      const skyX = 0.494 * canvas.offsetWidth;
+      const skyY = 0.83 * canvas.offsetHeight;
 
       const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
@@ -154,7 +183,16 @@ export const StarryBackground: FC<{
       });
 
       requestIdRef.current = requestAnimationFrame((time) =>
-        update({ time, stars, starsAmount, canvas, ctx, skyX, skyY }),
+        update({
+          time,
+          stars,
+          canvas,
+          ctx,
+          skyX,
+          skyY,
+          startingCanvasHeight: canvas.offsetHeight,
+          startingCanvasWidth: canvas.offsetWidth,
+        }),
       );
 
       if (Number.isFinite(requestIdRef.current)) {
