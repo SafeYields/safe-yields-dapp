@@ -253,21 +253,20 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
       investmentsSheetOptions,
       (data: any[]) => {
         const mappedTableData = mapSheetToTableData(data);
+
         const costRowsStartIndex = mappedTableData.findIndex(
           (c: TableData) => c.investments === 'Costs',
         );
         const exitedPositionStartIndex = mappedTableData.findIndex(
           (c: TableData) => c.investments === 'Exited Positions',
         );
+        const totalIndex = mappedTableData.findIndex((c: TableData) => c.investments === 'Total');
 
         sheetData = {
           tableData: mappedTableData.slice(0, costRowsStartIndex),
           costRows: mappedTableData.slice(costRowsStartIndex, exitedPositionStartIndex),
-          exitedPositionRows: mappedTableData.slice(
-            exitedPositionStartIndex,
-            mappedTableData.length - 1,
-          ),
-          total: mappedTableData.slice(-1),
+          exitedPositionRows: mappedTableData.slice(exitedPositionStartIndex, totalIndex),
+          total: [mappedTableData[totalIndex === -1 ? mappedTableData.length - 1 : totalIndex]],
         };
         resolve(null);
       },
@@ -298,6 +297,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
   });
 
   await Promise.allSettled([investmentsPromise, performancePromise]);
+
   return { props: { ...sheetData, lastMonthPerformance } };
 };
 
