@@ -1,3 +1,5 @@
+import 'nprogress/nprogress.css';
+
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { Analytics } from '@vercel/analytics/react';
@@ -5,13 +7,18 @@ import { NextPageWithLayout } from 'next';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import Router from 'next/router';
+import NProgress from 'nprogress';
 import { GlobalStyleProvider } from 'style/GlobalStyleProvider';
-
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout;
 }
 
 const Web3Provider = dynamic(() => import('components/Web3Provider/index'), { ssr: false });
+
+Router.events.on('routeChangeStart', () => NProgress.start());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
 
 function _App({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
