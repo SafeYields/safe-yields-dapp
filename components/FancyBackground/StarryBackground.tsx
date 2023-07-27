@@ -33,7 +33,7 @@ const createStar = ({
   color,
   canvasWidth,
   canvasHeight,
-  speed = 2e-5,
+  speed = 4e-5,
   minSpeed,
   maxSpeed,
 }: CreateStarProps): Star => {
