@@ -32,7 +32,7 @@ const ths = (mobile?: boolean) => (
     <th>Withdrawn</th>
     <th>Realized Profits</th>
     <th>ROI</th>
-    <th>PnL</th>
+    {/* <th>PnL</th> */}
   </tr>
 );
 
@@ -82,7 +82,7 @@ const TableRow = ({
     <td>{rowData.withdrawn}</td>
     <td>{rowData.profits}</td>
     <td>{rowData.roi}</td>
-    <td>{rowData.pnl}</td>
+    {/* <td>{rowData.pnl}</td> */}
   </tr>
 );
 
