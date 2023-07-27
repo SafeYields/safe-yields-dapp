@@ -266,7 +266,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
           tableData: mappedTableData.slice(0, costRowsStartIndex),
           costRows: mappedTableData.slice(costRowsStartIndex, exitedPositionStartIndex),
           exitedPositionRows: mappedTableData.slice(exitedPositionStartIndex, totalIndex),
-          total: [mappedTableData[totalIndex]],
+          total: [mappedTableData[totalIndex === -1 ? mappedTableData.length - 1 : totalIndex]],
         };
         resolve(null);
       },
