@@ -59,6 +59,7 @@ const useStyles = createStyles((theme) => ({
   link: {
     display: 'block',
     padding: '8px 12px',
+    textShadow: '1px 1px 3px #000',
     borderRadius: theme.radius.sm,
     textDecoration: 'none',
     color: theme.colors[theme.primaryColor][0],
@@ -69,12 +70,12 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: 'transparent',
 
     '&:hover': {
-      color: theme.colors.highlightGreen[0],
+      color: theme.colors.mainCyan[0],
     },
   },
 
   linkActive: {
-    color: theme.colors.highlightGreen[0],
+    color: theme.colors.mainCyan[0],
   },
 
   linkBackground: {

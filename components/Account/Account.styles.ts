@@ -21,10 +21,10 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       backgroundSize: '300% 100%',
       backgroundImage: theme.fn.linearGradient(
         90,
-        theme.colors.mustardGreen[0],
-        theme.colors.orange[0],
-        theme.colors.mustardGreen[0],
-        theme.colors.orange[0],
+        theme.colors.mainCyan[0],
+        theme.colors.darkGreen[0],
+        theme.colors.mainCyan[0],
+        theme.colors.darkGreen[0],
       ),
 
       borderRadius: '50px',
@@ -34,7 +34,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       transition: 'all 0.4s ease-in-out',
 
       '&:hover': {
-        boxShadow: '0 5px 15px 0 rgba(229, 66, 10, 0.85)',
+        boxShadow: '0 0px 8px 0 #4CFAC7',
         backgroundPosition: '100% 0',
         mozTransition: 'all 0.4s ease-in-out',
         oTransition: 'all 0.4s ease-in-out',
@@ -47,7 +47,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
     },
 
     buttonActive: {
-      boxShadow: '0 5px 15px 0 rgba(229, 66, 10, 0.85)',
+      boxShadow: '0 0px 8px 0 #4CFAC7',
     },
 
     outline: {
@@ -59,13 +59,13 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       fontWeight: 325,
       border: '1px solid',
       background: 'none',
-      borderColor: theme.colors.limeGreen[0],
+      borderColor: theme.colors.mainCyan[0],
 
       '&:hover': {
-        boxShadow: '0 5px 15px 0 rgba(229, 66, 10, 0.85)',
+        boxShadow: '0 5px 15px 0 #4CFAC7',
         background: 'none',
         fontWeight: 700,
-        borderColor: theme.colors.orange[0],
+        borderColor: theme.colors.mainCyan[0],
         mozTransition: 'all 0.4s ease-in-out',
         oTransition: 'all 0.4s ease-in-out',
         webkitTransition: 'all 0.4s ease-in-out',

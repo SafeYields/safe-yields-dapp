@@ -15,13 +15,12 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       fontWeight: 325,
       border: '1px solid',
       background: 'none',
-      borderColor: theme.colors.limeGreen[0],
+      borderColor: theme.colors.mainCyan[0],
 
       '&:hover': {
-        boxShadow: '0 5px 15px 0 rgba(229, 66, 10, 0.85)',
+        boxShadow: '0 0px 8px 0 #4CFAC7',
         background: 'none',
         fontWeight: 700,
-        borderColor: theme.colors.orange[0],
         mozTransition: 'all 0.4s ease-in-out',
         oTransition: 'all 0.4s ease-in-out',
         webkitTransition: 'all 0.4s ease-in-out',

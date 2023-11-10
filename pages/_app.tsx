@@ -26,8 +26,8 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <>
       <Head>
-        <link rel='icon' href='/favicon.svg' sizes='any' type='image/svg+xml' />
-        <link rel='apple-touch-icon' sizes='180x180' href='/favicon.svg' />
+        <link rel='icon' href='/favicon.ico' sizes='any' type='image/svg+xml' />
+        <link rel='apple-touch-icon' sizes='180x180' href='/favicon.ico' />
         <meta name='theme-color' content='#D9E022' />
       </Head>
       <Web3Provider>
@@ -39,11 +39,13 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
               colorScheme: 'light',
               black: 'white',
               colors: {
-                sideMenuBackgroundBlue: ['#013D43'],
+                sideMenuBackgroundBlue: ['#053234'],
                 highlightGreen: ['#D1DE5D'],
                 mustardGreen: ['#CEDB3F'],
                 limeGreen: ['#D9E022', '#CBDA49'],
                 orange: ['#E89B17', '#F28705'],
+                mainCyan: ['#4CFAC7'],
+                darkGreen: ['#053234'],
                 gray: ['#F2ECE42D', '#396668', '#396668', 'rgba(5, 50, 52, 0.18)'],
                 transparentGray: ['rgba(255, 255, 255, 0.29)'],
                 white: ['#F2ECE4'],
@@ -151,6 +153,7 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                       md: 960,
                       lg: 1140,
                       xl: 1320,
+                      xxl: 1920,
                     },
                   },
                 },
@@ -241,13 +244,13 @@ function _App({ Component, pageProps }: AppPropsWithLayout) {
                       backgroundColor: theme.colors.greenGray[2],
                       '&[data-selected]': {
                         color: theme.colors.emeraldGreen[0],
-                        backgroundColor: theme.colors.mustardGreen[0],
+                        backgroundColor: theme.colors.mainCyan[0],
                         '&, &:hover': {
-                          backgroundColor: theme.colors.mustardGreen[0],
+                          backgroundColor: theme.colors.mainCyan[0],
                         },
                       },
                       '&[data-hovered]': {
-                        backgroundColor: theme.colors.mustardGreen[0],
+                        backgroundColor: theme.colors.mainCyan[0],
                       },
                     },
                   }),

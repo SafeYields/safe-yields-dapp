@@ -73,7 +73,7 @@ export const Account = () => {
           <Button
             className={cx(classes.button)}
             loading={connecting || inProgress}
-            loaderProps={{ color: 'yellow', size: 'sm', variant: 'dots' }}
+            loaderProps={{ color: 'white', size: 'sm', variant: 'dots' }}
             variant='light'
             leftIcon={isMetaMaskInstalled ? <Unlink size={20} /> : <Download size={20} />}
             radius='xl'
