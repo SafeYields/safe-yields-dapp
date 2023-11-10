@@ -74,7 +74,7 @@ export const InfoCard: FC<InfoCardProps> = ({
         textAlign: 'center',
         columnGap: theme.spacing.sm,
         textDecoration: 'none',
-        color: theme.colors.limeGreen[0],
+        color: theme.colors.mainCyan[0],
         padding: `${theme.spacing.sm}px 0`,
         borderRadius: '21px',
         borderWidth: '0px',
@@ -83,7 +83,7 @@ export const InfoCard: FC<InfoCardProps> = ({
         backgroundClip: 'padding-box',
         position: 'relative',
         boxSizing: 'border-box',
-        // background: theme.fn.linearGradient(0, theme.colors.mustardGreen[0], theme.colors.orange[0]),
+        // background: theme.fn.linearGradient(0, theme.colors.mainCyan[0], theme.colors.orange[0]),
 
         background: 'transparent',
       },
