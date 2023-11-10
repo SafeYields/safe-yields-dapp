@@ -1,10 +1,7 @@
 import { keyframes } from '@emotion/react';
-import { createStyles, Image } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { createStyles } from '@mantine/core';
 import { FC, ReactNode } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
-
-import { StarryBackground } from './StarryBackground';
 
 const fading = keyframes`
   0% {
@@ -108,21 +105,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
   };
 });
 
-const glowing = keyframes`
-  0% {
-    filter: drop-shadow(0 0 5px #062C2D) drop-shadow(0 0 15px #062C2D) drop-shadow(0 0 20px #062C2D);
-  }
-  90% {
-    filter: drop-shadow(0 0 5px #062C2D) drop-shadow(0 0 15px #062C2D) drop-shadow(0 0 20px #062C2D);
-  }
-
-  100% {
-    filter: drop-shadow(0 0 20px #D1DE5D) drop-shadow(0 0 25px #D9E022) drop-shadow(0 0 40px #E89B17);
-  }
-`;
-
 export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
-  const [opened, handlers] = useDisclosure(false);
   const { classes, cx } = useStyles();
   return (
     <SwitchTransition mode='out-in'>
@@ -136,33 +119,20 @@ export const FancyBackground: FC<{ children: ReactNode }> = ({ children }) => {
           exit: 500,
         }}
       >
-        <StarryBackground>
-          <>
-            <Image
-              src='/assets/boreal1.svg'
-              alt='glowing boreal'
-              className={classes.glowingBoreal}
-            />
-            <div
-              style={{
-                left: 50,
-                top: 50,
-                width: '70vw',
-                opacity: 0.7,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                position: 'absolute',
-              }}
-            >
-              <Image
-                src='/assets/boreal2.svg'
-                alt='glowing boreal'
-                className={classes.unGlowingBoreal}
-              />
-            </div>
-            {children}
-          </>
-        </StarryBackground>
+        <>
+          <div
+            style={{
+              left: 50,
+              top: 50,
+              width: '70vw',
+              opacity: 0.7,
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              position: 'absolute',
+            }}
+          ></div>
+          {children}
+        </>
       </CSSTransition>
     </SwitchTransition>
   );

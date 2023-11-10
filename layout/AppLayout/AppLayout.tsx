@@ -19,10 +19,22 @@ export const AppLayout: CustomLayout = (page) => {
     <FancyBackground>
       <AppShell
         padding='md'
-        styles={() => ({
+        styles={(theme) => ({
           body: {
             height: '100%',
-            backgroundImage: 'url(/assets/background.png)',
+            backgroundImage: 'url(/assets/1920_1080_safeyields_bg.png)',
+            [theme.fn.largerThan('md')]: {
+              backgroundImage: 'url(/assets/1440_900_safeyields_bg.png)',
+            },
+            [theme.fn.smallerThan('md')]: {
+              backgroundImage: 'url(/assets/810_1080_safeyields_bg.png)',
+            },
+            [theme.fn.smallerThan('sm')]: {
+              backgroundImage: 'url(/assets/768_1024_safeyields_bg.png)',
+            },
+            [theme.fn.smallerThan('xs')]: {
+              backgroundImage: 'url(/assets/360_640_safeyields_bg.png)',
+            },
             backgroundSize: '100% 100vh',
             backgroundRepeat: 'no-repeat',
             backgroundAttachment: 'fixed',

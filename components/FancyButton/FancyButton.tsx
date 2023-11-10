@@ -25,10 +25,10 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       backgroundSize: '300% 100%',
       backgroundImage: theme.fn.linearGradient(
         90,
-        theme.colors.mustardGreen[0],
-        theme.colors.orange[0],
-        theme.colors.mustardGreen[0],
-        theme.colors.orange[0],
+        theme.colors.mainCyan[0],
+        theme.colors.darkGreen[0],
+        theme.colors.mainCyan[0],
+        theme.colors.darkGreen[0],
       ),
       borderRadius: '50px',
       mozTransition: 'all 0.4s ease-in-out',
@@ -42,7 +42,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       },
 
       '&:hover': {
-        boxShadow: '0 1px 2px 0 rgba(229, 66, 10, 0.85)',
+        boxShadow: '0 0 8px 0 #4CFAC7',
         backgroundPosition: '100% 0',
         mozTransition: 'all 0.4s ease-in-out',
         oTransition: 'all 0.4s ease-in-out',

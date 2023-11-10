@@ -100,7 +100,7 @@ function RefreshBtn({ trade, onRefresh, loading }: Props) {
         left: 0,
         right: 0,
         textAlign: 'center',
-        color: theme.colors.mustardGreen[0],
+        color: theme.colors.mainCyan[0],
       },
     };
   });
