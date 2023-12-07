@@ -1,5 +1,5 @@
 import { isAddress } from '@ethersproject/address';
-import { Grid, Loader, Text, Title } from '@mantine/core';
+import { Center, Grid, Loader, Stack, Text, Title } from '@mantine/core';
 import { transactionInProgressAtom } from 'components/Account/Account';
 import { FancyButton } from 'components/FancyButton';
 import { FormattedAmount } from 'components/FormatPrice';
@@ -15,6 +15,7 @@ import useWalletConnected from 'hooks/useWalletConnected';
 import { useAtom } from 'jotai';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -72,13 +73,33 @@ const Nft: NextPageWithLayout = () => {
           tier={selectedTier}
         />
       )}
+
+      <Center>
+        <InfoCard header={'Christmas NFT Sale'} minWidth='240px' hover={false}>
+          <Stack align='center' spacing={0}>
+            <Image
+              src='/assets/3-1nfts.svg'
+              alt='3 for 2 nfts'
+              height={100}
+              width={150}
+              style={{ marginTop: -20, marginBottom: -12 }}
+            />
+            <Title order={3} color='#4CFAC7' style={{ fontSize: 24 }}>
+              Buy 2 get 1 free
+            </Title>
+            <Text color='#F1F1F1' style={{ fontSize: 10, marginTop: 6 }}>
+              Airdropped by the end of December
+            </Text>
+          </Stack>
+        </InfoCard>
+      </Center>
       <Grid
         grow
         gutter={'md'}
         align={'center'}
         justify={'space-between'}
         mt={'lg'}
-        style={{ height: '60vh', textAlign: 'center', filter: isModalOpen ? 'blur(5px)' : 'none' }}
+        style={{ textAlign: 'center', filter: isModalOpen ? 'blur(5px)' : 'none' }}
       >
         {[0, 1, 2, 3].map((tier) => (
           <Grid.Col span={3} key={tier}>
@@ -93,7 +114,14 @@ const Nft: NextPageWithLayout = () => {
               <CardContentBox
                 footer={
                   <FancyButton
-                    style={{ height: '24px' }}
+                    style={{
+                      height: '24px',
+                      backgroundColor: '#9999ff',
+                      color: 'white',
+                      fontSize: '12px',
+                      paddingLeft: 24,
+                      paddingRight: 24,
+                    }}
                     onClick={() => handleModalOpen(tier)}
                     loading={executionInProgress}
                     disabled={
@@ -152,7 +180,7 @@ const Nft: NextPageWithLayout = () => {
             </Text>
           </Grid.Col>
         )}
-        <Grid.Col span={12} mt={'sm'}>
+        <Grid.Col span={12} mt={'lg'}>
           <Title order={4}> Don’t know how our NFTs work? Read our Whitepaper</Title>
           <Link
             href={'https://safeyields.io/safeyields_whitepaper.pdf'}

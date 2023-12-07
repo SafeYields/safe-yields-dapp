@@ -18,18 +18,19 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       columnGap: theme.spacing.sm,
       textDecoration: 'none',
       fontSize: theme.fontSizes.md,
-      color: 'white',
       lineHeight: '16.8px',
-      fontWeight: 400,
+      fontWeight: 600,
+      color: '#0B1B03',
       border: 'none',
-      backgroundSize: '300% 100%',
-      backgroundImage: theme.fn.linearGradient(
-        90,
-        theme.colors.mainCyan[0],
-        theme.colors.darkGreen[0],
-        theme.colors.mainCyan[0],
-        theme.colors.darkGreen[0],
-      ),
+      // backgroundSize: '300% 100%',
+      backgroundColor: '#4CFAC7',
+      // backgroundImage: theme.fn.linearGradient(
+      //   90,
+      //   theme.colors.mainCyan[0],
+      //   theme.colors.darkGreen[0],
+      //   theme.colors.mainCyan[0],
+      //   theme.colors.darkGreen[0],
+      // ),
       borderRadius: '50px',
       mozTransition: 'all 0.4s ease-in-out',
       oTransition: 'all 0.4s ease-in-out',
@@ -43,7 +44,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
 
       '&:hover': {
         boxShadow: '0 0 8px 0 #4CFAC7',
-        backgroundPosition: '100% 0',
+        // backgroundPosition: '100% 0',
         mozTransition: 'all 0.4s ease-in-out',
         oTransition: 'all 0.4s ease-in-out',
         webkitTransition: 'all 0.4s ease-in-out',
@@ -65,7 +66,7 @@ export const FancyButton: FC<
   return (
     <Button
       className={cx(classes.button, classes.buttonActive)}
-      variant='light'
+      variant='filled'
       radius='xl'
       size='sm'
       {...restProps}

@@ -15,6 +15,10 @@ export const AppLayout: CustomLayout = (page) => {
   const [opened, handlers] = useDisclosure(false);
   const [sideNavCollapsed, sideNavHandlers] = useDisclosure(false);
 
+  const router = useRouter();
+
+  const bgSuffix = router.pathname === '/' ? 'safeyields_bg' : 'safeyields_bg_dapp';
+
   return (
     <FancyBackground>
       <AppShell
@@ -22,23 +26,24 @@ export const AppLayout: CustomLayout = (page) => {
         styles={(theme) => ({
           body: {
             height: '100%',
-            backgroundImage: 'url(/assets/1920_1080_safeyields_bg.png)',
+            backgroundImage: `url(/assets/1920_1080_${bgSuffix}.png)`,
             [theme.fn.largerThan('md')]: {
-              backgroundImage: 'url(/assets/1440_900_safeyields_bg.png)',
+              backgroundImage: `url(/assets/1440_900_${bgSuffix}.png)`,
             },
             [theme.fn.smallerThan('md')]: {
-              backgroundImage: 'url(/assets/810_1080_safeyields_bg.png)',
+              backgroundImage: `url(/assets/810_1080_${bgSuffix}.png)`,
             },
             [theme.fn.smallerThan('sm')]: {
-              backgroundImage: 'url(/assets/768_1024_safeyields_bg.png)',
+              backgroundImage: `url(/assets/768_1024_${bgSuffix}.png)`,
             },
             [theme.fn.smallerThan('xs')]: {
-              backgroundImage: 'url(/assets/360_640_safeyields_bg.png)',
+              backgroundImage: `url(/assets/360_640_${bgSuffix}.png)`,
             },
             backgroundSize: '100% 100vh',
             backgroundRepeat: 'no-repeat',
             backgroundAttachment: 'fixed',
             WebkitMaskAttachment: 'fixed',
+            backgroundColor: '#000505',
           },
           main: {
             padding: 0,

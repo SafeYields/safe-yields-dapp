@@ -9,6 +9,7 @@ type InfoCardProps = {
   minHeight?: string;
   background?: string;
   gray?: boolean;
+  hover?: boolean;
 };
 
 export const InfoCard: FC<InfoCardProps> = ({
@@ -19,6 +20,7 @@ export const InfoCard: FC<InfoCardProps> = ({
   minHeight,
   background,
   gray,
+  hover = true,
 }) => {
   const useStyles = createStyles<string>((theme, params, getRef) => {
     return {
@@ -55,13 +57,15 @@ export const InfoCard: FC<InfoCardProps> = ({
         transition: 'all 0.4s ease-in-out',
         willChange: 'transform',
 
-        '&:hover': {
-          boxShadow: '0 7px 15px 0 rgba(200, 180, 80, 0.50)',
-          mozTransition: 'all 0.4s ease-in-out',
-          oTransition: 'all 0.4s ease-in-out',
-          webkitTransition: 'all 0.4s ease-in-out',
-          transition: 'all 0.4s ease-in-out',
-        },
+        '&:hover': hover
+          ? {
+              boxShadow: '0 7px 15px 0 #4CFAC770',
+              mozTransition: 'all 0.4s ease-in-out',
+              oTransition: 'all 0.4s ease-in-out',
+              webkitTransition: 'all 0.4s ease-in-out',
+              transition: 'all 0.4s ease-in-out',
+            }
+          : undefined,
       },
       cardInner: {
         ...theme.fn.focusStyles(),
@@ -94,7 +98,7 @@ export const InfoCard: FC<InfoCardProps> = ({
         fontWeight: '700',
         fontSize: 'lg',
         position: 'relative',
-        color: theme.colors.almostWhite[0],
+        color: 'white',
         paddingLeft: '10px',
         paddingRight: '10px',
         paddingTop: '0px',
