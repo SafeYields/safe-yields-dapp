@@ -6,7 +6,7 @@ export const TierHeader: FC<{ tier: number }> = (props) => (
     order={3}
     sx={(theme) => {
       return {
-        color: theme.colors.limeGreen[1],
+        color: theme.colors.mainCyan[0],
       };
     }}
   >
