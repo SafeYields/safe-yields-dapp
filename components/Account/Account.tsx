@@ -73,8 +73,8 @@ export const Account = () => {
           <Button
             className={cx(classes.button)}
             loading={connecting || inProgress}
-            loaderProps={{ color: 'white', size: 'sm', variant: 'dots' }}
-            variant='light'
+            loaderProps={{ color: 'black', size: 'sm', variant: 'dots' }}
+            variant='filled'
             leftIcon={isMetaMaskInstalled ? <Unlink size={20} /> : <Download size={20} />}
             radius='xl'
             size='md'
@@ -155,8 +155,8 @@ export const Account = () => {
       {!mobile && <RefferalButton />}
       <Stack spacing='xs' justify='center' align='center' style={{ textAlign: 'center' }}>
         <Button
-          className={cx(classes.button, classes.buttonActive)}
-          variant='light'
+          className={cx(classes.button)}
+          variant='filled'
           leftIcon={<Link size={20} />}
           radius='xl'
           size='md'

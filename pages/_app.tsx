@@ -23,12 +23,71 @@ Router.events.on('routeChangeError', () => NProgress.done());
 function _App({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
   const getPageLayout = Component.getLayout || ((page) => page);
+
   return (
     <>
       <Head>
         <link rel='icon' href='/favicon.ico' sizes='any' type='image/svg+xml' />
         <link rel='apple-touch-icon' sizes='180x180' href='/favicon.ico' />
         <meta name='theme-color' content='#D9E022' />
+        <link rel='preload' as='image' href='/assets/bg_tubes.svg' />
+        <link
+          rel='preload'
+          as='image'
+          href='/assets/1920_1080_safeyields_bg.png'
+          media='(min-width: 1080px)'
+        />
+        <link
+          rel='preload'
+          as='image'
+          href='/assets/1920_1080_safeyields_bg_dapp.png'
+          media='(min-width: 1080px)'
+        />
+        <link
+          rel='preload'
+          as='image'
+          href='/assets/1440_900_safeyields_bg.png'
+          media='(min-width: 1080px)'
+        />
+
+        <link
+          rel='preload'
+          as='image'
+          href='/assets/1440_900_safeyields_bg.png'
+          media='(min-width: 960px) and (max-width: 1080px)'
+        />
+        <link
+          rel='preload'
+          as='image'
+          href='/assets/1440_900_safeyields_bg_dapp.png'
+          media='(min-width: 960px) and (max-width: 1080px)'
+        />
+
+        <link
+          rel='preload'
+          as='image'
+          href='/assets/810_1080_safeyields_bg.png'
+          media='(min-width: 720px) and (max-width: 960px)'
+        />
+        <link
+          rel='preload'
+          as='image'
+          href='/assets/810_1080_safeyields_bg_dapp.png'
+          media='(min-width: 720px) and (max-width: 960px)'
+        />
+
+        <link
+          rel='preload'
+          as='image'
+          href='/assets/768_1024_safeyields_bg.png'
+          media='(min-width: 540px) and (max-width: 720px)'
+        />
+        <link
+          rel='preload'
+          as='image'
+          href='/assets/768_1024_safeyields_bg_dapp.png'
+          media='(min-width: 540px) and (max-width: 720px)'
+        />
       </Head>
       <Web3Provider>
         <GlobalStyleProvider>

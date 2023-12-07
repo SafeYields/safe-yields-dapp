@@ -1,4 +1,4 @@
-import { Center, Loader, Stack, Title } from '@mantine/core';
+import { Center, createStyles, Loader, Stack, Title } from '@mantine/core';
 import { PageContainer } from 'components/PageContainer';
 import useNFTOfTreasury from 'hooks/useNFTOfTreasury';
 import useNFTRewards from 'hooks/useNFTRewards';
@@ -7,12 +7,58 @@ import useSafeTokenBalance from 'hooks/useSafeTokenBalance';
 import useWalletConnected from 'hooks/useWalletConnected';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { DECIMALS_TO_DISPLAY } from '../config';
 import useFetchFromApi from '../hooks/useFetchFromApi';
 
+const useStyles = createStyles<string>((theme, params, getRef) => {
+  return {
+    welcome: {
+      [theme.fn.smallerThan('md')]: {
+        fontSize: 36,
+      },
+      [theme.fn.smallerThan('sm')]: {
+        fontSize: 32,
+      },
+    },
+    title: {
+      [theme.fn.smallerThan('md')]: {
+        fontSize: 48,
+      },
+      [theme.fn.smallerThan('sm')]: {
+        fontSize: 42,
+      },
+    },
+    description: {
+      [theme.fn.smallerThan('md')]: {
+        fontSize: 13,
+      },
+      [theme.fn.smallerThan('sm')]: {
+        fontSize: 11,
+      },
+    },
+    tubes: {
+      width: 'auto',
+      objectFit: 'contain',
+      position: 'absolute',
+      opacity: 0.55,
+      bottom: 0,
+      height: '42vh',
+      [theme.fn.smallerThan('md')]: {
+        height: '38vh',
+      },
+      [theme.fn.smallerThan('sm')]: {
+        height: '36vh',
+      },
+      objectPosition: '0 20px',
+    },
+  };
+});
+
 const Home: NextPageWithLayout = () => {
+  const { classes, cx } = useStyles();
   const injectedWalletConnected = useWalletConnected();
   const safeTokenPrice = useFetchFromApi('safe/price')?.data;
   // const safeTokenPrice = useSafeTokenPrice()?.data;
@@ -51,16 +97,40 @@ const Home: NextPageWithLayout = () => {
   }
   return (
     <PageContainer title='Welcome'>
-      <Stack justify={'center'} spacing={'md'} style={{ height: '50vh', textAlign: 'center' }}>
-        <Center>
-          <Title order={5}>Welcome to</Title>
+      <Stack justify={'center'} spacing={'md'} style={{ textAlign: 'center', flex: 1 }}>
+        <Center style={{ zIndex: 0 }}>
+          <Image
+            role='presentation'
+            src='/assets/bg_tubes.svg'
+            width={400}
+            height={400}
+            alt='Tubes'
+            className={cx([classes.tubes])}
+          />
         </Center>
-        <Center>
-          <Title order={1}>SAFE YIELDS</Title>
+        <Center style={{ zIndex: 1 }}>
+          <Title order={5} className={cx([classes.welcome])}>
+            Welcome to
+          </Title>
         </Center>
-        <Center>
-          <Title order={5}>Safe is a Hedge with an Edge</Title>
+        <Center style={{ zIndex: 1 }}>
+          <Title order={1} color='#4CFAC7' className={cx([classes.title])}>
+            SafeYields DAO
+          </Title>
         </Center>
+        <Stack
+          justify='center'
+          spacing={3}
+          style={{ zIndex: 1 }}
+          className={cx([classes.description])}
+        >
+          <p style={{ color: '#F2ECE4', margin: 0 }}>
+            A decentralized-one click solution for AI powered
+          </p>
+          <p style={{ color: '#F2ECE4', margin: 0 }}>
+            trading on GMX and DeFi automated strategies.
+          </p>
+        </Stack>
       </Stack>
     </PageContainer>
   );

@@ -100,11 +100,11 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
         alignItems: 'center',
         background: 'transparent',
         border: 'none',
-        color: theme.colors.limeGreen[1],
+        color: theme.colors.mainCyan[1],
         fontWeight: 700,
         fontSize: '20px',
         ':disabled': {
-          color: theme.colors.limeGreen[1],
+          background: theme.colors.gray[0],
         },
       },
     },
@@ -339,7 +339,12 @@ const SwapWidget = () => {
             Balance: {parseFloat(tokenInWithUnit).toFixed(6)}
           </Text>
         </Box>
-        <Flex className={classes.inputRow} direction={mobileScreen ? 'column' : 'row'}>
+        <Flex
+          className={classes.inputRow}
+          direction={mobileScreen ? 'column' : 'row'}
+          gap='xs'
+          align='center'
+        >
           <NumberInput
             type={'number'}
             className={classes.input}
@@ -401,7 +406,12 @@ const SwapWidget = () => {
             Balance: {parseFloat(tokenOutWithUnit).toPrecision(6)}
           </Text>
         </Box>
-        <Flex className={classes.inputRow} direction={mobileScreen ? 'column' : 'row'}>
+        <Flex
+          className={classes.inputRow}
+          gap='xs'
+          align='center'
+          direction={mobileScreen ? 'column' : 'row'}
+        >
           <NumberInput
             disabled
             className={classes.input}
@@ -412,12 +422,12 @@ const SwapWidget = () => {
             hideControls
             display={amountOut}
           />
-          <Flex gap='xs' justify='right' align='center'>
+          <Flex justify='right' align='center'>
             <SelectToken
               selectedTokenAddress={tokenOut}
               onChange={handleChangeTokenOut}
               safeList={directionToSafe}
-              style={{ width: '220px' }}
+              style={{ width: mobileScreen ? '100%' : '220px' }}
             />
           </Flex>
         </Flex>

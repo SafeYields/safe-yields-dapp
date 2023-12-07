@@ -25,6 +25,7 @@ import { getPath } from 'utils';
 import { ActiveLink } from 'utils';
 
 import { SafeYieldsLogo } from '../../components/SafeYieldsLogo';
+import SocialMediaButton from '../../components/SocialMediaButton';
 
 const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, getRef) => {
   const icon: string = getRef('icon');
@@ -35,6 +36,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
       height: '100vh',
       backgroundColor: 'transparent',
       overflowY: 'auto',
+      overflowX: 'hidden',
       top: 0,
       left: 0,
       borderColor: theme.colors.greenGray[0],
@@ -46,6 +48,15 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
     footer: {
       paddingTop: theme.spacing.xs,
       marginTop: theme.spacing.md,
+    },
+
+    socialMedia: {
+      paddingTop: theme.spacing.xs,
+      marginTop: theme.spacing.md,
+      display: 'flex',
+      gap: 16,
+      marginBottom: theme.spacing.md,
+      justifyContent: 'center',
     },
 
     collapse: {
@@ -205,6 +216,31 @@ export const SideNav: FC<{ className?: string; collapsed?: boolean; toggle?: () 
           </UnstyledButton>
         </Navbar.Section>
       </MediaQuery>
+
+      {!collapsed ? (
+        <Navbar.Section className={classes.socialMedia}>
+          <SocialMediaButton
+            href='https://github.com/orgs/SafeYields/repositories'
+            iconSrc='/assets/github.svg'
+            alt='Github'
+          />
+          <SocialMediaButton
+            href='https://www.youtube.com/@SafeYields'
+            iconSrc='/assets/youtube.svg'
+            alt='Youtube'
+          />
+          <SocialMediaButton
+            href='https://discord.gg/safeyields'
+            iconSrc='/assets/discord.svg'
+            alt='Discord'
+          />
+          <SocialMediaButton
+            href='https://twitter.com/safeyields'
+            iconSrc='/assets/twitter.svg'
+            alt='Twitter'
+          />
+        </Navbar.Section>
+      ) : null}
     </Navbar>
   );
 };
