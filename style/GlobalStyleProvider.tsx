@@ -3,7 +3,11 @@ import '@fontsource/space-grotesk';
 import { Global } from '@mantine/core';
 import type { FC, ReactNode } from 'react';
 
+import useWalletConnected from '../hooks/useWalletConnected';
+
 export const GlobalStyleProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const injectedWalletConnected = useWalletConnected();
+
   return (
     <>
       <Global
@@ -20,8 +24,8 @@ export const GlobalStyleProvider: FC<{ children: ReactNode }> = ({ children }) =
           },
           main: {
             [theme.fn.smallerThan('sm')]: {
-              height: 'calc(100vh - 145px)',
-              marginTop: '145px',
+              height: injectedWalletConnected ? 'calc(100vh - 200px)' : 'calc(100vh - 145px)',
+              marginTop: injectedWalletConnected ? '200px' : '145px',
             },
             [theme.fn.largerThan('sm')]: {
               height: 'calc(100vh - 120px)',

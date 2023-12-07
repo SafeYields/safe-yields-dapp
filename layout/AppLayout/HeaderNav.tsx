@@ -137,7 +137,11 @@ export const HeaderNav: FC<{
             {!injectedWalletConnected && items}
             <Account />
           </Group>
-          <Stack spacing={'xs'} className={classes.mobileHeader} pt={115}>
+          <Stack
+            spacing={'xs'}
+            className={classes.mobileHeader}
+            pt={injectedWalletConnected ? 180 : 115}
+          >
             <Account />
             <SafeYieldsLogo />
           </Stack>
