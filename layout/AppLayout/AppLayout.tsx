@@ -43,6 +43,7 @@ export const AppLayout: CustomLayout = (page) => {
             backgroundRepeat: 'no-repeat',
             backgroundAttachment: 'fixed',
             WebkitMaskAttachment: 'fixed',
+            backgroundColor: '#000505',
           },
           main: {
             padding: 0,
