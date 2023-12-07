@@ -83,6 +83,8 @@ const Nft: NextPageWithLayout = () => {
               height={100}
               width={150}
               style={{ marginTop: -20, marginBottom: -12 }}
+              priority={true}
+              fetchPriority='high'
             />
             <Title order={3} color='#4CFAC7' style={{ fontSize: 24 }}>
               Buy 2 get 1 free
