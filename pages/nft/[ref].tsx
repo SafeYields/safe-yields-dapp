@@ -1,5 +1,5 @@
 import { isAddress } from '@ethersproject/address';
-import { Center, Grid, Loader, Stack, Text, Title } from '@mantine/core';
+import { Grid, Loader, Text, Title } from '@mantine/core';
 import { transactionInProgressAtom } from 'components/Account/Account';
 import { FancyButton } from 'components/FancyButton';
 import { FormattedAmount } from 'components/FormatPrice';
@@ -15,7 +15,6 @@ import useWalletConnected from 'hooks/useWalletConnected';
 import { useAtom } from 'jotai';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -74,7 +73,7 @@ const Nft: NextPageWithLayout = () => {
         />
       )}
 
-      <Center>
+      {/* <Center>
         <InfoCard header={'Christmas NFT Sale'} minWidth='240px' hover={false}>
           <Stack align='center' spacing={0}>
             <Image
@@ -94,7 +93,8 @@ const Nft: NextPageWithLayout = () => {
             </Text>
           </Stack>
         </InfoCard>
-      </Center>
+      </Center> */}
+
       <Grid
         grow
         gutter={'md'}
