@@ -7,7 +7,6 @@ import useSafeTokenBalance from 'hooks/useSafeTokenBalance';
 import useWalletConnected from 'hooks/useWalletConnected';
 import { AppLayout } from 'layout';
 import type { NextPageWithLayout } from 'next';
-import { useRouter } from 'next/router';
 
 import { DECIMALS_TO_DISPLAY } from '../config';
 import useFetchFromApi from '../hooks/useFetchFromApi';
@@ -45,10 +44,7 @@ const Home: NextPageWithLayout = () => {
       )}
     </h1>
   );
-  const router = useRouter();
-  if (process.env.NEXT_PUBLIC_PRESALE_IS_ACTIVE?.toLowerCase() === 'true') {
-    router.push('/nft');
-  }
+
   return (
     <PageContainer title='Welcome'>
       <Stack justify={'center'} spacing={'md'} style={{ height: '50vh' }}>

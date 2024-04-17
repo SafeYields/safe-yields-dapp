@@ -1,9 +1,7 @@
-import { Flex } from '@mantine/core';
+import { Center, Stack, Title } from '@mantine/core';
 import { useWeb3React } from '@web3-react/core';
 
 import { PageContainer } from '../components/PageContainer';
-import SwapWidget from '../components/SwapWidget';
-import { TokenListProvider } from '../hooks/useTokens';
 import { AppLayout } from '../layout';
 
 const safeTheme = {
@@ -33,12 +31,20 @@ const defaultTokenOut: { [chainId: number]: string } = {
 const Safe = () => {
   const { chainId, provider } = useWeb3React();
   return (
-    <PageContainer title='safe'>
-      <Flex justify='center' align='center'>
-        <TokenListProvider tokenList={[]}>
-          <SwapWidget />
-        </TokenListProvider>
-      </Flex>
+    // <PageContainer title='safe'>
+    //   <Flex justify='center' align='center'>
+    //     <TokenListProvider tokenList={[]}>
+    //       <SwapWidget />
+    //     </TokenListProvider>
+    //   </Flex>
+    // </PageContainer>
+
+    <PageContainer title='Welcome'>
+      <Stack justify={'center'} spacing={'md'} style={{ height: '50vh' }}>
+        <Center>
+          <Title order={5}>Coming Soon</Title>
+        </Center>
+      </Stack>
     </PageContainer>
   );
 };

@@ -1,4 +1,4 @@
-import { Flex, Grid, Loader, MediaQuery, Text } from '@mantine/core';
+import { Flex, Grid, Loader, MediaQuery } from '@mantine/core';
 import { InfoCard } from 'components/InfoCard';
 import { CardContentBox } from 'components/InfoCard/CardContentBox';
 import { PageContainer } from 'components/PageContainer';
@@ -14,8 +14,6 @@ import { useRouter } from 'next/router';
 
 import { transactionInProgressAtom } from '../components/Account/Account';
 import { FancyButton } from '../components/FancyButton';
-import { FormattedAmount } from '../components/FormatPrice';
-import { TierHeader } from '../components/TierHeader';
 import { DECIMALS_TO_DISPLAY } from '../config';
 import { executeContractHandler } from '../handlers/executeContractHandler';
 import useFetchFromApi from '../hooks/useFetchFromApi';
@@ -101,7 +99,7 @@ const Home: NextPageWithLayout = () => {
         {/*  </InfoCard>*/}
         {/* </Grid.Col>*/}
         <Grid.Col span={4}>
-          <InfoCard header={'NFT Rewards'}>
+          <InfoCard header={'Beta User Rewards'}>
             <CardContentBox footer={displayValueInUSDC(NFTRewards)}>
               <Flex gap={16}>
                 {displayDollarValue(NFTRewards)}
@@ -124,54 +122,6 @@ const Home: NextPageWithLayout = () => {
         <MediaQuery smallerThan='lg' styles={{ display: 'none' }}>
           <Grid.Col span={2}></Grid.Col>
         </MediaQuery>
-        {[0, 1, 2, 3].map((tier) => (
-          <Grid.Col span={3} key={tier}>
-            <InfoCard
-              header={<TierHeader tier={tier + 1} />}
-              minHeight='220px'
-              background={`url(/assets/nft-icon-${tier + 1}.png) center/cover no-repeat`}
-              gray={!(safeNFTBalance && parseInt(safeNFTBalance[tier]))}
-            >
-              <CardContentBox
-                footer={
-                  <FormattedAmount
-                    caption='Your NFTs: '
-                    price={!safeNFTBalance || safeNFTBalance[tier]}
-                    unit=''
-                    decimals={0}
-                  />
-                }
-              >
-                {safeNFTBalance &&
-                safeNFTBalance[tier] &&
-                typeof safeNFTBalance[tier] == 'string' ? (
-                  <Text color='#FFFFFF' size='xs'>
-                    {safeNFTOwnership[tier].toString() + '% '}
-                    Ownership
-                  </Text>
-                ) : (
-                  '⸻'
-                )}
-              </CardContentBox>
-            </InfoCard>
-          </Grid.Col>
-        ))}
-        <Grid.Col span={12}>
-          <Text align={'center'}>
-            Total Treasury Ownership:{' '}
-            {nftOfTreasury?.concat(' %') ?? <Loader size='xs' color='#F5F5F5' />}
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={2}>
-          <InfoCard header={'SAFE Price'} minWidth={'130px'}>
-            <CardContentBox>
-              <h2 style={{ color: '#F5F5F5' }}>
-                {safeTokenPrice ? parseFloat(safeTokenPrice).toFixed(2).concat(' $USDC') : '⸻'}
-              </h2>
-              <br />
-            </CardContentBox>
-          </InfoCard>
-        </Grid.Col>
         {/* <Grid.Col span={2}>*/}
         {/*  <InfoCard header={'SAFE+ Price'} minWidth={'130px'}>*/}
         {/*    <CardContentBox>*/}
@@ -182,19 +132,7 @@ const Home: NextPageWithLayout = () => {
         {/*    </CardContentBox>*/}
         {/*  </InfoCard>*/}
         {/* </Grid.Col>*/}
-        <Grid.Col span={2}>
-          <InfoCard header={'SAFE APR'} minWidth={'130px'}>
-            <CardContentBox footer={'Last 30 days'}>
-              <h2 style={{ color: '#F5F5F5' }}>
-                {safeTokenAPR ? (
-                  safeTokenAPR.toFixed(1).concat(' %')
-                ) : (
-                  <Loader size='lg' color='#F5F5F5' />
-                )}
-              </h2>
-            </CardContentBox>
-          </InfoCard>
-        </Grid.Col>
+
         {/* <Grid.Col span={2}>*/}
         {/*  <InfoCard header={'SAFE+ APR'} minWidth={'130px'}>*/}
         {/*    <CardContentBox footer={'Last 30 days'}>*/}
@@ -208,39 +146,6 @@ const Home: NextPageWithLayout = () => {
         {/*    </CardContentBox>*/}
         {/*  </InfoCard>*/}
         {/* </Grid.Col>*/}
-        <Grid.Col span={2}>
-          <InfoCard header={'Treasury Performance'} minWidth={'130px'}>
-            <CardContentBox footer={'Last 30 days'}>
-              <h2 style={{ color: '#F5F5F5' }}>
-                {nftAPR ? nftAPR.toFixed(1).concat('%') : <Loader size='lg' color='#F5F5F5' />}
-              </h2>
-            </CardContentBox>
-          </InfoCard>
-        </Grid.Col>
-        <Grid.Col span={12}>
-          <InfoCard header={'NFTs Fair Value'}>
-            <Flex gap='xl' justify='space-between' align='center' direction='row' wrap='wrap'>
-              {[0, 1, 2, 3].map((tier) => (
-                <CardContentBox
-                  key={`safeNFTFairPrice${tier + 1}`}
-                  footer={
-                    injectedWalletConnected ? (
-                      safeNFTFairPrice && safeNFTFairPrice[tier] ? (
-                        `${safeNFTFairPrice[tier]} $USDC`
-                      ) : (
-                        <Loader size='xs' color='#F5F5F5' />
-                      )
-                    ) : (
-                      '⸻'
-                    )
-                  }
-                >
-                  <h1 style={{ color: '#F1F1F1' }}>Tier {tier + 1}</h1>
-                </CardContentBox>
-              ))}
-            </Flex>
-          </InfoCard>
-        </Grid.Col>
       </Grid>
     </PageContainer>
   );
