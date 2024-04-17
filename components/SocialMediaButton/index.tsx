@@ -11,7 +11,7 @@ interface SocialMediaButtonProps {
 const useStyles = createStyles<string>((theme, params, getRef) => {
   return {
     link: {
-      backgroundColor: '#9999ff',
+      backgroundColor: '#9999ff99',
       borderRadius: '9999px',
       padding: '8px',
       display: 'flex',
@@ -19,7 +19,7 @@ const useStyles = createStyles<string>((theme, params, getRef) => {
       alignItems: 'center',
       cursor: 'pointer',
       ':hover': {
-        boxShadow: '0 0 12px 0 #9999ff',
+        boxShadow: '0 0 12px 0 #9999ff99',
       },
       width: 40,
       height: 40,

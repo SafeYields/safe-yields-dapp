@@ -12,7 +12,7 @@ import { Account } from 'components/Account';
 import { SafeYieldsLogo } from 'components/SafeYieldsLogo';
 import Link from 'next/link';
 import { FC, ReactNode, useState } from 'react';
-import { Bell, Home, Moneybag, UserCircle } from 'tabler-icons-react';
+import { Bell, Home, Moneybag } from 'tabler-icons-react';
 import { ActiveLink, getPath } from 'utils';
 
 import useWalletConnected from '../../hooks/useWalletConnected';
@@ -92,7 +92,6 @@ export const HeaderNav: FC<{
   const links = [
     { link: getPath('WHITEPAPER'), label: 'Whitepaper', Icon: Home },
     { link: getPath('SAFE'), label: 'Buy Safe', Icon: Moneybag },
-    { link: getPath('NFT'), label: 'Buy NFT', Icon: UserCircle },
   ];
 
   const [active, setActive] = useState(links[0].link);
