@@ -8,18 +8,7 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { FC } from 'react';
-import {
-  ArrowLeft,
-  ArrowRight,
-  CornerRightUp,
-  FileReport,
-  Home,
-  LayoutDashboard,
-  Moneybag,
-  ReportMoney,
-  Robot,
-  UserCircle,
-} from 'tabler-icons-react';
+import { ArrowLeft, ArrowRight, Home, LayoutDashboard, Moneybag, Robot } from 'tabler-icons-react';
 import { getPath } from 'utils';
 // eslint-disable-next-line no-duplicate-imports
 import { ActiveLink } from 'utils';
@@ -149,16 +138,8 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
 const ITEMS = [
   { href: getPath('WEBSITE'), label: 'Website', Icon: Home },
   { href: getPath('DASHBOARD'), label: 'Dashboard', Icon: LayoutDashboard },
-  { href: getPath('YIELD'), label: 'Yield aggregator', Icon: ReportMoney, comingSoon: true },
-  { href: getPath('EMMA'), label: 'Emma the trading Bot', Icon: Robot, comingSoon: true },
-  { href: getPath('SAFE'), label: 'Trade Safe', Icon: Moneybag },
-  { href: getPath('NFT'), label: 'Buy an NFT', Icon: UserCircle },
-  {
-    href: getPath('INVESTMENT'),
-    label: 'Investment Pool Portfolio',
-    Icon: CornerRightUp,
-  },
-  { href: getPath('EXPENSE'), label: 'Expense Log', Icon: FileReport, comingSoon: true },
+  { href: getPath('EMMA'), label: 'Emma AI', Icon: Robot, comingSoon: true },
+  { href: getPath('SAFE'), label: 'Safe Pre-Sale', Icon: Moneybag, comingSoon: true },
 ];
 
 export const SideNav: FC<{ className?: string; collapsed?: boolean; toggle?: () => any }> = ({
