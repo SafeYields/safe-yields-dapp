@@ -5,7 +5,7 @@ import useNFTRewards from 'hooks/useNFTRewards';
 import useSafeNFTBalance from 'hooks/useSafeNFTBalance';
 import useSafeTokenBalance from 'hooks/useSafeTokenBalance';
 import useWalletConnected from 'hooks/useWalletConnected';
-import { AppLayout } from 'layout';
+import { HomeLayout } from 'layout/HomeLayout';
 import type { NextPageWithLayout } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -138,4 +138,4 @@ const Home: NextPageWithLayout = () => {
 
 export default Home;
 
-Home.getLayout = AppLayout;
+Home.getLayout = HomeLayout;

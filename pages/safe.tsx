@@ -1,6 +1,20 @@
-import { Center, Stack, Title } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Grid,
+  Group,
+  Image,
+  Input,
+  Progress,
+  Stack,
+  Text,
+  Title,
+} from '@mantine/core';
 import { useWeb3React } from '@web3-react/core';
+import { HeaderNav } from 'layout/AppLayout/HeaderNav';
+import { useState } from 'react';
 
+import { CardInfo } from '../components/InfoCard/CardInfo';
 import { PageContainer } from '../components/PageContainer';
 import { AppLayout } from '../layout';
 
@@ -16,13 +30,13 @@ const safeTheme = {
   success: '#189470',
   warning: '#FF9901',
   error: '#F28705',
-  fontFamily: 'Space Grotesk',
+  fontFamily: 'Inter, sans-serif',
   borderRadius: '25px',
   buttonRadius: '25px',
   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.04)',
 };
 
-const defaultTokenOut: { [chainId: number]: string } = {
+const defaultTokenOut = {
   42161: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
   1337: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
   421613: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
@@ -30,20 +44,214 @@ const defaultTokenOut: { [chainId: number]: string } = {
 
 const Safe = () => {
   const { chainId, provider } = useWeb3React();
-  return (
-    // <PageContainer title='safe'>
-    //   <Flex justify='center' align='center'>
-    //     <TokenListProvider tokenList={[]}>
-    //       <SwapWidget />
-    //     </TokenListProvider>
-    //   </Flex>
-    // </PageContainer>
+  const balance = 1234.56;
+  const [amount, setAmount] = useState('');
+  const [safeAmount, setSafeAmount] = useState(0);
+  const [totalSafeBought, setTotalSafeBought] = useState(0);
+  const totalSafeAvailable = 2000000;
 
-    <PageContainer title='Welcome'>
-      <Stack justify={'center'} spacing={'md'} style={{ height: '50vh' }}>
-        <Center>
-          <Title order={5}>Coming Soon</Title>
-        </Center>
+  const handleInputChange = (e: any) => {
+    const value = e.target.value;
+    setAmount(value);
+
+    const dollars = parseFloat(value);
+    if (!isNaN(dollars)) {
+      setSafeAmount(dollars * 1.1); // Calculate $SAFE based on $1 to $1.10 ratio
+    } else {
+      setSafeAmount(0);
+    }
+  };
+
+  const handleBuyClick = () => {
+    setTotalSafeBought((prevTotal) => prevTotal + safeAmount);
+  };
+
+  const progressValue = (totalSafeBought / totalSafeAvailable) * 100;
+
+  return (
+    <PageContainer title='SafeYields'>
+      <HeaderNav
+        left={undefined}
+        opened={false}
+        toggle={() => {
+          throw new Error('Function not implemented.');
+        }}
+      />
+      <Stack align='center' spacing='sm'>
+        <Title order={3} style={{ fontFamily: safeTheme.fontFamily, color: '#6772b7' }}>
+          $SAFE Pre-sale is live!
+        </Title>
+        <Text size='xl' style={{ fontFamily: safeTheme.fontFamily }} weight={700}>
+          2M $SAFE at 1$ for a 1.10$ launch price
+        </Text>
+        <CardInfo header>
+          <Input.Wrapper label='Amount' size='xl' color='#FFFFF'>
+            <Input
+              radius='xl'
+              rightSection='Max.'
+              placeholder='Enter USDC amount'
+              variant='unstyled'
+              style={{
+                borderRadius: '30px',
+                backgroundColor: '#5d6c6a',
+                color: '#FFFFFF',
+                border: '1px solid #5d6c6a',
+                padding: '10px',
+                marginBottom: '20px',
+                width: '100%',
+                fontFamily: safeTheme.fontFamily,
+              }}
+              value={amount}
+              onChange={handleInputChange}
+              sx={{
+                '::placeholder': {
+                  color: '#FFFFFF', // White placeholder text
+                },
+              }}
+            />
+          </Input.Wrapper>
+          <Group
+            style={{
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              paddingTop: '20px',
+            }}
+          >
+            <Stack align='center' spacing='md'>
+              <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Text>You will get </Text>
+                <Text
+                  style={{ marginLeft: '5px', color: 'rgb(76, 250, 199)', fontWeight: 'bolder' }}
+                >
+                  {safeAmount} $SAFE
+                </Text>
+              </Box>
+              <Button
+                variant='filled'
+                radius='xl'
+                size='md'
+                w='200px'
+                style={{ backgroundColor: '#6772b7' }}
+                onClick={handleBuyClick}
+              >
+                Buy $SAFE
+              </Button>
+            </Stack>
+          </Group>
+        </CardInfo>
+        <CardInfo header='Available $SAFE'>
+          <Progress
+            value={progressValue}
+            color='#4cfac7'
+            size='xl'
+            radius='xl'
+            style={{ width: '100%', padding: '15px', margin: '10px', backgroundColor: '#5d6c6a' }}
+          />
+          <Box
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
+            <Text style={{ marginLeft: '10px', fontWeight: '500' }}>{progressValue}</Text>
+            <Text style={{ marginLeft: '5px', fontWeight: '500' }}>2M $SAFE</Text>
+          </Box>
+        </CardInfo>
+        <Stack>
+          <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Image
+              src='/assets/1-safe-coin.svg'
+              alt='safe-yeilds'
+              style={{ width: '100px', height: '100px' }}
+            />
+          </Box>
+          <Text
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              color: '#4CFAC7',
+              fontFamily: safeTheme.fontFamily,
+              font: 'bold',
+              marginTop: '10px',
+            }}
+            size='xl'
+            weight={700}
+          >
+            Stack $SAFE
+          </Text>
+          <Text
+            size='xl'
+            weight={700}
+            style={{
+              display: 'flex',
+              color: '#4CFAC7',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            and get
+          </Text>
+          <Grid style={{ width: '100%' }}>
+            <Grid.Col span={4}>
+              <Box
+                style={{
+                  display: 'flex',
+                  margin: '10px',
+                  padding: '30px',
+                  lineHeight: '18px',
+                  fontWeight: 500,
+                  borderRadius: '21px',
+                  background:
+                    'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
+                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  transition: 'all 0.4s ease-in-out',
+                }}
+              >
+                Governance power over SafeYields
+              </Box>
+            </Grid.Col>
+            <Grid.Col span={4}>
+              <Box
+                style={{
+                  display: 'flex',
+                  margin: '10px',
+                  padding: '30px',
+                  lineHeight: '18px',
+                  fontWeight: 500,
+                  borderRadius: '21px',
+                  background:
+                    'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
+                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  transition: 'all 0.4s ease-in-out',
+                }}
+              >
+                Early access to Emma AI up until launch
+              </Box>
+            </Grid.Col>
+            <Grid.Col span={4}>
+              <Box
+                style={{
+                  display: 'flex',
+                  margin: '10px',
+                  padding: '30px',
+                  lineHeight: '18px',
+                  fontWeight: 500,
+                  borderRadius: '21px',
+                  background:
+                    'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
+                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  transition: 'all 0.4s ease-in-out',
+                }}
+              >
+                Revenue share from protocol generates fees
+              </Box>
+            </Grid.Col>
+          </Grid>
+        </Stack>
       </Stack>
     </PageContainer>
   );

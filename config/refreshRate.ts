@@ -1,2 +1,2 @@
 // dashboard data refresh rate in seconds
-export const refreshRate = 10;
+export const refreshRate = 30;

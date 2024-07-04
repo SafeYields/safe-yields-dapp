@@ -9,6 +9,7 @@ const PATH = {
   NFT: '/nft',
   INVESTMENT: '/investments',
   EXPENSE: '/expense',
+  GETREF: '/reference',
   WHITEPAPER: 'https://www.safeyields.io/safeyields_whitepaper.pdf',
 } as const;
 
