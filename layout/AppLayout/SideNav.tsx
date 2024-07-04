@@ -139,7 +139,7 @@ const ITEMS = [
   { href: getPath('WEBSITE'), label: 'Website', Icon: Home },
   { href: getPath('DASHBOARD'), label: 'Dashboard', Icon: LayoutDashboard },
   { href: getPath('EMMA'), label: 'Emma AI', Icon: Robot, comingSoon: true },
-  { href: getPath('SAFE'), label: 'Safe Pre-Sale', Icon: Moneybag, comingSoon: true },
+  { href: getPath('SAFE'), label: 'Safe Pre-Sale', Icon: Moneybag },
 ];
 
 export const SideNav: FC<{ className?: string; collapsed?: boolean; toggle?: () => any }> = ({
