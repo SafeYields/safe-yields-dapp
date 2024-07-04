@@ -155,7 +155,10 @@ const Safe = () => {
             size='xl'
             radius='xl'
             style={{
-              width: isSmallScreen ? '100%' : '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: isSmallScreen ? '50%' : '100%',
               padding: '15px',
               margin: '10px',
               backgroundColor: '#5d6c6a',
@@ -167,7 +170,7 @@ const Safe = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
 
-              width: isSmallScreen ? '100%' : '50%',
+              width: isSmallScreen ? '50%' : '100%',
             }}
           >
             <Text style={{ marginLeft: '10px', fontWeight: '500' }}>{progressValue}</Text>
@@ -211,7 +214,7 @@ const Safe = () => {
           </Text>
 
           <SimpleGrid
-            cols={6}
+            cols={4}
             spacing='xs'
             style={{
               width: '100%',
