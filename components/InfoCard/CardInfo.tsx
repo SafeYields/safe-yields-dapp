@@ -1,4 +1,5 @@
-import { Box, createStyles, Stack, Text } from '@mantine/core';
+import { Box, createStyles, Stack, Text, useMantineTheme } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { FC, ReactNode } from 'react';
 
 type InfoCardProps = {
@@ -22,18 +23,21 @@ export const CardInfo: FC<InfoCardProps> = ({
   gray,
   hover = true,
 }) => {
+  const theme = useMantineTheme();
+  const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
+
   const useStyles = createStyles((theme) => ({
     card: {
       ...theme.fn.focusStyles(),
-      maxWidth,
-      minHeight,
+      maxWidth: isSmallScreen ? '100%' : maxWidth,
+      minHeight: isSmallScreen ? 'auto' : minHeight,
 
       margin: '20px',
       marginBottom: '5px',
       columnGap: theme.spacing.sm,
       fontSize: theme.fontSizes.md,
       color: theme.colors[theme.primaryColor][0],
-      padding: '10px 50px',
+      padding: isSmallScreen ? '10px 20px' : '10px 50px',
       lineHeight: '18px',
       fontWeight: 325,
       borderRadius: '21px',
@@ -65,7 +69,7 @@ export const CardInfo: FC<InfoCardProps> = ({
     },
     cardInner: {
       ...theme.fn.focusStyles(),
-      minWidth: '400px',
+      minWidth: isSmallScreen ? '100%' : '400px',
       display: 'flex',
       textDecoration: 'none',
       margin: '10px',
@@ -88,6 +92,7 @@ export const CardInfo: FC<InfoCardProps> = ({
       borderRadius: '10px',
       margin: '0px 0px',
       background: 'transparent',
+      textAlign: isSmallScreen ? 'center' : 'left',
     },
   }));
   const { classes } = useStyles();

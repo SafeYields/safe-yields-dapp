@@ -1,17 +1,18 @@
 import {
   Box,
   Button,
-  Grid,
   Group,
   Image,
   Input,
   Progress,
+  SimpleGrid,
   Stack,
   Text,
   Title,
+  useMantineTheme,
 } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { useWeb3React } from '@web3-react/core';
-import { HeaderNav } from 'layout/AppLayout/HeaderNav';
 import { useState } from 'react';
 
 import { CardInfo } from '../components/InfoCard/CardInfo';
@@ -68,20 +69,27 @@ const Safe = () => {
 
   const progressValue = (totalSafeBought / totalSafeAvailable) * 100;
 
+  const theme = useMantineTheme();
+  const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
+
   return (
-    <PageContainer title='SafeYields'>
-      <HeaderNav
-        left={undefined}
-        opened={false}
-        toggle={() => {
-          throw new Error('Function not implemented.');
-        }}
-      />
+    <PageContainer title='Safe'>
       <Stack align='center' spacing='sm'>
-        <Title order={3} style={{ fontFamily: safeTheme.fontFamily, color: '#6772b7' }}>
+        <Title
+          order={3}
+          style={{
+            fontFamily: safeTheme.fontFamily,
+            color: '#6772b7',
+            textAlign: isSmallScreen ? 'center' : 'left',
+          }}
+        >
           $SAFE Pre-sale is live!
         </Title>
-        <Text size='xl' style={{ fontFamily: safeTheme.fontFamily }} weight={700}>
+        <Text
+          size='xl'
+          style={{ fontFamily: safeTheme.fontFamily, textAlign: isSmallScreen ? 'center' : 'left' }}
+          weight={700}
+        >
           2M $SAFE at 1$ for a 1.10$ launch price
         </Text>
         <CardInfo header>
@@ -118,7 +126,7 @@ const Safe = () => {
               paddingTop: '20px',
             }}
           >
-            <Stack align='center' spacing='md'>
+            <Stack justify='center' align='center' spacing='md'>
               <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Text>You will get </Text>
                 <Text
@@ -146,14 +154,20 @@ const Safe = () => {
             color='#4cfac7'
             size='xl'
             radius='xl'
-            style={{ width: '100%', padding: '15px', margin: '10px', backgroundColor: '#5d6c6a' }}
+            style={{
+              width: isSmallScreen ? '100%' : '50%',
+              padding: '15px',
+              margin: '10px',
+              backgroundColor: '#5d6c6a',
+            }}
           />
           <Box
             style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              width: '100%',
+
+              width: isSmallScreen ? '100%' : '50%',
             }}
           >
             <Text style={{ marginLeft: '10px', fontWeight: '500' }}>{progressValue}</Text>
@@ -195,62 +209,74 @@ const Safe = () => {
           >
             and get
           </Text>
-          <Grid style={{ width: '100%' }}>
-            <Grid.Col span={4}>
-              <Box
-                style={{
-                  display: 'flex',
-                  margin: '10px',
-                  padding: '30px',
-                  lineHeight: '18px',
-                  fontWeight: 500,
-                  borderRadius: '21px',
-                  background:
-                    'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
-                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                  transition: 'all 0.4s ease-in-out',
-                }}
-              >
-                Governance power over SafeYields
-              </Box>
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <Box
-                style={{
-                  display: 'flex',
-                  margin: '10px',
-                  padding: '30px',
-                  lineHeight: '18px',
-                  fontWeight: 500,
-                  borderRadius: '21px',
-                  background:
-                    'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
-                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                  transition: 'all 0.4s ease-in-out',
-                }}
-              >
-                Early access to Emma AI up until launch
-              </Box>
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <Box
-                style={{
-                  display: 'flex',
-                  margin: '10px',
-                  padding: '30px',
-                  lineHeight: '18px',
-                  fontWeight: 500,
-                  borderRadius: '21px',
-                  background:
-                    'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
-                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                  transition: 'all 0.4s ease-in-out',
-                }}
-              >
-                Revenue share from protocol generates fees
-              </Box>
-            </Grid.Col>
-          </Grid>
+
+          <SimpleGrid
+            cols={6}
+            spacing='xs'
+            style={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignContent: 'center',
+            }}
+          >
+            <Box
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '10px',
+                padding: '30px',
+                lineHeight: '18px',
+                fontWeight: 500,
+                borderRadius: '21px',
+                background:
+                  'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
+                boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                transition: 'all 0.4s ease-in-out',
+              }}
+            >
+              Governance power over SafeYields
+            </Box>
+
+            <Box
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '10px',
+                padding: '30px',
+                lineHeight: '18px',
+                fontWeight: 500,
+                borderRadius: '21px',
+                background:
+                  'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
+                boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                transition: 'all 0.4s ease-in-out',
+              }}
+            >
+              Early access to Emma AI up until launch
+            </Box>
+
+            <Box
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '10px',
+                padding: '30px',
+                lineHeight: '18px',
+                fontWeight: 500,
+                borderRadius: '21px',
+                background:
+                  'linear-gradient(180deg, rgba(217, 217, 217, 0.3) 0%, rgba(217, 217, 217, 0.3) 0.01%, rgba(217, 217, 217, 0.09) 100%)',
+                boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                transition: 'all 0.4s ease-in-out',
+              }}
+            >
+              Revenue share from protocol generates fees
+            </Box>
+          </SimpleGrid>
         </Stack>
       </Stack>
     </PageContainer>
